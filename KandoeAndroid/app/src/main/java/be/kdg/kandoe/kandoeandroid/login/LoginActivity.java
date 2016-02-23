@@ -1,4 +1,4 @@
-package be.kdg.kandoe.kandoeandroid;
+package be.kdg.kandoe.kandoeandroid.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -31,6 +31,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import be.kdg.kandoe.kandoeandroid.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
