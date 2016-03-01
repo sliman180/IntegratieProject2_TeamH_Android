@@ -1,4 +1,4 @@
-package be.kdg.kandoe.kandoeandroid.login;
+package be.kdg.kandoe.kandoeandroid.login.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
