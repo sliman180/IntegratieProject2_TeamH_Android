@@ -3,6 +3,7 @@ package be.kdg.kandoe.kandoeandroid.login.login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,11 +30,24 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
+import be.kdg.kandoe.kandoeandroid.login.api.AuthAPI;
+import be.kdg.kandoe.kandoeandroid.login.cirkelsessie.CIrkelsessieLijstActivity;
+import be.kdg.kandoe.kandoeandroid.login.pojo.Credentials;
+import be.kdg.kandoe.kandoeandroid.login.pojo.Token;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -59,17 +74,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    // Token that you need to use the kandoe app.
+    private Token token;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        intent = new Intent(this, CIrkelsessieLijstActivity.class);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -84,8 +104,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        Button mSignInButton = (Button) findViewById(R.id.sign_in_button);
+        mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
@@ -112,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(mUsernameView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
@@ -151,11 +171,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         // Reset errors.
-        mEmailView.setError(null);
+        mUsernameView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
+        String username = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
@@ -168,14 +188,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+        // Check for a valid username.
+        if (TextUtils.isEmpty(username)) {
+            mUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mUsernameView;
             cancel = true;
         }
 
@@ -187,19 +203,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(username, password);
             mAuthTask.execute((Void) null);
         }
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return true;
     }
 
     /**
@@ -278,7 +289,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+        mUsernameView.setAdapter(adapter);
     }
 
 
@@ -298,35 +309,88 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
+        private final String mUsername;
         private final String mPassword;
+        private StringBuffer response;
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
+        UserLoginTask(String username, String password) {
+            mUsername = username;
             mPassword = password;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
+            // Check username & password for existence en corectness
+//            try {
+//                URL url = new URL("http://teamh-spring.herokuapp.com/auth/login");
+//                con = (HttpURLConnection) url.openConnection();
+//                con.setReadTimeout(10000);
+//                con.setConnectTimeout(15000);
+//                con.setRequestMethod("POST");
+//                con.setRequestProperty("Content-Type", "application/json");
+//                con.setDoInput(true);
+//                con.setDoOutput(true);
+//
+//                OutputStream os = con.getOutputStream();
+//                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+//
+//                writer.write(String.format("{\"gebruikersnaam\":\"%s\",\"wachtwoord\":\"%s\"}", mUsername, mPassword));
+//                writer.flush();
+//                writer.close();
+//                os.close();
+//
+//                con.connect();
+//
+//                BufferedReader in = new BufferedReader(
+//                        new InputStreamReader(con.getInputStream()));
+//                String inputLine;
+//                response = new StringBuffer();
+//
+//                while ((inputLine = in.readLine()) != null) {
+//                    response.append(inputLine);
+//                }
+//                int responseCode = con.getResponseCode();
+//
+//                Log.d("response", response.toString());
+//                Log.d("response", responseCode + "");
+//                in.close();
+//                if (responseCode == 200) {
+//                    Object token = new Gson().fromJson(response.toString(), Object.class);
+//                    token.g
+//                    Log.d("token", token.toString());
+//                    return true;
+//                }
+//                else return  false;
+//            } catch (IOException e) {
+//                int responseCode = 0;
+//                try {
+//                    responseCode = con.getResponseCode();
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//                Log.d("response", responseCode + "");
+//                e.printStackTrace();
+//                return false;
+//            }
 
             // TODO: register the new account here.
-            return true;
+//            if ()
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://teamh-spring.herokuapp.com")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            AuthAPI authAPI = retrofit.create(AuthAPI.class);
+
+            Call<Token> call = authAPI.login(new Credentials(mUsername, mPassword));
+            try {
+                token = call.execute().body();
+                return token != null;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
 
         @Override
@@ -335,7 +399,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+                intent.putExtra("token", token.getToken());
+                startActivity(intent);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
