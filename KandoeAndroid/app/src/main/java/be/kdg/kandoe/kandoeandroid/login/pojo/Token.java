@@ -4,7 +4,7 @@ public class Token {
     String token;
 
     public String getToken() {
-        return token;
+        return  token;
     }
 
     public void setToken(String token) {
