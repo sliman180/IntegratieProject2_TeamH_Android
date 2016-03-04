@@ -24,6 +24,13 @@ public class Kaart {
         return tekst;
     }
 
+    public Kaart(int id, String tekst, String imageUrl, boolean commentsToelaatbaar) {
+        this.id = id;
+        this.tekst = tekst;
+        this.imageUrl = imageUrl;
+        this.commentsToelaatbaar = commentsToelaatbaar;
+    }
+
     public void setTekst(String tekst) {
         this.tekst = tekst;
     }

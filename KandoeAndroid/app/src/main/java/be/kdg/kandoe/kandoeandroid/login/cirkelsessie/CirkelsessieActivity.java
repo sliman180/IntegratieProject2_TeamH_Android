@@ -14,21 +14,13 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
-import be.kdg.kandoe.kandoeandroid.login.api.KaartenAPI;
 import be.kdg.kandoe.kandoeandroid.login.helpers.Child;
 import be.kdg.kandoe.kandoeandroid.login.helpers.Parent;
-import be.kdg.kandoe.kandoeandroid.login.pojo.Kaart;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+
 
 
 public class CirkelsessieActivity extends AppCompatActivity {
@@ -52,7 +44,8 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
 
     public void setTest(String a){
-       cirkelsessieListAdapter.parentItems.get(0).getChildren().add(new Child(a));
+        Parent parent = cirkelsessieListAdapter.parentItems.get(0);
+        parent.getChildren().add(new Child(a));
         cirkelsessieListAdapter.notifyDataSetChanged();
     }
 
@@ -66,15 +59,10 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
         private Context context;
 
-        private ArrayList<Child> childItems;
-
         private ArrayList<Parent> parentItems;
-
-
 
         public CirkelsessieListAdapter(Context context) {
             this.context = context;
-            this.childItems = new ArrayList<>();
             this.parentItems = new ArrayList<>();
             dummyData();
         }
@@ -84,7 +72,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 final Parent parent = new Parent();
 
                 parent.setPosition("Position " + i);
-                parent.setChildren(childItems);
+                parent.setChildren(new ArrayList<Child>());
 
                 parentItems.add(parent);
             }
