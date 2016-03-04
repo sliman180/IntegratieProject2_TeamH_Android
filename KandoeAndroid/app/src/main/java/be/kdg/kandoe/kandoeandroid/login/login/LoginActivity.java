@@ -320,62 +320,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // Check username & password for existence en corectness
-//            try {
-//                URL url = new URL("http://teamh-spring.herokuapp.com/auth/login");
-//                con = (HttpURLConnection) url.openConnection();
-//                con.setReadTimeout(10000);
-//                con.setConnectTimeout(15000);
-//                con.setRequestMethod("POST");
-//                con.setRequestProperty("Content-Type", "application/json");
-//                con.setDoInput(true);
-//                con.setDoOutput(true);
-//
-//                OutputStream os = con.getOutputStream();
-//                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-//
-//                writer.write(String.format("{\"gebruikersnaam\":\"%s\",\"wachtwoord\":\"%s\"}", mUsername, mPassword));
-//                writer.flush();
-//                writer.close();
-//                os.close();
-//
-//                con.connect();
-//
-//                BufferedReader in = new BufferedReader(
-//                        new InputStreamReader(con.getInputStream()));
-//                String inputLine;
-//                response = new StringBuffer();
-//
-//                while ((inputLine = in.readLine()) != null) {
-//                    response.append(inputLine);
-//                }
-//                int responseCode = con.getResponseCode();
-//
-//                Log.d("response", response.toString());
-//                Log.d("response", responseCode + "");
-//                in.close();
-//                if (responseCode == 200) {
-//                    Object token = new Gson().fromJson(response.toString(), Object.class);
-//                    token.g
-//                    Log.d("token", token.toString());
-//                    return true;
-//                }
-//                else return  false;
-//            } catch (IOException e) {
-//                int responseCode = 0;
-//                try {
-//                    responseCode = con.getResponseCode();
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//                Log.d("response", responseCode + "");
-//                e.printStackTrace();
-//                return false;
-//            }
-
-            // TODO: register the new account here.
-//            if ()
-
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://teamh-spring.herokuapp.com")
                     .addConverterFactory(GsonConverterFactory.create())
