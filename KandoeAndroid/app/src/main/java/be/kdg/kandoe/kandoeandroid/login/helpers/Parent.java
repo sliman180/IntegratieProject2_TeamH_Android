@@ -3,11 +3,13 @@ package be.kdg.kandoe.kandoeandroid.login.helpers;
 
 import java.util.ArrayList;
 
+import be.kdg.kandoe.kandoeandroid.login.pojo.Spelkaart;
+
 public class Parent {
 
     private String position;
 
-    private ArrayList<Child> children;
+    private ArrayList<Spelkaart> children;
 
     public String getPosition() {
         return position;
@@ -17,11 +19,11 @@ public class Parent {
         this.position = position;
     }
 
-    public ArrayList<Child> getChildren() {
+    public ArrayList<Spelkaart> getChildren() {
         return children;
     }
 
-    public void setChildren(ArrayList<Child> children) {
+    public void setChildren(ArrayList<Spelkaart> children) {
         this.children = children;
     }
 }

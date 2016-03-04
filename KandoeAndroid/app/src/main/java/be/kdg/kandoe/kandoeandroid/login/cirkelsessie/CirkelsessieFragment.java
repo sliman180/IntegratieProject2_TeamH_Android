@@ -22,7 +22,9 @@ import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.login.api.KaartenAPI;
+import be.kdg.kandoe.kandoeandroid.login.api.SpelkaartenAPI;
 import be.kdg.kandoe.kandoeandroid.login.pojo.Kaart;
+import be.kdg.kandoe.kandoeandroid.login.pojo.Spelkaart;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -63,24 +65,23 @@ public class CirkelsessieFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        KaartenAPI kaartenAPI = retrofit.create(KaartenAPI.class);
+        SpelkaartenAPI spelkaartenAPI = retrofit.create(SpelkaartenAPI.class);
 
-        Call<List<Kaart>> call = kaartenAPI.getKaarten();
-        call.enqueue(new Callback<List<Kaart>>() {
+        Call<List<Spelkaart>> call = spelkaartenAPI.getSpelkaarten();
+
+        call.enqueue(new Callback<List<Spelkaart>>() {
 
 
             @Override
-            public void onResponse(Response<List<Kaart>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<Spelkaart>> response, Retrofit retrofit) {
                 if(response !=null){
                // createTextViews(response,null);
-                    ArrayList<Kaart> kaarts = new ArrayList<Kaart>();
+                    ArrayList<Spelkaart> spelkaarts = new ArrayList<Spelkaart>();
                     for(int i = 0; i < 10; i++)
                     {
-                        kaarts.add(new Kaart(i, "kaart" + i, "lol", true));
-
+                        spelkaarts.add(new Spelkaart(i, new Kaart(i,"kaart" + i, "dummy",true), 0));
                     }
-
-                    createTextViews(null,kaarts);
+                    createTextViews(null,spelkaarts);
                 }
 
                 Toast.makeText(getActivity().getBaseContext(), "data received",
@@ -92,14 +93,12 @@ public class CirkelsessieFragment extends Fragment {
             public void onFailure(Throwable t) {
                 Toast.makeText(getActivity().getBaseContext(), "failure",
                         Toast.LENGTH_SHORT).show();
-               ArrayList<Kaart> kaarts = new ArrayList<Kaart>();
+               ArrayList<Spelkaart> spelkaarts = new ArrayList<Spelkaart>();
                for(int i = 0; i < 10; i++)
                {
-                   kaarts.add(new Kaart(i, "kaart" + i, "lol", true));
-
+                   spelkaarts.add(new Spelkaart(i, new Kaart(i,"kaart" + i, "dummy",true), 0));
                }
-
-                createTextViews(null,kaarts);
+                createTextViews(null,spelkaarts);
             }
 
         });
@@ -111,20 +110,20 @@ public class CirkelsessieFragment extends Fragment {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
-    public void createTextViews(Response<List<Kaart>> response, ArrayList<Kaart> kaarts){
+    public void createTextViews(Response<List<Spelkaart>> response, ArrayList<Spelkaart> spelkaarts){
 
-        List<Kaart> kaarten = new ArrayList<>();
-        if(kaarts != null){
-            kaarten.addAll(kaarts);
+        List<Spelkaart> spelkaarten = new ArrayList<>();
+        if(spelkaarts != null){
+            spelkaarten.addAll(spelkaarts);
         }else {
            // kaarten.addAll(response.body());
         }
         LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.spelKaartLayout);
         int i = 0;
-        for (final Kaart kaart : kaarten) {
+        for (final Spelkaart spelkaart : spelkaarten) {
 
-            TextView textView = new TextView(getActivity());
-            textView.setText(kaart.getTekst());
+            final TextView textView = new TextView(getActivity());
+            textView.setText(spelkaart.getKaart().getTekst());
             linearLayout.addView(textView);
 
             textView.setId(i);
@@ -132,7 +131,7 @@ public class CirkelsessieFragment extends Fragment {
             int padding = dpToPx(15);
 
             textView.setPadding(padding, padding, padding, padding);
-            LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+            final LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             llp.setMarginEnd(dpToPx(5));
@@ -154,8 +153,10 @@ public class CirkelsessieFragment extends Fragment {
                     dialogButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ((CirkelsessieActivity) getActivity()).setTest(kaart.getTekst());
+                            ((CirkelsessieActivity) getActivity()).setPosition(spelkaart);
+
                             dialog.dismiss();
+                            textView.setVisibility(View.GONE);
                         }
                     });
 

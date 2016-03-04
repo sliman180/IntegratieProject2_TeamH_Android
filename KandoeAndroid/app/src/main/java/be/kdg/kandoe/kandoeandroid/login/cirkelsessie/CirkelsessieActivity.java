@@ -1,7 +1,7 @@
 package be.kdg.kandoe.kandoeandroid.login.cirkelsessie;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,16 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import be.kdg.kandoe.kandoeandroid.R;
-import be.kdg.kandoe.kandoeandroid.login.helpers.Child;
 import be.kdg.kandoe.kandoeandroid.login.helpers.Parent;
-
+import be.kdg.kandoe.kandoeandroid.login.pojo.Spelkaart;
 
 
 public class CirkelsessieActivity extends AppCompatActivity {
@@ -43,9 +43,10 @@ public class CirkelsessieActivity extends AppCompatActivity {
     }
 
 
-    public void setTest(String a){
-        Parent parent = cirkelsessieListAdapter.parentItems.get(0);
-        parent.getChildren().add(new Child(a));
+    public void setPosition(Spelkaart spelkaart){
+        Parent parent = cirkelsessieListAdapter.parentItems.get(spelkaart.getPositie());
+
+        parent.getChildren().add(spelkaart);
         cirkelsessieListAdapter.notifyDataSetChanged();
     }
 
@@ -68,11 +69,14 @@ public class CirkelsessieActivity extends AppCompatActivity {
         }
 
         private void dummyData(){
+            int getal = 4;
             for(int i = 1;i <5; i++){
                 final Parent parent = new Parent();
 
-                parent.setPosition("Position " + i);
-                parent.setChildren(new ArrayList<Child>());
+                parent.setPosition("Position " + getal);
+                parent.setChildren(new ArrayList<Spelkaart>());
+
+                getal--;
 
                 parentItems.add(parent);
             }
@@ -95,7 +99,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         }
 
         @Override
-        public Child getChild(int i, int i1) {
+        public Spelkaart getChild(int i, int i1) {
             return parentItems.get(i).getChildren().get(i1);
         }
 
@@ -123,6 +127,8 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 view = infalInflater.inflate(R.layout.cirkel_header_list,
                         null);
             }
+            ExpandableListView expandableListView = (ExpandableListView) viewGroup;
+            expandableListView.expandGroup(i);
             TextView item = (TextView) view.findViewById(R.id.niveau);
             item.setTypeface(null, Typeface.BOLD);
             item.setText(niveauName);
@@ -130,10 +136,10 @@ public class CirkelsessieActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getChildView(int groupPos, int childPos, boolean b, View view, ViewGroup viewGroup) {
+        public View getChildView(final int groupPos, final int childPos, boolean b, View view, ViewGroup viewGroup) {
 
 
-            final String childText = getChild(groupPos,childPos).getChildText();
+            final String childText = getChild(groupPos,childPos).getKaart().getTekst();
 
             if (view == null) {
                 LayoutInflater infalInflater = (LayoutInflater) this.context
@@ -141,10 +147,47 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 view = infalInflater.inflate(R.layout.cirkel_list_child, null);
             }
 
-            TextView txtListChild = (TextView) view
+            final TextView txtListChild = (TextView) view
                     .findViewById(R.id.kaart);
 
             txtListChild.setText(childText);
+
+            txtListChild.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Dialog dialog = new Dialog(CirkelsessieActivity.this);
+                    dialog.setContentView(R.layout.custom_dialog);
+                    dialog.setTitle("Verplaats kaart ?");
+
+                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+                    Button annuleerButton = (Button) dialog.findViewById(R.id.dialogButtonAnnuleer);
+                    // if button is clicked, close the custom dialog
+                    dialogButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Spelkaart spelkaart = getChild(groupPos, childPos);
+                            spelkaart.setPositie(spelkaart.getPositie() + 1);
+                            Parent oldParent = getGroup(groupPos);
+                            oldParent.getChildren().remove(spelkaart);
+
+                            Parent newParent = getGroup(spelkaart.getPositie());
+                            newParent.getChildren().add(spelkaart);
+                            notifyDataSetChanged();
+                            dialog.dismiss();
+                        }
+                    });
+
+                    annuleerButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+
+                }
+            });
 
             return view;
 

@@ -9,6 +9,13 @@ public class Spelkaart {
 
     private int positie;
 
+
+    public Spelkaart(int id, Kaart kaart, int positie) {
+        this.id = id;
+        this.kaart = kaart;
+        this.positie = positie;
+    }
+
     public int getId() {
         return id;
     }
