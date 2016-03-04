@@ -1,6 +1,7 @@
 package be.kdg.kandoe.kandoeandroid.login.cirkelsessie;
 
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -69,7 +71,17 @@ public class CirkelsessieFragment extends Fragment {
 
             @Override
             public void onResponse(Response<List<Kaart>> response, Retrofit retrofit) {
-                createTextViews(response);
+                if(response !=null){
+               // createTextViews(response,null);
+                    ArrayList<Kaart> kaarts = new ArrayList<Kaart>();
+                    for(int i = 0; i < 10; i++)
+                    {
+                        kaarts.add(new Kaart(i, "kaart" + i, "lol", true));
+
+                    }
+
+                    createTextViews(null,kaarts);
+                }
 
                 Toast.makeText(getActivity().getBaseContext(), "data received",
                         Toast.LENGTH_SHORT).show();
@@ -78,9 +90,16 @@ public class CirkelsessieFragment extends Fragment {
 
             @Override
             public void onFailure(Throwable t) {
-                Toast.makeText(getActivity().getBaseContext(), t.getMessage(),
+                Toast.makeText(getActivity().getBaseContext(), "failure",
                         Toast.LENGTH_SHORT).show();
-                System.out.println("failure");
+               ArrayList<Kaart> kaarts = new ArrayList<Kaart>();
+               for(int i = 0; i < 10; i++)
+               {
+                   kaarts.add(new Kaart(i, "kaart" + i, "lol", true));
+
+               }
+
+                createTextViews(null,kaarts);
             }
 
         });
@@ -91,16 +110,21 @@ public class CirkelsessieFragment extends Fragment {
     {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
-    public void createTextViews(Response<List<Kaart>> response){
+
+    public void createTextViews(Response<List<Kaart>> response, ArrayList<Kaart> kaarts){
 
         List<Kaart> kaarten = new ArrayList<>();
-        kaarten.addAll(response.body());
+        if(kaarts != null){
+            kaarten.addAll(kaarts);
+        }else {
+           // kaarten.addAll(response.body());
+        }
         LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.spelKaartLayout);
         int i = 0;
-        for (final Kaart aTextArray : kaarten) {
+        for (final Kaart kaart : kaarten) {
 
             TextView textView = new TextView(getActivity());
-            textView.setText(aTextArray.getTekst());
+            textView.setText(kaart.getTekst());
             linearLayout.addView(textView);
 
             textView.setId(i);
@@ -119,10 +143,31 @@ public class CirkelsessieFragment extends Fragment {
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity().getBaseContext(), "kaartId: "+String.valueOf(aTextArray.getId()),
-                            Toast.LENGTH_SHORT).show();
+                    // custom dialog
+                    final Dialog dialog = new Dialog(getActivity());
+                    dialog.setContentView(R.layout.custom_dialog);
+                    dialog.setTitle("Verplaats kaart?");
 
-                    ((CirkelsessieActivity)getActivity()).setTest(aTextArray.getTekst());
+                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+                    Button annuleerButton = (Button) dialog.findViewById(R.id.dialogButtonAnnuleer);
+                    // if button is clicked, close the custom dialog
+                    dialogButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ((CirkelsessieActivity) getActivity()).setTest(kaart.getTekst());
+                            dialog.dismiss();
+                        }
+                    });
+
+                    annuleerButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+
                 }
             });
 

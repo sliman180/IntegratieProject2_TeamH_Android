@@ -11,7 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:background="#C9A295"
+            android:background="#a8a8a8"
             android:orientation="horizontal">
 
         </LinearLayout>

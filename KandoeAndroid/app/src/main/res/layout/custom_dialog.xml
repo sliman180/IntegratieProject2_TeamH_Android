@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/dialogtext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFF"
+        />
+
+    <Button
+        android:id="@+id/dialogButtonOK"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text=" Ok "
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="25dp"
+        android:layout_below="@+id/dialogtext"
+        />
+
+    <Button
+        android:id="@+id/dialogButtonAnnuleer"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text=" Annuleer "
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_toEndOf="@+id/dialogButtonOK"
+        android:layout_below="@+id/dialogtext"
+        />
+
+</RelativeLayout>
