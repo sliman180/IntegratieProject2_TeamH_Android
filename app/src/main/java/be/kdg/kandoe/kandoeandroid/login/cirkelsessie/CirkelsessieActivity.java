@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -128,10 +129,10 @@ public class CirkelsessieActivity extends AppCompatActivity {
                         null);
             }
             ExpandableListView expandableListView = (ExpandableListView) viewGroup;
-            expandableListView.expandGroup(i);
-            TextView item = (TextView) view.findViewById(R.id.niveau);
-            item.setTypeface(null, Typeface.BOLD);
-            item.setText(niveauName);
+//            expandableListView.expandGroup(i);
+            ImageView item = (ImageView) view.findViewById(R.id.niveau);
+//            item.setTypeface(null, Typeface.BOLD);
+//            item.setText(niveauName);
             return view;
         }
 
