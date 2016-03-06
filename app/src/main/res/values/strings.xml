@@ -15,4 +15,10 @@
     </string>
     <string name="title_activity_cirkelsessie">Cirkelsessie</string>
     <string name="title_activity_cirkelsessie_lijst">CIrkelsessieLijstActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="drawer_open">open drawer</string>
+    <string name="drawer_close">close drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
