@@ -41,6 +41,7 @@ import java.util.List;
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.login.api.AuthAPI;
 import be.kdg.kandoe.kandoeandroid.login.cirkelsessie.CIrkelsessieLijstActivity;
+import be.kdg.kandoe.kandoeandroid.login.cirkelsessie.CirkelsessieActivity;
 import be.kdg.kandoe.kandoeandroid.login.pojo.Credentials;
 import be.kdg.kandoe.kandoeandroid.login.pojo.Token;
 import retrofit.Call;

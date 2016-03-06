@@ -9,6 +9,16 @@ public class Parent {
 
     private String position;
 
+    private int circleLength;
+
+    public int getCircleLength() {
+        return circleLength;
+    }
+
+    public void setCircleLength(int circleLength) {
+        this.circleLength = circleLength;
+    }
+
     private ArrayList<Spelkaart> children;
 
     public String getPosition() {

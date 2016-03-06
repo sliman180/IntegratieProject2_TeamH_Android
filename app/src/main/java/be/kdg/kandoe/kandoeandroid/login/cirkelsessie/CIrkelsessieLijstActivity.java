@@ -1,15 +1,22 @@
 package be.kdg.kandoe.kandoeandroid.login.cirkelsessie;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Interceptor;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,12 +32,22 @@ import retrofit.Retrofit;
 
 public class CIrkelsessieLijstActivity extends AppCompatActivity {
 
+    private String token;
+    private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cirkelsessie_lijst);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        intent = new Intent(this, CirkelsessieActivity.class);
+        Bundle extras = getIntent().getExtras();
+
+
+        token = extras.getString("token");
+
+        Log.d("token :",token);
 
         getData();
 
@@ -39,8 +56,17 @@ public class CIrkelsessieLijstActivity extends AppCompatActivity {
 
     public void getData(){
 
+        OkHttpClient client = new OkHttpClient();
+        client.interceptors().add(new Interceptor() {
+            @Override
+            public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+                Request newRequest = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build();
+                return chain.proceed(newRequest);
+            }
+        });
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://teamh-spring.herokuapp.com")
+                .baseUrl("http://teamh-spring.herokuapp.com").client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -73,12 +99,15 @@ public class CIrkelsessieLijstActivity extends AppCompatActivity {
         final ListView listview = (ListView) findViewById(R.id.listview);
 
         final ArrayList<String> list = new ArrayList<>();
+        final ArrayList<Cirkelsessie> list2 = new ArrayList<>();
 
         for (int i = 0; i < response.body().size(); ++i) {
             list.add(response.body().get(i).getNaam());
+            list2.add(response.body().get(i));
         }
         final StableArrayAdapter adapter = new StableArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
+
         listview.setAdapter(adapter);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,16 +115,9 @@ public class CIrkelsessieLijstActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                view.animate().setDuration(2000).alpha(0)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                list.remove(item);
-                                adapter.notifyDataSetChanged();
-                                view.setAlpha(1);
-                            }
-                        });
+                intent.putExtra("cirkelsessieId", String.valueOf(list2.get(position).getId()));
+                intent.putExtra("token",token);
+                startActivity(intent);
             }
 
         });
@@ -107,10 +129,12 @@ public class CIrkelsessieLijstActivity extends AppCompatActivity {
 
         public StableArrayAdapter(Context context, int textViewResourceId,
                                   List<String> objects) {
+
             super(context, textViewResourceId, objects);
             for (int i = 0; i < objects.size(); ++i) {
                 mIdMap.put(objects.get(i), i);
             }
+
         }
 
         @Override

@@ -2,11 +2,14 @@ package be.kdg.kandoe.kandoeandroid.login.cirkelsessie;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +17,48 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Interceptor;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import be.kdg.kandoe.kandoeandroid.R;
+import be.kdg.kandoe.kandoeandroid.login.api.AuthAPI;
+import be.kdg.kandoe.kandoeandroid.login.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.login.helpers.Parent;
+import be.kdg.kandoe.kandoeandroid.login.pojo.Cirkelsessie;
+import be.kdg.kandoe.kandoeandroid.login.pojo.Credentials;
 import be.kdg.kandoe.kandoeandroid.login.pojo.Spelkaart;
+import be.kdg.kandoe.kandoeandroid.login.pojo.Token;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
+import retrofit.http.Path;
 
 
 public class CirkelsessieActivity extends AppCompatActivity {
 
     CirkelsessieListAdapter cirkelsessieListAdapter;
+    private String token;
+    private String cirkelsessieId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        Bundle extras = getIntent().getExtras();
+
+        token = extras.getString("token");
+        cirkelsessieId = extras.getString("cirkelsessieId");
 
         setContentView(R.layout.activity_cirkelsessie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -41,8 +69,18 @@ public class CirkelsessieActivity extends AppCompatActivity {
         cirkelsessieListAdapter = new CirkelsessieListAdapter(context);
         elv.setAdapter(cirkelsessieListAdapter);
 
+
+
     }
 
+
+    public String getToken() {
+        return token;
+    }
+
+    public String getCirkelsessieId() {
+        return cirkelsessieId;
+    }
 
     public void setPosition(Spelkaart spelkaart){
         Parent parent = cirkelsessieListAdapter.parentItems.get(spelkaart.getPositie());
@@ -52,8 +90,10 @@ public class CirkelsessieActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+
         return super.onCreateView(parent, name, context, attrs);
     }
 
@@ -66,21 +106,60 @@ public class CirkelsessieActivity extends AppCompatActivity {
         public CirkelsessieListAdapter(Context context) {
             this.context = context;
             this.parentItems = new ArrayList<>();
-            dummyData();
+            getData();
         }
 
-        private void dummyData(){
-            int getal = 4;
-            for(int i = 1;i <5; i++){
-                final Parent parent = new Parent();
+        private void getData(){
+            OkHttpClient client = new OkHttpClient();
+            client.interceptors().add(new Interceptor() {
+                @Override
+                public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+                    Request newRequest = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build();
+                    return chain.proceed(newRequest);
+                }
+            });
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://teamh-spring.herokuapp.com")
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-                parent.setPosition("Position " + getal);
-                parent.setChildren(new ArrayList<Spelkaart>());
+            CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
 
-                getal--;
+            Call<Cirkelsessie> call = cirkelsessieAPI.getCirkelsessie(cirkelsessieId);
 
-                parentItems.add(parent);
-            }
+            call.enqueue(new Callback<Cirkelsessie>() {
+
+                @Override
+                public void onResponse(Response<Cirkelsessie> response, Retrofit retrofit) {
+                    if(response.body() !=null){
+                        int aantalCirkels = response.body().getAantalCirkels();
+
+                        int getal = aantalCirkels-1;
+                        for(int i = 1;i < aantalCirkels; i++){
+                            final Parent parent = new Parent();
+                            parent.setChildren(new ArrayList<Spelkaart>());
+                            parent.setCircleLength(getal);
+                            getal--;
+                            parentItems.add(parent);
+                        }
+                    }
+
+                    Toast.makeText(getBaseContext(), "data received",
+                            Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    Toast.makeText(getBaseContext(), "failure",
+                            Toast.LENGTH_SHORT).show();
+                    Log.d("failure",t.getMessage());
+
+                }
+
+            });
+
         }
 
         @Override
@@ -122,17 +201,34 @@ public class CirkelsessieActivity extends AppCompatActivity {
         @Override
         public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
 
-            String niveauName = getGroup(i).getPosition();
+            Parent parent = getGroup(i);
             if (view == null) {
                 LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = infalInflater.inflate(R.layout.cirkel_header_list,
                         null);
+
             }
-            ExpandableListView expandableListView = (ExpandableListView) viewGroup;
-//            expandableListView.expandGroup(i);
-            ImageView item = (ImageView) view.findViewById(R.id.niveau);
-//            item.setTypeface(null, Typeface.BOLD);
-//            item.setText(niveauName);
+
+            LinearLayout lL = (LinearLayout) view.findViewById(R.id.header_linear);
+
+            if(lL.getChildCount() == 0){
+                for(int j = 0; j < parent.getCircleLength();j++){
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    if(j == 0){
+            lp.setMargins(dpToPx(25), 0, 0, 0);
+                    }
+            ImageView item = new ImageView(getBaseContext());
+            item.setImageResource(R.drawable.cirkel);
+            item.setVisibility(View.VISIBLE);
+            item.setLayoutParams(lp);
+
+            lL.addView(item);
+                }
+            }
+
+            ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.list);
+            expandableListView.expandGroup(i);
+
             return view;
         }
 
@@ -199,6 +295,12 @@ public class CirkelsessieActivity extends AppCompatActivity {
             return true;
         }
 
+
+    }
+
+    public static int dpToPx(int dp)
+    {
+        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
 
