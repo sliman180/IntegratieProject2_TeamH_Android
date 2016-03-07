@@ -2,6 +2,7 @@ package be.kdg.kandoe.kandoeandroid.login;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +21,8 @@ import android.widget.ListView;
 import java.util.LinkedHashMap;
 
 import be.kdg.kandoe.kandoeandroid.R;
+import be.kdg.kandoe.kandoeandroid.login.cirkelsessie.CIrkelsessieLijstActivity;
+import be.kdg.kandoe.kandoeandroid.login.cirkelsessie.CirkelsessieActivity;
 import be.kdg.kandoe.kandoeandroid.login.cirkelsessie.CirkelsessieFragment;
 import be.kdg.kandoe.kandoeandroid.login.subthema.SubthemaFragment;
 
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private LinkedHashMap<String, Fragment> fragmentMap;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentMap = new LinkedHashMap<>();
         fragmentMap.put("Subthemas", new SubthemaFragment());
-        fragmentMap.put("Cirkelsessie", new CirkelsessieFragment());
+        fragmentMap.put("Cirkelsessies", new CIrkelsessieLijstActivity());
 
         mMenuItems = getResources().getStringArray(R.array.menu_item_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -92,6 +97,17 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        // On start the first screen should be open
+        getFragmentManager().beginTransaction().replace(R.id.content_frame, fragmentMap.get(mMenuItems[0])).commit();
+        setTitle(mMenuItems[0]);
+
+        // Get token
+        Intent intent = new Intent(this, CirkelsessieActivity.class);
+        Bundle extras = getIntent().getExtras();
+
+        token = extras.getString("token");
+        Log.d("token :", token);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -140,5 +156,9 @@ public class MainActivity extends AppCompatActivity {
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+
+    public String getToken() {
+        return token;
     }
 }
