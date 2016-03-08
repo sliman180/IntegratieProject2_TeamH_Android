@@ -21,4 +21,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_subthema">SubthemaActivity</string>
+    <string name="subthema">Subthema</string>
+    <string name="token">token</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Annuleer</string>
 </resources>

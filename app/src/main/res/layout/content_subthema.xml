@@ -9,12 +9,9 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".login.cirkelsessie.CirkelSessieLijstFragment"
-    tools:showIn="@layout/fragment_cirkelsessie_lijst">
+    tools:context="be.kdg.kandoe.kandoeandroid.login.subthema.SubthemaActivity"
+    tools:showIn="@layout/activity_subthema">
 
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/listview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
 
 </RelativeLayout>
