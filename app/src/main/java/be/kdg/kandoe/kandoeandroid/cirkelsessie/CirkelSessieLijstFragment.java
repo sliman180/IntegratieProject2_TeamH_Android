@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.AvoidXfermode;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -157,6 +158,7 @@ public class CirkelSessieLijstFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+
             // 2. Get rowView from inflater
 
             View rowView = null;
@@ -172,6 +174,14 @@ public class CirkelSessieLijstFragment extends Fragment {
                 imgView.setImageResource(modelsArrayList.get(position).getIcon());
                 titleView.setText(modelsArrayList.get(position).getTitle());
                 counterView.setText(modelsArrayList.get(position).getCounter());
+
+                if (position % 2 == 1) {
+                    rowView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    titleView.setTextColor(Color.WHITE);
+                    counterView.setTextColor(Color.WHITE);
+                } else {
+                    rowView.setBackgroundColor(Color.WHITE);
+                }
             }
 
 

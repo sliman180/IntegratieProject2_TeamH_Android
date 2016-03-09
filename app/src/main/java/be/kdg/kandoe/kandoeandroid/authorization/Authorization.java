@@ -17,7 +17,7 @@ public class Authorization {
     public static Retrofit authorize(Activity activity){
         final String token = SharedPreferencesMethods.getFromSharedPreferences(activity, activity.getString(R.string.token));
         OkHttpClient client = new OkHttpClient();
-        client.interceptors().add(new Interceptor() {
+        client.interceptors().add(  new Interceptor() {
             @Override
             public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                 Request newRequest =
