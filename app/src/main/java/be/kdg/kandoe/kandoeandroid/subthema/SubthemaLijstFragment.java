@@ -34,8 +34,6 @@ import retrofit.Retrofit;
  * create an instance of this fragment.
  */
 public class SubthemaLijstFragment extends Fragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_TOKEN = "token";
 
     private String token;
 
@@ -86,7 +84,7 @@ public class SubthemaLijstFragment extends Fragment {
 
     public void getData(){
         be.kdg.kandoe.kandoeandroid.api.SubthemaAPI subthemaAPI =
-                Authorization.authorize(token).create(SubthemaAPI.class);
+                Authorization.authorize(getActivity()).create(SubthemaAPI.class);
 
         Call<List<Subthema>> call = subthemaAPI.getSubThemas();
         call.enqueue(new Callback<List<Subthema>>() {

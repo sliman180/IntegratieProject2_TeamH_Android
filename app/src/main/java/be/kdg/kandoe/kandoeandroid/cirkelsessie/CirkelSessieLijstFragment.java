@@ -29,7 +29,6 @@ import retrofit.Retrofit;
 
 public class CirkelSessieLijstFragment extends Fragment {
 
-    private String token;
     private Intent intent;
     private Activity mActivity;
 
@@ -56,7 +55,6 @@ public class CirkelSessieLijstFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (getActivity() != null)
             mActivity = getActivity();
-        token = ((MainActivity) mActivity).getToken();
         intent = new Intent(mActivity.getBaseContext(), CirkelsessieActivity.class);
 
         getData();
@@ -64,7 +62,7 @@ public class CirkelSessieLijstFragment extends Fragment {
 
     public void getData(){
         CirkelsessieAPI cirkelsessieAPI =
-                Authorization.authorize(token).create(CirkelsessieAPI.class);
+                Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
 
         Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessies();
         call.enqueue(new Callback<List<Cirkelsessie>>() {

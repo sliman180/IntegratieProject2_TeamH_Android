@@ -23,6 +23,7 @@ import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
+import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
 import retrofit.Call;
@@ -33,9 +34,7 @@ import retrofit.Retrofit;
 
 
 public class CirkelsessieFragment extends Fragment {
-
     View v;
-    private String token;
     private String cirkelsessieId;
 
     @Override
@@ -49,35 +48,14 @@ public class CirkelsessieFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        token = ((CirkelsessieActivity) getActivity()).getToken();
-
         cirkelsessieId = ((CirkelsessieActivity) getActivity()).getCirkelsessieId();
-
 
         getData();
     }
 
 
     public void getData(){
-
-
-        OkHttpClient client = new OkHttpClient();
-        client.interceptors().add(new Interceptor() {
-            @Override
-            public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
-                Request newRequest = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build();
-                return chain.proceed(newRequest);
-            }
-        });
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://teamh-spring.herokuapp.com")
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-
-
+        Retrofit retrofit = Authorization.authorize(getActivity());
         CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
 
         Call<Cirkelsessie> call = cirkelsessieAPI.getCirkelsessie(cirkelsessieId);

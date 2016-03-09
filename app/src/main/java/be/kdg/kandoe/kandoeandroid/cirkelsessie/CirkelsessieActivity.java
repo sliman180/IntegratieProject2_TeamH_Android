@@ -1,5 +1,6 @@
 package be.kdg.kandoe.kandoeandroid.cirkelsessie;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
@@ -19,11 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 import be.kdg.kandoe.kandoeandroid.R;
@@ -35,7 +31,6 @@ import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
 import retrofit.Call;
 import retrofit.Callback;
-import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
@@ -45,13 +40,14 @@ public class CirkelsessieActivity extends AppCompatActivity {
     private CirkelsessieListAdapter cirkelsessieListAdapter;
     private String token;
     private String cirkelsessieId;
+    private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Bundle extras = getIntent().getExtras();
 
+        mActivity = this;
         token = SharedPreferencesMethods.getFromSharedPreferences(this, getString(R.string.token));
         cirkelsessieId = extras.getString("cirkelsessieId");
 
@@ -98,7 +94,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         }
 
         private void getData(){
-            Retrofit retrofit = Authorization.authorize(token);
+            Retrofit retrofit = Authorization.authorize(mActivity);
 
             CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
 

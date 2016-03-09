@@ -18,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final String LOGIN = "login";
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -169,13 +171,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
         // Check for a valid username.
         if (TextUtils.isEmpty(username)) {
             mUsernameView.setError(getString(R.string.error_field_required));
@@ -194,11 +189,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = new UserLoginTask(username, password);
             mAuthTask.execute((Void) null);
         }
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return true;
     }
 
     /**
@@ -299,7 +289,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mUsername;
         private final String mPassword;
-        private StringBuffer response;
 
         UserLoginTask(String username, String password) {
             mUsername = username;
@@ -320,7 +309,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 token = call.execute().body();
                 return token != null;
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(LOGIN, e.toString());
                 return false;
             }
         }
