@@ -5,6 +5,10 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
+
+import android.os.Handler;
+import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +24,19 @@ import com.squareup.okhttp.Request;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 import be.kdg.kandoe.kandoeandroid.R;
+
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
+
+
+
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -36,10 +47,14 @@ import retrofit.Retrofit;
 public class CirkelsessieFragment extends Fragment {
     View v;
     private String cirkelsessieId;
+    Timer timer;
+    LinearLayout linearLayout;
+    TimerTask doAsynchronousTask;
+    Handler handler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.test, null);
+        v = inflater.inflate(R.layout.horizontal_scroll_cirkelsessie, null);
 
         return v;
     }
@@ -48,14 +63,42 @@ public class CirkelsessieFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
         cirkelsessieId = ((CirkelsessieActivity) getActivity()).getCirkelsessieId();
 
+
+        handler = new Handler();
+
+        timer = new Timer();
+
+
+        cirkelsessieId = ((CirkelsessieActivity) getActivity()).getCirkelsessieId();
+
+        linearLayout = (LinearLayout) v.findViewById(R.id.spelKaartLayout);
+
         getData();
+
+
     }
 
 
+
+
+    private final Runnable callRunnable= new Runnable() {
+        @Override
+        public void run()
+        {
+            getData();
+            //Do task
+            handler.postDelayed(callRunnable, 5000);
+        }
+    };
+
     public void getData(){
+
+
         Retrofit retrofit = Authorization.authorize(getActivity());
+
         CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
 
         Call<Cirkelsessie> call = cirkelsessieAPI.getCirkelsessie(cirkelsessieId);
@@ -66,7 +109,10 @@ public class CirkelsessieFragment extends Fragment {
             @Override
             public void onResponse(Response<Cirkelsessie> response, Retrofit retrofit) {
                 if(response.body() !=null){
-                createTextViews(response);
+                    if(linearLayout.getChildCount() != 0){
+                    linearLayout.removeAllViews();
+                    }
+                    createTextViews(response);
 
                 }
 
@@ -77,8 +123,8 @@ public class CirkelsessieFragment extends Fragment {
 
             @Override
             public void onFailure(Throwable t) {
-                Toast.makeText(getActivity().getBaseContext(), "failure",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getBaseContext(), t.getMessage(),
+                        Toast.LENGTH_LONG).show();
 
             }
 
@@ -97,10 +143,10 @@ public class CirkelsessieFragment extends Fragment {
 
         spelkaarts.addAll(response.body().getSpelkaarten());
 
-        LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.spelKaartLayout);
         int i = 0;
         for (final Spelkaart spelkaart : spelkaarts) {
 
+            if(spelkaart.getPositie() == 0){
             final TextView textView = new TextView(getActivity());
             textView.setText(spelkaart.getKaart().getTekst());
             linearLayout.addView(textView);
@@ -154,5 +200,19 @@ public class CirkelsessieFragment extends Fragment {
             i++;
 
         }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        handler.removeCallbacks(callRunnable);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        handler.postDelayed(callRunnable, 5000);
     }
 }

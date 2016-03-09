@@ -71,10 +71,10 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
     public void setPosition(Spelkaart spelkaart){
         Parent parent = cirkelsessieListAdapter.parentItems.get(spelkaart.getPositie());
-
         parent.getChildren().add(spelkaart);
         cirkelsessieListAdapter.notifyDataSetChanged();
     }
+
 
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {

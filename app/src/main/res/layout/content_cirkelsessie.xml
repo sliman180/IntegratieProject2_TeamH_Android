@@ -12,17 +12,61 @@
     tools:context=".login.cirkelsessie.CirkelsessieActivity"
     tools:showIn="@layout/activity_cirkelsessie">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/expand_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
-        <ExpandableListView android:id="@+id/list"
-            android:layout_height="400dp"
+        <TextView
+            android:id="@+id/textKaarten2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cirkel met grootte"
+            android:layout_marginBottom="15dp"
+            android:textSize="16sp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_below="@id/textKaarten2"
+            android:layout_height="2dp"
+
+            android:background="@color/colorPrimary"
+            />
+
+        <ExpandableListView
+            android:layout_below="@id/textKaarten2"
+            android:id="@+id/list"
+            android:layout_height="305dp"
             android:layout_width="match_parent" />
 
-    </LinearLayout>
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/expand_layout"
+        android:orientation="horizontal">
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimary"
+            />
+        <TextView
+            android:id="@+id/textKaarten"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/kaarten_text"
+            android:layout_marginTop="15dp"
+            android:textSize="16sp"
+            />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,6 +77,7 @@
         android:layout_alignParentStart="true">
 
         <fragment android:name="be.kdg.kandoe.kandoeandroid.cirkelsessie.CirkelsessieFragment"
+
             android:id="@+id/headlines_fragment"
             android:layout_weight="1"
             android:layout_width="0dp"

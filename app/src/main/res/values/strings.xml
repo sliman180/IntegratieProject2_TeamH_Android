@@ -21,14 +21,18 @@
     <string name="drawer_close">close drawer</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="title_activity_subthema">SubthemaActivity</string>
     <string name="subthema">Subthema</string>
     <string name="token">token</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Annuleer</string>
     <string name="kandoe_circle">Kandoe Circle</string>
     <string name="email">E-mail adres</string>
     <string name="password_mismatch">De wachtwoorden verschillen van elkaar</string>
     <string name="register_fail">Het registreren is mislukt</string>
     <string name="register_success">Het registreren is gelukt, u kunt u nu aanmelden.</string>
+
+    <string name="kaarten_text">Beschikbare kaarten</string>
+
 </resources>
