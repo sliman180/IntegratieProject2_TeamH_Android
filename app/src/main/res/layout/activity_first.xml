@@ -21,12 +21,16 @@
         android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/sign_in"/>
+        android:text="@string/sign_in"
+        android:textColor="#FFFFFF"
+        android:theme="@style/MyButton"/>
 
     <Button
         android:id="@+id/register"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/register"/>
+        android:text="@string/register"
+        android:textColor="#FFFFFF"
+        android:theme="@style/MyRegisterButton"/>
 </LinearLayout>

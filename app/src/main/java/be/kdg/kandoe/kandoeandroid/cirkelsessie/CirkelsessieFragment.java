@@ -71,7 +71,6 @@ public class CirkelsessieFragment extends Fragment {
 
         timer = new Timer();
 
-
         cirkelsessieId = ((CirkelsessieActivity) getActivity()).getCirkelsessieId();
 
         linearLayout = (LinearLayout) v.findViewById(R.id.spelKaartLayout);
@@ -116,8 +115,8 @@ public class CirkelsessieFragment extends Fragment {
 
                 }
 
-                Toast.makeText(getActivity().getBaseContext(), "data received",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity().getBaseContext(), "data received",
+//                        Toast.LENGTH_SHORT).show();
 
             }
 
@@ -178,10 +177,10 @@ public class CirkelsessieFragment extends Fragment {
                     dialogButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ((CirkelsessieActivity) getActivity()).setPosition(spelkaart);
+                            ((CirkelsessieActivity) getActivity()).changeCardPosition(spelkaart);
 
                             dialog.dismiss();
-                            textView.setVisibility(View.GONE);
+                            linearLayout.removeView(textView);
                         }
                     });
 

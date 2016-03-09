@@ -8,6 +8,6 @@ import retrofit.http.Path;
 
 public interface SpelkaartenAPI {
 
-    @POST("/api/spelkaarten/verschuif/{id}")
+    @POST("/api/spelkaarten/{id}/verschuif")
     Call<Spelkaart> verschuif(@Path("id") String id);
 }

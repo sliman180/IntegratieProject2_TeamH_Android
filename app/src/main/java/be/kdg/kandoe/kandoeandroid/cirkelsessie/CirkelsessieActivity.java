@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
+import be.kdg.kandoe.kandoeandroid.api.SpelkaartenAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.Parent;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
@@ -38,9 +40,14 @@ import retrofit.Retrofit;
 public class CirkelsessieActivity extends AppCompatActivity {
 
     private CirkelsessieListAdapter cirkelsessieListAdapter;
-    private String token;
+
     private String cirkelsessieId;
+
+    private int maxAantalCirkels;
+
     private Activity mActivity;
+
+    private ExpandableListView elv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,31 +55,46 @@ public class CirkelsessieActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         mActivity = this;
-        token = SharedPreferencesMethods.getFromSharedPreferences(this, getString(R.string.token));
         cirkelsessieId = extras.getString("cirkelsessieId");
 
         setContentView(R.layout.activity_cirkelsessie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ExpandableListView elv = (ExpandableListView) findViewById(R.id.list);
+        elv = (ExpandableListView) findViewById(R.id.list);
         cirkelsessieListAdapter = new CirkelsessieListAdapter(getBaseContext());
         elv.setAdapter(cirkelsessieListAdapter);
     }
 
 
-    public String getToken() {
-        return token;
-    }
+
 
     public String getCirkelsessieId() {
         return cirkelsessieId;
     }
 
-    public void setPosition(Spelkaart spelkaart){
-        Parent parent = cirkelsessieListAdapter.parentItems.get(spelkaart.getPositie());
-        parent.getChildren().add(spelkaart);
-        cirkelsessieListAdapter.notifyDataSetChanged();
+    public void changeCardPosition(Spelkaart spelkaart){
+        final Spelkaart spelkaartToChange = spelkaart;
+        final Parent parent = cirkelsessieListAdapter.parentItems.get(spelkaartToChange.getPositie());
+        Retrofit retrofit = Authorization.authorize(mActivity);
+        SpelkaartenAPI spelkaartenAPI = retrofit.create(SpelkaartenAPI.class);
+        Call<Spelkaart> call = spelkaartenAPI.verschuif(String.valueOf(spelkaartToChange.getId()));
+        call.enqueue(new Callback<Spelkaart>() {
+            @Override
+            public void onResponse(Response<Spelkaart> response, Retrofit retrofit) {
+                Toast.makeText(mActivity.getBaseContext(), "kaart verplaatst",
+                        Toast.LENGTH_SHORT).show();
+                spelkaartToChange.setPositie(spelkaartToChange.getPositie() + 1);
+                parent.getChildren().add(spelkaartToChange);
+                cirkelsessieListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Toast.makeText(mActivity.getBaseContext(), "kaart is niet verplaatst",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -105,18 +127,23 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Response<Cirkelsessie> response, Retrofit retrofit) {
                     if(response.body() !=null){
-                        int aantalCirkels = response.body().getAantalCirkels();
-
-                        int getal = aantalCirkels-1;
-                        for(int i = 1;i < aantalCirkels; i++){
+                        maxAantalCirkels = response.body().getAantalCirkels();
+                        int getal = maxAantalCirkels;
+                        for(int i = 1;i < maxAantalCirkels+1; i++){
                             final Parent parent = new Parent();
-                            parent.setChildren(new ArrayList<Spelkaart>());
+                            ArrayList<Spelkaart> spelkaarten = new ArrayList<>();
+                            for(int j = 0; j< response.body().getSpelkaarten().size();j++){
+                                Spelkaart spelkaart = response.body().getSpelkaarten().get(j);
+                                if(spelkaart.getPositie() == i){
+                                    spelkaarten.add(spelkaart);
+                                }
+                            }
+                            parent.setChildren(spelkaarten);
                             parent.setCircleLength(getal);
                             getal--;
                             parentItems.add(parent);
                         }
                     }
-
                     Toast.makeText(getBaseContext(), "data received",
                             Toast.LENGTH_SHORT).show();
 
@@ -198,8 +225,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 }
             }
 
-            ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.list);
-            expandableListView.expandGroup(i);
+             elv.expandGroup(i);
 
             return view;
         }
@@ -235,13 +261,16 @@ public class CirkelsessieActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             Spelkaart spelkaart = getChild(groupPos, childPos);
-                            spelkaart.setPositie(spelkaart.getPositie() + 1);
+                            if(spelkaart.getPositie() == maxAantalCirkels){
+                                Toast.makeText(getBaseContext(), "max positie bereikt",
+                                        Toast.LENGTH_SHORT).show();
+                            }else{
                             Parent oldParent = getGroup(groupPos);
                             oldParent.getChildren().remove(spelkaart);
 
-                            Parent newParent = getGroup(spelkaart.getPositie());
-                            newParent.getChildren().add(spelkaart);
+                            changeCardPosition(spelkaart);
                             notifyDataSetChanged();
+                            }
                             dialog.dismiss();
                         }
                     });

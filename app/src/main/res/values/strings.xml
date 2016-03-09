@@ -34,5 +34,6 @@
     <string name="register_success">Het registreren is gelukt, u kunt u nu aanmelden.</string>
 
     <string name="kaarten_text">Beschikbare kaarten</string>
+    <string name="button_kaart">Kaart aanmaken</string>
 
 </resources>

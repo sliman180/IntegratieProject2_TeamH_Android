@@ -1,9 +1,18 @@
-<resources>>
+<resources>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="MyButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">#67A3B8</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+    </style>
+    <style name="MyRegisterButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">#F2AAAA</item>
+        <item name="colorButtonNormal">#E8232D</item>
     </style>
 </resources>

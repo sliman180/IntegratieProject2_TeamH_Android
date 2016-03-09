@@ -72,7 +72,7 @@ public class CirkelSessieLijstFragment extends Fragment {
             public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
                 createList(response);
 
-                Toast.makeText(mActivity.getBaseContext(), response.body().get(0).getNaam(),
+                Toast.makeText(mActivity.getBaseContext(), "cirkelsessie received",
                         Toast.LENGTH_SHORT).show();
             }
 
@@ -120,6 +120,12 @@ public class CirkelSessieLijstFragment extends Fragment {
 
             });
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
     }
 
     private class StableArrayAdapter extends ArrayAdapter<String> {
