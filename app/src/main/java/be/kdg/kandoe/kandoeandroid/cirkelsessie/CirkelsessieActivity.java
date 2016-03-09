@@ -3,10 +3,13 @@ package be.kdg.kandoe.kandoeandroid.cirkelsessie;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +34,7 @@ import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.Parent;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
+import be.kdg.kandoe.kandoeandroid.pojo.Kaart;
 import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
 import retrofit.Call;
 import retrofit.Callback;
@@ -49,6 +54,8 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
     private ExpandableListView elv;
 
+    private CirkelsessieFragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +71,53 @@ public class CirkelsessieActivity extends AppCompatActivity {
         elv = (ExpandableListView) findViewById(R.id.list);
         cirkelsessieListAdapter = new CirkelsessieListAdapter(getBaseContext());
         elv.setAdapter(cirkelsessieListAdapter);
+
+        fragment = (CirkelsessieFragment) getFragmentManager().findFragmentById(R.id.cirkelsessie_fragment);
+
+
+
     }
 
 
+    public void onClickBtn(View v)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Vul de kaart tekst in");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Retrofit retrofit = Authorization.authorize(mActivity);
+                final CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
+                Kaart kaart = new Kaart(input.getText().toString(),input.getText().toString(),false);
+                Call<Kaart> call = cirkelsessieAPI.createSpelKaart(cirkelsessieId,kaart);
+
+                call.enqueue(new Callback<Kaart>() {
+                    @Override
+                    public void onResponse(Response<Kaart> response, Retrofit retrofit) {
+                        fragment.getData();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(mActivity.getBaseContext(), "kaart niet aangemaakt",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
 
 
     public String getCirkelsessieId() {
@@ -232,8 +283,6 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
         @Override
         public View getChildView(final int groupPos, final int childPos, boolean b, View view, ViewGroup viewGroup) {
-
-
             final String childText = getChild(groupPos,childPos).getKaart().getTekst();
 
             if (view == null) {
@@ -250,40 +299,32 @@ public class CirkelsessieActivity extends AppCompatActivity {
             txtListChild.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final Dialog dialog = new Dialog(CirkelsessieActivity.this);
-                    dialog.setContentView(R.layout.custom_dialog);
-                    dialog.setTitle("Verplaats kaart ?");
-
-                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                    Button annuleerButton = (Button) dialog.findViewById(R.id.dialogButtonAnnuleer);
-                    // if button is clicked, close the custom dialog
-                    dialogButton.setOnClickListener(new View.OnClickListener() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                    builder.setTitle("Verplaats kaart?");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(DialogInterface dialog, int which) {
                             Spelkaart spelkaart = getChild(groupPos, childPos);
-                            if(spelkaart.getPositie() == maxAantalCirkels){
+                            if (spelkaart.getPositie() == maxAantalCirkels) {
                                 Toast.makeText(getBaseContext(), "max positie bereikt",
                                         Toast.LENGTH_SHORT).show();
                             }else{
-                            Parent oldParent = getGroup(groupPos);
-                            oldParent.getChildren().remove(spelkaart);
+                                Parent oldParent = getGroup(groupPos);
+                                oldParent.getChildren().remove(spelkaart);
 
-                            changeCardPosition(spelkaart);
-                            notifyDataSetChanged();
+                                changeCardPosition(spelkaart);
+                                notifyDataSetChanged();
                             }
-                            dialog.dismiss();
                         }
                     });
-
-                    annuleerButton.setOnClickListener(new View.OnClickListener() {
+                    builder.setNegativeButton("Annuleer", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
                         }
                     });
 
-                    dialog.show();
-
+                    builder.show();
                 }
             });
 

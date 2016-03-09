@@ -3,10 +3,12 @@ package be.kdg.kandoe.kandoeandroid.cirkelsessie;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ import be.kdg.kandoe.kandoeandroid.R;
 
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.helpers.Parent;
 import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
 
@@ -45,12 +48,10 @@ import retrofit.Retrofit;
 
 
 public class CirkelsessieFragment extends Fragment {
-    View v;
+    private View v;
     private String cirkelsessieId;
-    Timer timer;
-    LinearLayout linearLayout;
-    TimerTask doAsynchronousTask;
-    Handler handler;
+    private LinearLayout linearLayout;
+    private Handler handler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,12 +67,7 @@ public class CirkelsessieFragment extends Fragment {
 
         cirkelsessieId = ((CirkelsessieActivity) getActivity()).getCirkelsessieId();
 
-
         handler = new Handler();
-
-        timer = new Timer();
-
-        cirkelsessieId = ((CirkelsessieActivity) getActivity()).getCirkelsessieId();
 
         linearLayout = (LinearLayout) v.findViewById(R.id.spelKaartLayout);
 
@@ -92,6 +88,7 @@ public class CirkelsessieFragment extends Fragment {
             handler.postDelayed(callRunnable, 5000);
         }
     };
+
 
     public void getData(){
 
@@ -166,33 +163,23 @@ public class CirkelsessieFragment extends Fragment {
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // custom dialog
-                    final Dialog dialog = new Dialog(getActivity());
-                    dialog.setContentView(R.layout.custom_dialog);
-                    dialog.setTitle("Verplaats kaart?");
-
-                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                    Button annuleerButton = (Button) dialog.findViewById(R.id.dialogButtonAnnuleer);
-                    // if button is clicked, close the custom dialog
-                    dialogButton.setOnClickListener(new View.OnClickListener() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Verplaats kaart?");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(DialogInterface dialog, int which) {
                             ((CirkelsessieActivity) getActivity()).changeCardPosition(spelkaart);
-
-                            dialog.dismiss();
                             linearLayout.removeView(textView);
                         }
                     });
-
-                    annuleerButton.setOnClickListener(new View.OnClickListener() {
+                    builder.setNegativeButton("Annuleer", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
                         }
                     });
 
-                    dialog.show();
-
+                    builder.show();
                 }
             });
 

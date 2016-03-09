@@ -74,7 +74,8 @@
             android:layout_below="@+id/view"
             android:textColor="#FFFFFF"
             android:layout_alignParentEnd="true"
-            android:theme="@style/MyButton"/>
+            android:theme="@style/MyButton"
+            android:onClick="onClickBtn"/>
 
 
     </RelativeLayout>
@@ -89,7 +90,7 @@
 
         <fragment android:name="be.kdg.kandoe.kandoeandroid.cirkelsessie.CirkelsessieFragment"
 
-            android:id="@+id/headlines_fragment"
+            android:id="@+id/cirkelsessie_fragment"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />

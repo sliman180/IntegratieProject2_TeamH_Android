@@ -24,8 +24,7 @@ public class Kaart {
         return tekst;
     }
 
-    public Kaart(int id, String tekst, String imageUrl, boolean commentsToelaatbaar) {
-        this.id = id;
+    public Kaart(String tekst, String imageUrl, boolean commentsToelaatbaar) {
         this.tekst = tekst;
         this.imageUrl = imageUrl;
         this.commentsToelaatbaar = commentsToelaatbaar;
