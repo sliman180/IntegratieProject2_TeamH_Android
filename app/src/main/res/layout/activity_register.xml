@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_password"
-            android:imeActionId="@+id/login"
+            android:imeActionId="@+id/login_button"
             android:imeActionLabel="@string/sign_in"
             android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password_confirmation"
-            android:imeActionId="@+id/login"
+            android:imeActionId="@+id/login_button"
             android:imeActionLabel="@string/sign_in"
             android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
@@ -76,7 +76,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@id/register"
+        android:id="@id/register_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/register"

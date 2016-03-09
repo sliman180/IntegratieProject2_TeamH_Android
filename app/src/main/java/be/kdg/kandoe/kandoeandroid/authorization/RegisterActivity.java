@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.IOException;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.AuthAPI;
@@ -44,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = (TextView) findViewById(R.id.email);
         //endregion
 
-        Button registerButton = (Button) findViewById(R.id.register);
+        Button registerButton = (Button) findViewById(R.id.register_button);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -22,7 +22,7 @@ public class FirstActivity extends AppCompatActivity {
         mActivity = this;
 
         //region Scale circle image
-        ImageView circle = (ImageView) findViewById(R.id.circleImage);
+        ImageView circle = (ImageView) findViewById(R.id.circle_image);
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -34,8 +34,8 @@ public class FirstActivity extends AppCompatActivity {
         //endregion
 
         //region Buttons
-        Button login = (Button) findViewById(R.id.login);
-        Button register = (Button) findViewById(R.id.register);
+        Button login = (Button) findViewById(R.id.login_button);
+        Button register = (Button) findViewById(R.id.register_button);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
