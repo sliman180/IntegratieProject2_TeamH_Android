@@ -56,6 +56,8 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
     private CirkelsessieFragment fragment;
 
+    private TextView circleLengthTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +75,8 @@ public class CirkelsessieActivity extends AppCompatActivity {
         elv.setAdapter(cirkelsessieListAdapter);
 
         fragment = (CirkelsessieFragment) getFragmentManager().findFragmentById(R.id.cirkelsessie_fragment);
+
+        circleLengthTextView = (TextView) findViewById(R.id.circleLength);
 
 
 
@@ -93,7 +97,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 Retrofit retrofit = Authorization.authorize(mActivity);
                 final CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
                 Kaart kaart = new Kaart(input.getText().toString(),input.getText().toString(),false);
-                Call<Kaart> call = cirkelsessieAPI.createSpelKaart(cirkelsessieId,kaart);
+                Call<Kaart> call = cirkelsessieAPI.createSpelKaart(cirkelsessieId, kaart);
 
                 call.enqueue(new Callback<Kaart>() {
                     @Override
@@ -178,6 +182,8 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Response<Cirkelsessie> response, Retrofit retrofit) {
                     if(response.body() !=null){
+                        String circleLengthText = "Cirkel met grootte: "+ String.valueOf(response.body().getAantalCirkels());
+                        circleLengthTextView.setText(circleLengthText);
                         maxAantalCirkels = response.body().getAantalCirkels();
                         int getal = maxAantalCirkels;
                         for(int i = 1;i < maxAantalCirkels+1; i++){

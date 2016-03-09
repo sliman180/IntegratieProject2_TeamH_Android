@@ -33,7 +33,8 @@
     <string name="register_fail">Het registreren is mislukt</string>
     <string name="register_success">Het registreren is gelukt, u kunt u nu aanmelden.</string>
 
-    <string name="kaarten_text">Beschikbare kaarten</string>
+    <string name="kaarten_text">Aantal kaarten</string>
     <string name="button_kaart">Kaart aanmaken</string>
+    <string name="cirkel_grootte">Cirkel met grootte</string>
 
 </resources>

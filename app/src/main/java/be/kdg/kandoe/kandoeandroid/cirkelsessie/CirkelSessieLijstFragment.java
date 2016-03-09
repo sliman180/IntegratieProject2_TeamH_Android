@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.AvoidXfermode;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import be.kdg.kandoe.kandoeandroid.MainActivity;
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.helpers.Model;
 import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import retrofit.Call;
 import retrofit.Callback;
@@ -92,18 +96,19 @@ public class CirkelSessieLijstFragment extends Fragment {
         if (getView() != null)
             listview = (ListView) getView().findViewById(R.id.listview);
 
-        final ArrayList<String> list = new ArrayList<>();
+        final ArrayList<Model> list = new ArrayList<>();
         final ArrayList<Cirkelsessie> list2 = new ArrayList<>();
 
         for (int i = 0; i < response.body().size(); ++i) {
-            list.add(response.body().get(i).getNaam());
+            Model model = new Model(R.drawable.ic_arrow_right,response.body().get(i).getNaam(),String.valueOf(i+1));
+            list.add(model);
             list2.add(response.body().get(i));
         }
         StableArrayAdapter adapter = null;
 
         if (mActivity != null) {
             adapter = new StableArrayAdapter(mActivity.getBaseContext(),
-                    android.R.layout.simple_list_item_1, list);
+                    R.layout.cirkelsessie_lijst_item, list);
         }
 
         if (listview != null) {
@@ -128,30 +133,50 @@ public class CirkelSessieLijstFragment extends Fragment {
         getData();
     }
 
-    private class StableArrayAdapter extends ArrayAdapter<String> {
+    private class StableArrayAdapter extends ArrayAdapter<Model> {
 
+        private Context context;
+        private ArrayList<Model> modelsArrayList;
         HashMap<String, Integer> mIdMap = new HashMap<>();
 
-        public StableArrayAdapter(Context context, int textViewResourceId,
-                                  List<String> objects) {
 
-            super(context, textViewResourceId, objects);
-            for (int i = 0; i < objects.size(); ++i) {
-                mIdMap.put(objects.get(i), i);
+
+        public StableArrayAdapter(Context context,int textViewResourceId, ArrayList<Model> modelsArrayList) {
+
+            super(context, textViewResourceId, modelsArrayList);
+
+            this.context = context;
+            this.modelsArrayList = modelsArrayList;
+        }
+
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // 1. Create inflater
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            // 2. Get rowView from inflater
+
+            View rowView = null;
+            if(!modelsArrayList.get(position).isGroupHeader()){
+                rowView = inflater.inflate(R.layout.cirkelsessie_lijst_item, parent, false);
+
+                // 3. Get icon,title & counter views from the rowView
+                ImageView imgView = (ImageView) rowView.findViewById(R.id.item_icon);
+                TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
+                TextView counterView = (TextView) rowView.findViewById(R.id.item_counter);
+
+                // 4. Set the text for textView
+                imgView.setImageResource(modelsArrayList.get(position).getIcon());
+                titleView.setText(modelsArrayList.get(position).getTitle());
+                counterView.setText(modelsArrayList.get(position).getCounter());
             }
 
-        }
 
-        @Override
-        public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
+            // 5. retrn rowView
+            return rowView;
         }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
     }
 }

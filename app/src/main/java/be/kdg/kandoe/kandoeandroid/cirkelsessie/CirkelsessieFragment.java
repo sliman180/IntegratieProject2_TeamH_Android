@@ -23,6 +23,8 @@ import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,8 @@ public class CirkelsessieFragment extends Fragment {
     private LinearLayout linearLayout;
     private Handler handler;
 
+    private TextView aantalKaartenTextView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.horizontal_scroll_cirkelsessie, null);
@@ -64,22 +68,19 @@ public class CirkelsessieFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         cirkelsessieId = ((CirkelsessieActivity) getActivity()).getCirkelsessieId();
 
         handler = new Handler();
 
         linearLayout = (LinearLayout) v.findViewById(R.id.spelKaartLayout);
 
-        getData();
+        aantalKaartenTextView = (TextView) getActivity().findViewById(R.id.aantalKaarten);
 
+        getData();
 
     }
 
-
-
-
-    private final Runnable callRunnable= new Runnable() {
+   private final Runnable callRunnable= new Runnable() {
         @Override
         public void run()
         {
@@ -88,7 +89,6 @@ public class CirkelsessieFragment extends Fragment {
             handler.postDelayed(callRunnable, 5000);
         }
     };
-
 
     public void getData(){
 
@@ -139,10 +139,12 @@ public class CirkelsessieFragment extends Fragment {
 
         spelkaarts.addAll(response.body().getSpelkaarten());
 
+
         int i = 0;
         for (final Spelkaart spelkaart : spelkaarts) {
 
             if(spelkaart.getPositie() == 0){
+
             final TextView textView = new TextView(getActivity());
             textView.setText(spelkaart.getKaart().getTekst());
             linearLayout.addView(textView);
@@ -159,6 +161,9 @@ public class CirkelsessieFragment extends Fragment {
             textView.setLayoutParams(llp);
             textView.setBackground(getResources().getDrawable(R.drawable.back));
             textView.getLayoutParams();
+
+            String aantalKaartenText = "Aantal kaarten: " + String.valueOf(linearLayout.getChildCount());
+            aantalKaartenTextView.setText(aantalKaartenText);
 
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
