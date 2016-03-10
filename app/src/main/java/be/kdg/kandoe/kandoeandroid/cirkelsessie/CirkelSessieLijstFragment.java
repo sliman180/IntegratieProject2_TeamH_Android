@@ -201,7 +201,7 @@ public class CirkelSessieLijstFragment extends Fragment {
                     rowView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     titleView.setTextColor(Color.WHITE);
                     counterView.setTextColor(Color.WHITE);
-//                    imgView.setImageResource(R.drawable.ic_arrow_right_bright);
+                    imgView.setImageResource(R.drawable.ic_arrow_right_bright);
 
                 } else {
                     rowView.setBackgroundColor(Color.WHITE);
