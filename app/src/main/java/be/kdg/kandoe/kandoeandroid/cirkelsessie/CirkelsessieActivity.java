@@ -5,7 +5,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -45,18 +48,15 @@ import retrofit.Retrofit;
 public class CirkelsessieActivity extends AppCompatActivity {
 
     private CirkelsessieListAdapter cirkelsessieListAdapter;
-
     private String cirkelsessieId;
-
     private int maxAantalCirkels;
-
     private Activity mActivity;
-
     private ExpandableListView elv;
-
     private CirkelsessieFragment fragment;
-
     private TextView circleLengthTextView;
+    private Button buttonAddKaart;
+    private Button buttonDeelname;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +78,35 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
         circleLengthTextView = (TextView) findViewById(R.id.circleLength);
 
+        buttonDeelname = (Button) findViewById(R.id.buttonDeelname);
+        buttonAddKaart = (Button) findViewById(R.id.buttonAddKaart);
+        buttonAddKaart.setEnabled(false);
+        buttonAddKaart.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
 
-
+        handler = new Handler();
     }
 
+
+    public void onClickDeelnemen(View v){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Wilt u zeker deelnemen?");
+        builder.setPositiveButton("JA", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                buttonAddKaart.setEnabled(true);
+                buttonAddKaart.getBackground().setColorFilter(null);
+                buttonDeelname.setVisibility(View.GONE);
+            }
+        });
+        builder.setNegativeButton("NEE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
 
     public void onClickBtn(View v)
     {
@@ -113,7 +138,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 });
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("ANULLEER", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -139,8 +164,8 @@ public class CirkelsessieActivity extends AppCompatActivity {
             public void onResponse(Response<Spelkaart> response, Retrofit retrofit) {
                 Toast.makeText(mActivity.getBaseContext(), "kaart verplaatst",
                         Toast.LENGTH_SHORT).show();
-                spelkaartToChange.setPositie(spelkaartToChange.getPositie() + 1);
-                parent.getChildren().add(spelkaartToChange);
+//                spelkaartToChange.setPositie(spelkaartToChange.getPositie() + 1);
+//                parent.getChildren().add(spelkaartToChange);
                 cirkelsessieListAdapter.notifyDataSetChanged();
             }
 
@@ -158,7 +183,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         return super.onCreateView(parent, name, context, attrs);
     }
 
-    public class CirkelsessieListAdapter extends BaseExpandableListAdapter {
+    private class CirkelsessieListAdapter extends BaseExpandableListAdapter {
 
         private Context context;
 
@@ -181,17 +206,20 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(Response<Cirkelsessie> response, Retrofit retrofit) {
-                    if(response.body() !=null){
-                        String circleLengthText = "Cirkel met grootte: "+ String.valueOf(response.body().getAantalCirkels());
+                    if (response.body() != null) {
+                        if(parentItems.size() != 0){
+                            parentItems.clear();
+                        }
+                        String circleLengthText = "Cirkel met grootte: " + String.valueOf(response.body().getAantalCirkels());
                         circleLengthTextView.setText(circleLengthText);
                         maxAantalCirkels = response.body().getAantalCirkels();
                         int getal = maxAantalCirkels;
-                        for(int i = 1;i < maxAantalCirkels+1; i++){
+                        for (int i = 1; i < maxAantalCirkels + 1; i++) {
                             final Parent parent = new Parent();
                             ArrayList<Spelkaart> spelkaarten = new ArrayList<>();
-                            for(int j = 0; j< response.body().getSpelkaarten().size();j++){
+                            for (int j = 0; j < response.body().getSpelkaarten().size(); j++) {
                                 Spelkaart spelkaart = response.body().getSpelkaarten().get(j);
-                                if(spelkaart.getPositie() == i){
+                                if (spelkaart.getPositie() == i) {
                                     spelkaarten.add(spelkaart);
                                 }
                             }
@@ -200,9 +228,10 @@ public class CirkelsessieActivity extends AppCompatActivity {
                             getal--;
                             parentItems.add(parent);
                         }
+                        notifyDataSetChanged();
                     }
-                    Toast.makeText(getBaseContext(), "data received",
-                            Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getBaseContext(), "data received",
+//                            Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -210,7 +239,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 public void onFailure(Throwable t) {
                     Toast.makeText(getBaseContext(), "failure",
                             Toast.LENGTH_SHORT).show();
-                    Log.d("failure",t.getMessage());
+                    Log.d("failure", t.getMessage());
 
                 }
 
@@ -260,30 +289,26 @@ public class CirkelsessieActivity extends AppCompatActivity {
             Parent parent = getGroup(i);
             if (view == null) {
                 LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = infalInflater.inflate(R.layout.cirkel_header_list,
-                        null);
+                view = infalInflater.inflate(R.layout.cirkel_header_list, viewGroup ,false);
+                view.setBackgroundColor(Color.WHITE);
 
             }
 
-            LinearLayout lL = (LinearLayout) view.findViewById(R.id.header_linear);
+                LinearLayout lL = (LinearLayout) view.findViewById(R.id.header_linear);
+                if (lL.getChildCount() == 0) {
+                    for (int j = 0; j < parent.getCircleLength(); j++) {
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        if (j == 0) {
+                            lp.setMargins(dpToPx(25), 0, 0, 0);
+                        }
+                        ImageView item = new ImageView(getBaseContext());
+                        item.setLayoutParams(lp);
+                        item.setImageResource(R.drawable.cirkel);
+                        lL.addView(item);
 
-            if(lL.getChildCount() == 0){
-                for(int j = 0; j < parent.getCircleLength();j++){
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    if(j == 0){
-            lp.setMargins(dpToPx(25), 0, 0, 0);
                     }
-            ImageView item = new ImageView(getBaseContext());
-            item.setImageResource(R.drawable.cirkel);
-            item.setVisibility(View.VISIBLE);
-            item.setLayoutParams(lp);
-
-            lL.addView(item);
                 }
-            }
-
              elv.expandGroup(i);
-
             return view;
         }
 
@@ -294,17 +319,21 @@ public class CirkelsessieActivity extends AppCompatActivity {
             if (view == null) {
                 LayoutInflater infalInflater = (LayoutInflater) this.context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = infalInflater.inflate(R.layout.cirkel_list_child, null);
+                view = infalInflater.inflate(R.layout.cirkel_list_child, viewGroup,false);
             }
 
             final TextView txtListChild = (TextView) view
                     .findViewById(R.id.kaart);
 
             txtListChild.setText(childText);
+            txtListChild.setTextColor(getResources().getColor(R.color.colorPrimary));
+            txtListChild.setBackground(getResources().getDrawable(R.drawable.back));
 
+            final View finalView = view;
             txtListChild.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    finalView.setBackgroundColor(Color.LTGRAY);
                     AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
                     builder.setTitle("Verplaats kaart?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -327,6 +356,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
+                            finalView.setBackgroundColor(Color.WHITE);
                         }
                     });
 
@@ -343,6 +373,29 @@ public class CirkelsessieActivity extends AppCompatActivity {
             return true;
         }
 
+    }
+
+    private final Runnable cirkelRunnable = new Runnable() {
+        @Override
+        public void run()
+        {
+            cirkelsessieListAdapter.getData();
+            //Do task
+            handler.postDelayed(cirkelRunnable, 2000);
+        }
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        handler.removeCallbacks(cirkelRunnable);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        handler.postDelayed(cirkelRunnable, 2000);
     }
 
     public static int dpToPx(int dp) {

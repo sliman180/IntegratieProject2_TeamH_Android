@@ -36,5 +36,6 @@
     <string name="kaarten_text">Aantal kaarten</string>
     <string name="button_kaart">Kaart aanmaken</string>
     <string name="cirkel_grootte">Cirkel met grootte</string>
+    <string name="deelnemen">Deelnemen</string>
 
 </resources>

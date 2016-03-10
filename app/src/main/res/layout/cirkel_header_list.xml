@@ -2,15 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp" >
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:id="@+id/header_linear">
 
 
-<LinearLayout
-    android:id="@+id/header_linear"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-
-</LinearLayout>
 </LinearLayout>

@@ -1,50 +1,26 @@
 package be.kdg.kandoe.kandoeandroid.cirkelsessie;
-
-
-import android.app.Dialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
-
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
-
 import be.kdg.kandoe.kandoeandroid.R;
-
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
-import be.kdg.kandoe.kandoeandroid.helpers.Parent;
 import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
-
-
-
 import retrofit.Call;
 import retrofit.Callback;
-import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
@@ -86,7 +62,7 @@ public class CirkelsessieFragment extends Fragment {
         {
             getData();
             //Do task
-            handler.postDelayed(callRunnable, 5000);
+            handler.postDelayed(callRunnable, 2000);
         }
     };
 
@@ -162,12 +138,13 @@ public class CirkelsessieFragment extends Fragment {
             textView.setBackground(getResources().getDrawable(R.drawable.back));
             textView.getLayoutParams();
 
-            String aantalKaartenText = "Aantal kaarten: " + String.valueOf(linearLayout.getChildCount());
-            aantalKaartenTextView.setText(aantalKaartenText);
+                String aantalKaartenText = "Aantal kaarten: " + String.valueOf(linearLayout.getChildCount());
+                aantalKaartenTextView.setText(aantalKaartenText);
 
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    textView.setBackgroundColor(Color.LTGRAY);
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Verplaats kaart?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -181,6 +158,7 @@ public class CirkelsessieFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
+                            textView.setBackground(getResources().getDrawable(R.drawable.back));
                         }
                     });
 
@@ -190,7 +168,10 @@ public class CirkelsessieFragment extends Fragment {
 
             i++;
 
-        }
+        }else {
+                String aantalKaartenText = "Aantal kaarten: 0";
+                aantalKaartenTextView.setText(aantalKaartenText);
+            }
         }
     }
 
@@ -204,6 +185,6 @@ public class CirkelsessieFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        handler.postDelayed(callRunnable, 5000);
+        handler.postDelayed(callRunnable, 2000);
     }
 }
