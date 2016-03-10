@@ -9,13 +9,11 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +30,6 @@ import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.api.SpelkaartenAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.Parent;
-import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import be.kdg.kandoe.kandoeandroid.pojo.Kaart;
 import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
@@ -43,19 +40,13 @@ import retrofit.Retrofit;
 
 
 public class CirkelsessieActivity extends AppCompatActivity {
-
-    private CirkelsessieListAdapter cirkelsessieListAdapter;
-
     private String cirkelsessieId;
-
     private int maxAantalCirkels;
 
+    private CirkelsessieListAdapter cirkelsessieListAdapter;
     private Activity mActivity;
-
     private ExpandableListView elv;
-
     private CirkelsessieFragment fragment;
-
     private TextView circleLengthTextView;
 
     @Override
@@ -70,57 +61,59 @@ public class CirkelsessieActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        elv = (ExpandableListView) findViewById(R.id.list);
+        elv = (ExpandableListView) findViewById(R.id.card_list);
         cirkelsessieListAdapter = new CirkelsessieListAdapter(getBaseContext());
         elv.setAdapter(cirkelsessieListAdapter);
 
         fragment = (CirkelsessieFragment) getFragmentManager().findFragmentById(R.id.cirkelsessie_fragment);
 
-        circleLengthTextView = (TextView) findViewById(R.id.circleLength);
-
-
-
+        circleLengthTextView = (TextView) findViewById(R.id.circle_length);
     }
 
 
-    public void onClickBtn(View v)
+    public void addCard(View v)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Vul de kaart tekst in");
+        final Dialog newCardDialog = new Dialog(this);
+        newCardDialog.setContentView(R.layout.custom_dialog);
+        newCardDialog.setTitle("Vul de kaart tekst in");
 
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        final EditText newCardInput = (EditText) newCardDialog.findViewById(R.id.dialogtext);
+        Button okButton = (Button) newCardDialog.findViewById(R.id.dialogButtonOK);
+        Button cancelButton = (Button) newCardDialog.findViewById(R.id.dialogButtonAnnuleer);
+
+        okButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 Retrofit retrofit = Authorization.authorize(mActivity);
                 final CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
-                Kaart kaart = new Kaart(input.getText().toString(),input.getText().toString(),false);
+                Kaart kaart = new Kaart(newCardInput.getText().toString(), newCardInput.getText().toString(), false);
                 Call<Kaart> call = cirkelsessieAPI.createSpelKaart(cirkelsessieId, kaart);
 
                 call.enqueue(new Callback<Kaart>() {
                     @Override
                     public void onResponse(Response<Kaart> response, Retrofit retrofit) {
                         fragment.getData();
+                        newCardDialog.dismiss();
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         Toast.makeText(mActivity.getBaseContext(), "kaart niet aangemaakt",
                                 Toast.LENGTH_SHORT).show();
+                        newCardDialog.dismiss();
                     }
                 });
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+            public void onClick(View v) {
+                newCardDialog.cancel();
             }
         });
 
-        builder.show();
+        newCardDialog.show();
     }
 
 
@@ -133,6 +126,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         final Parent parent = cirkelsessieListAdapter.parentItems.get(spelkaartToChange.getPositie());
         Retrofit retrofit = Authorization.authorize(mActivity);
         SpelkaartenAPI spelkaartenAPI = retrofit.create(SpelkaartenAPI.class);
+
         Call<Spelkaart> call = spelkaartenAPI.verschuif(String.valueOf(spelkaartToChange.getId()));
         call.enqueue(new Callback<Spelkaart>() {
             @Override
@@ -151,7 +145,6 @@ public class CirkelsessieActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {

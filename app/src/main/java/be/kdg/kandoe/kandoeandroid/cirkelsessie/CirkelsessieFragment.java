@@ -1,50 +1,29 @@
 package be.kdg.kandoe.kandoeandroid.cirkelsessie;
 
 
-import android.app.Dialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
-
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 
 import be.kdg.kandoe.kandoeandroid.R;
-
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
-import be.kdg.kandoe.kandoeandroid.helpers.Parent;
 import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
-
-
-
 import retrofit.Call;
 import retrofit.Callback;
-import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
@@ -56,6 +35,8 @@ public class CirkelsessieFragment extends Fragment {
     private Handler handler;
 
     private TextView aantalKaartenTextView;
+
+    private final static long REFRESH_TIME = 5000;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,44 +67,35 @@ public class CirkelsessieFragment extends Fragment {
         {
             getData();
             //Do task
-            handler.postDelayed(callRunnable, 5000);
+            handler.postDelayed(callRunnable, REFRESH_TIME);
         }
     };
 
     public void getData(){
-
-
         Retrofit retrofit = Authorization.authorize(getActivity());
-
         CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
-
         Call<Cirkelsessie> call = cirkelsessieAPI.getCirkelsessie(cirkelsessieId);
 
         call.enqueue(new Callback<Cirkelsessie>() {
 
-
             @Override
             public void onResponse(Response<Cirkelsessie> response, Retrofit retrofit) {
-                if(response.body() !=null){
-                    if(linearLayout.getChildCount() != 0){
-                    linearLayout.removeAllViews();
+                if (response.body() !=null) {
+                    if (linearLayout.getChildCount() != 0) {
+                        linearLayout.removeAllViews();
                     }
                     createTextViews(response);
-
                 }
 
 //                Toast.makeText(getActivity().getBaseContext(), "data received",
 //                        Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
             public void onFailure(Throwable t) {
                 Toast.makeText(getActivity().getBaseContext(), t.getMessage(),
                         Toast.LENGTH_LONG).show();
-
             }
-
         });
     }
 
@@ -134,7 +106,6 @@ public class CirkelsessieFragment extends Fragment {
     }
 
     public void createTextViews(Response<Cirkelsessie> response){
-
         List<Spelkaart> spelkaarts = new ArrayList<>();
 
         spelkaarts.addAll(response.body().getSpelkaarten());
@@ -190,7 +161,7 @@ public class CirkelsessieFragment extends Fragment {
 
             i++;
 
-        }
+            }
         }
     }
 

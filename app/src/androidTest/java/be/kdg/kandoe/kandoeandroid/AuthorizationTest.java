@@ -23,6 +23,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 public class AuthorizationTest {
     private static final String TAG = "auth_test";
     private String randomUser;
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "admin";
 
     @Rule
     public ActivityTestRule<FirstActivity> mActivityRule =
@@ -39,9 +41,9 @@ public class AuthorizationTest {
                 .perform(click());
 
         onView(withId(R.id.username))
-                .perform(typeText("admin"));
+                .perform(typeText(ADMIN_USERNAME));
         onView(withId(R.id.password))
-                .perform(typeText("admin"));
+                .perform(typeText(ADMIN_PASSWORD));
 
         onView(withId(R.id.sign_in_button))
                 .perform(click());
@@ -82,6 +84,11 @@ public class AuthorizationTest {
                 .check(matches(isDisplayed()));
 
         goBackN();
+    }
+
+    @Test
+    public void logOff() {
+
     }
 
     /**
