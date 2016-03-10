@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,10 @@ public class CirkelSessieLijstFragment extends Fragment {
 
     private Intent intent;
     private Activity mActivity;
+    private ListView listView;
+    private View viewToChange;
+    private int tempPosition = 0;
+    LinearLayout linlaHeaderProgress;
 
     @Override
     public void onAttach(Context context) {
@@ -52,6 +57,11 @@ public class CirkelSessieLijstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_cirkelsessie_lijst, null);
         super.onCreate(savedInstanceState);
+        listView = (ListView) v.findViewById(R.id.listview);
+        listView.setSelector(R.drawable.my_selector);
+        listView.setVisibility(View.GONE);
+        linlaHeaderProgress = (LinearLayout) v.findViewById(R.id.linlaHeaderProgress);
+        linlaHeaderProgress.setVisibility(View.VISIBLE);
 
         return v;
     }
@@ -76,7 +86,6 @@ public class CirkelSessieLijstFragment extends Fragment {
             @Override
             public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
                 createList(response);
-
                 Toast.makeText(mActivity.getBaseContext(), "cirkelsessie received",
                         Toast.LENGTH_SHORT).show();
             }
@@ -122,16 +131,29 @@ public class CirkelSessieLijstFragment extends Fragment {
                                         int position, long id) {
                     intent.putExtra("cirkelsessieId", String.valueOf(list2.get(position).getId()));
                     startActivity(intent);
+                    viewToChange = view;
+                    tempPosition = position;
+                    viewToChange.setBackgroundColor(Color.LTGRAY);
                 }
 
             });
         }
+        linlaHeaderProgress.setVisibility(View.GONE);
+        listView.setVisibility(View.VISIBLE);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        if(viewToChange != null)
+        if ((tempPosition % 2 == 1)) {
+            viewToChange.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        } else {
+            viewToChange.setBackgroundColor(Color.WHITE);
+        }
         getData();
+
     }
 
     private class StableArrayAdapter extends ArrayAdapter<Model> {
@@ -179,6 +201,8 @@ public class CirkelSessieLijstFragment extends Fragment {
                     rowView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     titleView.setTextColor(Color.WHITE);
                     counterView.setTextColor(Color.WHITE);
+                    imgView.setImageResource(R.drawable.ic_arrow_right_bright);
+
                 } else {
                     rowView.setBackgroundColor(Color.WHITE);
                 }

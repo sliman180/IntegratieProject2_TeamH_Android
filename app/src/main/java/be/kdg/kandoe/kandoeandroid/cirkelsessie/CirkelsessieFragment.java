@@ -4,6 +4,7 @@ package be.kdg.kandoe.kandoeandroid.cirkelsessie;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -36,7 +37,7 @@ public class CirkelsessieFragment extends Fragment {
 
     private TextView aantalKaartenTextView;
 
-    private final static long REFRESH_TIME = 5000;
+    private final static long REFRESH_TIME = 2000;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -133,12 +134,13 @@ public class CirkelsessieFragment extends Fragment {
             textView.setBackground(getResources().getDrawable(R.drawable.back));
             textView.getLayoutParams();
 
-            String aantalKaartenText = "Aantal kaarten: " + String.valueOf(linearLayout.getChildCount());
-            aantalKaartenTextView.setText(aantalKaartenText);
+                String aantalKaartenText = "Aantal kaarten: " + String.valueOf(linearLayout.getChildCount());
+                aantalKaartenTextView.setText(aantalKaartenText);
 
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    textView.setBackgroundColor(Color.LTGRAY);
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Verplaats kaart?");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -152,6 +154,7 @@ public class CirkelsessieFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
+                            textView.setBackground(getResources().getDrawable(R.drawable.back));
                         }
                     });
 
@@ -161,6 +164,9 @@ public class CirkelsessieFragment extends Fragment {
 
             i++;
 
+        }else {
+                String aantalKaartenText = "Aantal kaarten: 0";
+                aantalKaartenTextView.setText(aantalKaartenText);
             }
         }
     }
@@ -175,6 +181,6 @@ public class CirkelsessieFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        handler.postDelayed(callRunnable, 5000);
+        handler.postDelayed(callRunnable, 2000);
     }
 }
