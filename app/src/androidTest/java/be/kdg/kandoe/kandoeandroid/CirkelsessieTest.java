@@ -82,6 +82,13 @@ public class CirkelsessieTest {
                 .atPosition(0)
                 .perform(click());
 
+        onView(withId(R.id.buttonDeelname))
+                .perform(click());
+        onView(withText(R.string.yes))
+                .perform(click());
+
+        sleep(SHORT_WAIT_TIME);
+
         onView(withId(R.id.buttonAddKaart))
                 .perform(click());
 

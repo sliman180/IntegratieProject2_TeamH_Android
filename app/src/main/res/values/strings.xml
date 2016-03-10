@@ -37,5 +37,7 @@
     <string name="button_kaart">Kaart aanmaken</string>
     <string name="cirkel_grootte">Cirkel met grootte</string>
     <string name="deelnemen">Deelnemen</string>
+    <string name="yes">JA</string>
+    <string name="no">NEE</string>
 
 </resources>

@@ -75,7 +75,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
         fragment = (CirkelsessieFragment) getFragmentManager().findFragmentById(R.id.cirkelsessie_fragment);
 
-        circleLengthTextView = (TextView) findViewById(R.id.circleLength);
+        circleLengthTextView = (TextView) findViewById(R.id.circle_length);
 
         buttonDeelname = (Button) findViewById(R.id.buttonDeelname);
         buttonAddKaart = (Button) findViewById(R.id.buttonAddKaart);
@@ -89,7 +89,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
     public void onClickDeelnemen(View v){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Wilt u zeker deelnemen?");
-        builder.setPositiveButton("JA", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 buttonAddKaart.setEnabled(true);
@@ -97,7 +97,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 buttonDeelname.setVisibility(View.GONE);
             }
         });
-        builder.setNegativeButton("NEE", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
