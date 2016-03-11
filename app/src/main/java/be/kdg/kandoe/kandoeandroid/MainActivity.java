@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectedItem(int position) {
-        if ((menuMap.get(mMenuItems[position])).getClass().equals(Fragment.class)) {
+        if ((menuMap.get(mMenuItems[position])) instanceof Fragment) {
             Fragment fragment = (Fragment) menuMap.get(mMenuItems[position]);
 
             FragmentManager fragmentManager = getFragmentManager();
