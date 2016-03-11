@@ -3,5 +3,6 @@
     <string-array name="menu_item_array" >
         <item>Cirkelsessies</item>
         <item>Subthemas</item>
+        <item>Afmelden</item>
     </string-array>
 </resources>

@@ -2,6 +2,7 @@ package be.kdg.kandoe.kandoeandroid;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,11 +24,12 @@ import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.subthema.SubthemaLijstFragment;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String LOG_OUT_METHOD = "log_out";
     private String[] mMenuItems;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private LinkedHashMap<String, Fragment> fragmentMap;
+    private LinkedHashMap<String, Object> menuMap;
     private String token;
 
     @Override
@@ -87,21 +89,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Get token
-//        Intent intent = new Intent(this, CirkelsessieActivity.class);
-//        Bundle extras = getIntent().getExtras();
-
         token = SharedPreferencesMethods.getFromSharedPreferences(this, getString(R.string.token));
 
-//        Log.d("token :", token);
-
-        fragmentMap = new LinkedHashMap<>();
-        fragmentMap.put("Subthemas", SubthemaLijstFragment.newInstance());
-        fragmentMap.put("Cirkelsessies", new CirkelSessieLijstFragment());
+        menuMap = new LinkedHashMap<>();
+        menuMap.put("Subthemas", SubthemaLijstFragment.newInstance());
+        menuMap.put("Cirkelsessies", new CirkelSessieLijstFragment());
+        menuMap.put("Afmelden", LOG_OUT_METHOD);
 
         // On start the first screen should be open
-        getFragmentManager().beginTransaction().replace(R.id.content_frame, fragmentMap.get(mMenuItems[0])).commit();
+        getFragmentManager().beginTransaction().replace(R.id.content_frame,
+                (Fragment) menuMap.get(mMenuItems[0])).commit();
         setTitle(mMenuItems[0]);
+    }
+
+    private void logOut() {
+        SharedPreferencesMethods.saveInSharedPreferences(this, getString(R.string.token), "");
+        Intent intent = new Intent(this, FirstActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -119,18 +123,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectedItem(int position) {
-        Fragment fragment = fragmentMap.get(mMenuItems[position]);
-//        Bundle args = new Bundle();
-//        args.putInt("");
+        if ((menuMap.get(mMenuItems[position])).getClass().equals(Fragment.class)) {
+            Fragment fragment = (Fragment) menuMap.get(mMenuItems[position]);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .commit();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, fragment)
+                    .commit();
 
-        mDrawerList.setItemChecked(position, true);
-        setTitle(mMenuItems[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
+            mDrawerList.setItemChecked(position, true);
+            setTitle(mMenuItems[position]);
+            mDrawerLayout.closeDrawer(mDrawerList);
+        }
+        else if ((menuMap.get(mMenuItems[position])).equals(LOG_OUT_METHOD)){
+            finish();
+            mDrawerList.setItemChecked(position, true);
+            mDrawerLayout.closeDrawer(mDrawerList);
+            logOut();
+        }
     }
 
     @Override
@@ -156,9 +166,5 @@ public class MainActivity extends AppCompatActivity {
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-    }
-
-    public String getToken() {
-        return token;
     }
 }
