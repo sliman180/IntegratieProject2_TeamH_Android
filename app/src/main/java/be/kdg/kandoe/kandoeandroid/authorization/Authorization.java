@@ -17,7 +17,7 @@ public class Authorization {
     public static Retrofit authorize(Activity activity){
         final String token = SharedPreferencesMethods.getFromSharedPreferences(activity, activity.getString(R.string.token));
         OkHttpClient client = new OkHttpClient();
-        client.interceptors().add(  new Interceptor() {
+        client.interceptors().add(new Interceptor() {
             @Override
             public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                 Request newRequest =
@@ -28,7 +28,8 @@ public class Authorization {
         });
 
         return new Retrofit.Builder()
-                .baseUrl("http://teamh-spring.herokuapp.com").client(client)
+                //10.0.3.2 voor localhost
+                .baseUrl("http://10.0.3.2:8080").client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

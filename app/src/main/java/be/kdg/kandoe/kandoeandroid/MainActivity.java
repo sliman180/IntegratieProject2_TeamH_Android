@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,12 +14,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.LinkedHashMap;
 
 import be.kdg.kandoe.kandoeandroid.cirkelsessie.CirkelSessieLijstFragment;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
+import be.kdg.kandoe.kandoeandroid.organisaties.OrganisatieLijstFragment;
+import be.kdg.kandoe.kandoeandroid.profiel.ProfielFragment;
 import be.kdg.kandoe.kandoeandroid.subthema.SubthemaLijstFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -84,16 +86,20 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.main_linear);
+                linearLayout.setVisibility(View.VISIBLE);
             }
         });
 
         token = SharedPreferencesMethods.getFromSharedPreferences(this, getString(R.string.token));
 
         menuMap = new LinkedHashMap<>();
+        menuMap.put("Mijn profiel", ProfielFragment.newInstance());
         menuMap.put("Subthemas", SubthemaLijstFragment.newInstance());
         menuMap.put("Cirkelsessies", new CirkelSessieLijstFragment());
+        menuMap.put("Mijn organisaties", OrganisatieLijstFragment.newInstance());
         menuMap.put("Afmelden", LOG_OUT_METHOD);
 
         // On start the first screen should be open
