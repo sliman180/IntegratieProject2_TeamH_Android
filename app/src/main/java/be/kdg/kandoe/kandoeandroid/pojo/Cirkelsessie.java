@@ -8,16 +8,16 @@ public class Cirkelsessie {
     private String naam;
     private int aantalCirkels;
     private int maxAantalKaarten;
-    private List<Spelkaart> spelkaarten;
+//    private List<Spelkaart> spelkaarten;
 
 
-    public List<Spelkaart> getSpelkaarten() {
-        return spelkaarten;
-    }
-
-    public void setSpelkaarten(List<Spelkaart> spelkaarten) {
-        this.spelkaarten = spelkaarten;
-    }
+//    public List<Spelkaart> getSpelkaarten() {
+//        return spelkaarten;
+//    }
+//
+//    public void setSpelkaarten(List<Spelkaart> spelkaarten) {
+//        this.spelkaarten = spelkaarten;
+//    }
 
     public int getId() {
         return id;

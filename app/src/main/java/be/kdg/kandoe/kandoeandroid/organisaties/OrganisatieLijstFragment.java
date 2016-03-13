@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,10 @@ public class OrganisatieLijstFragment extends Fragment {
 
     private Intent intent;
 
+    private TextView textViewAantal;
+
+    private View v;
+
     public OrganisatieLijstFragment() {
         // Required empty public constructor
     }
@@ -65,8 +70,9 @@ public class OrganisatieLijstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_organisatie_lijst, container, false);
+        v = inflater.inflate(R.layout.fragment_organisatie_lijst, container, false);
+        textViewAantal = (TextView) v.findViewById(R.id.organisatie_header);
+        return v;
     }
 
     @Override
@@ -94,6 +100,7 @@ public class OrganisatieLijstFragment extends Fragment {
             public void onFailure(Throwable t) {
                 Toast.makeText(mActivity.getBaseContext(), "failure",
                         Toast.LENGTH_SHORT).show();
+                Log.d("failure", t.getMessage());
             }
         });
     }
@@ -134,6 +141,9 @@ public class OrganisatieLijstFragment extends Fragment {
 
             });
         }
+
+        String textAantal = "Aantal : " + String.valueOf(list2.size());
+        textViewAantal.setText(textAantal);
     }
 
     private class StableArrayAdapter extends ArrayAdapter<Model> {

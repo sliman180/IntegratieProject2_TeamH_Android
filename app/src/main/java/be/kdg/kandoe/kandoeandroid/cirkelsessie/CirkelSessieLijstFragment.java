@@ -41,7 +41,9 @@ public class CirkelSessieLijstFragment extends Fragment {
     private ListView listView;
     private View viewToChange;
     private int tempPosition = 0;
-    LinearLayout linlaHeaderProgress;
+    private LinearLayout linlaHeaderProgress;
+    private TextView textViewAantal;
+
 
     @Override
     public void onAttach(Context context) {
@@ -58,6 +60,7 @@ public class CirkelSessieLijstFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_cirkelsessie_lijst, null);
         super.onCreate(savedInstanceState);
         listView = (ListView) v.findViewById(R.id.listview);
+        textViewAantal = (TextView) v.findViewById(R.id.cirkelsessie_header);
         listView.setSelector(R.drawable.my_selector);
         listView.setVisibility(View.GONE);
         linlaHeaderProgress = (LinearLayout) v.findViewById(R.id.linlaHeaderProgress);
@@ -140,6 +143,8 @@ public class CirkelSessieLijstFragment extends Fragment {
         }
         linlaHeaderProgress.setVisibility(View.GONE);
         listView.setVisibility(View.VISIBLE);
+        String textAantal = "Aantal : " + String.valueOf(list2.size());
+        textViewAantal.setText(textAantal);
 
     }
 

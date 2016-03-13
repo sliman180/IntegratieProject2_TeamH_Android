@@ -7,12 +7,12 @@ public class Gebruiker {
     private int id;
     private String gebruikersnaam;
     private String wachtwoord;
-    private List<Hoofdthema> hoofdthemas = new ArrayList<>();
-    private List<Kaart> kaarten = new ArrayList<>();
-    private List<Deelname> deelnames = new ArrayList<>();
-    private List<Commentaar> commentaren = new ArrayList<>();
-    private List<Bericht> berichten = new ArrayList<>();
-    private List<Rol> rollen = new ArrayList<>();
+//    private List<Hoofdthema> hoofdthemas = new ArrayList<>();
+//    private List<Kaart> kaarten = new ArrayList<>();
+//    private List<Deelname> deelnames = new ArrayList<>();
+//    private List<Commentaar> commentaren = new ArrayList<>();
+//    private List<Bericht> berichten = new ArrayList<>();
+//    private List<Rol> rollen = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -38,51 +38,51 @@ public class Gebruiker {
         this.wachtwoord = wachtwoord;
     }
 
-    public List<Hoofdthema> getHoofdthemas() {
-        return hoofdthemas;
-    }
-
-    public void setHoofdthemas(List<Hoofdthema> hoofdthemas) {
-        this.hoofdthemas = hoofdthemas;
-    }
-
-    public List<Kaart> getKaarten() {
-        return kaarten;
-    }
-
-    public void setKaarten(List<Kaart> kaarten) {
-        this.kaarten = kaarten;
-    }
-
-    public List<Deelname> getDeelnames() {
-        return deelnames;
-    }
-
-    public void setDeelnames(List<Deelname> deelnames) {
-        this.deelnames = deelnames;
-    }
-
-    public List<Commentaar> getCommentaren() {
-        return commentaren;
-    }
-
-    public void setCommentaren(List<Commentaar> commentaren) {
-        this.commentaren = commentaren;
-    }
-
-    public List<Bericht> getBerichten() {
-        return berichten;
-    }
-
-    public void setBerichten(List<Bericht> berichten) {
-        this.berichten = berichten;
-    }
-
-    public List<Rol> getRollen() {
-        return rollen;
-    }
-
-    public void setRollen(List<Rol> rollen) {
-        this.rollen = rollen;
-    }
+//    public List<Hoofdthema> getHoofdthemas() {
+//        return hoofdthemas;
+//    }
+//
+//    public void setHoofdthemas(List<Hoofdthema> hoofdthemas) {
+//        this.hoofdthemas = hoofdthemas;
+//    }
+//
+//    public List<Kaart> getKaarten() {
+//        return kaarten;
+//    }
+//
+//    public void setKaarten(List<Kaart> kaarten) {
+//        this.kaarten = kaarten;
+//    }
+//
+//    public List<Deelname> getDeelnames() {
+//        return deelnames;
+//    }
+//
+//    public void setDeelnames(List<Deelname> deelnames) {
+//        this.deelnames = deelnames;
+//    }
+//
+//    public List<Commentaar> getCommentaren() {
+//        return commentaren;
+//    }
+//
+//    public void setCommentaren(List<Commentaar> commentaren) {
+//        this.commentaren = commentaren;
+//    }
+//
+//    public List<Bericht> getBerichten() {
+//        return berichten;
+//    }
+//
+//    public void setBerichten(List<Bericht> berichten) {
+//        this.berichten = berichten;
+//    }
+//
+//    public List<Rol> getRollen() {
+//        return rollen;
+//    }
+//
+//    public void setRollen(List<Rol> rollen) {
+//        this.rollen = rollen;
+//    }
 }

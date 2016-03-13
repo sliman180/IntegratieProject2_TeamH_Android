@@ -8,7 +8,7 @@ public class Organisatie {
     private String naam;
     private String beschrijving;
     private Gebruiker gebruiker;
-    private List<Hoofdthema> hoofdthemas = new ArrayList<>();
+//    private List<Hoofdthema> hoofdthemas = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -42,11 +42,11 @@ public class Organisatie {
         this.gebruiker = gebruiker;
     }
 
-    public List<Hoofdthema> getHoofdthemas() {
-        return hoofdthemas;
-    }
-
-    public void setHoofdthemas(List<Hoofdthema> hoofdthemas) {
-        this.hoofdthemas = hoofdthemas;
-    }
+//    public List<Hoofdthema> getHoofdthemas() {
+//        return hoofdthemas;
+//    }
+//
+//    public void setHoofdthemas(List<Hoofdthema> hoofdthemas) {
+//        this.hoofdthemas = hoofdthemas;
+//    }
 }

@@ -1,11 +1,15 @@
 package be.kdg.kandoe.kandoeandroid;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.AutoScrollHelper;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,14 +20,24 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.LinkedHashMap;
 
+import be.kdg.kandoe.kandoeandroid.api.GebruikerAPI;
+import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.cirkelsessie.CirkelSessieLijstFragment;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.organisaties.OrganisatieLijstFragment;
+import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
 import be.kdg.kandoe.kandoeandroid.profiel.ProfielFragment;
 import be.kdg.kandoe.kandoeandroid.subthema.SubthemaLijstFragment;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_OUT_METHOD = "log_out";
@@ -33,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private LinkedHashMap<String, Object> menuMap;
     private String token;
+    private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mActivity = this;
         mMenuItems = getResources().getStringArray(R.array.menu_item_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -82,22 +98,13 @@ public class MainActivity extends AppCompatActivity {
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.main_linear);
-                linearLayout.setVisibility(View.VISIBLE);
-            }
-        });
+
 
         token = SharedPreferencesMethods.getFromSharedPreferences(this, getString(R.string.token));
 
         menuMap = new LinkedHashMap<>();
         menuMap.put("Mijn profiel", ProfielFragment.newInstance());
-        menuMap.put("Subthemas", SubthemaLijstFragment.newInstance());
+        menuMap.put("Mijn subthemas", SubthemaLijstFragment.newInstance());
         menuMap.put("Cirkelsessies", new CirkelSessieLijstFragment());
         menuMap.put("Mijn organisaties", OrganisatieLijstFragment.newInstance());
         menuMap.put("Afmelden", LOG_OUT_METHOD);
@@ -106,8 +113,35 @@ public class MainActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction().replace(R.id.content_frame,
                 (Fragment) menuMap.get(mMenuItems[0])).commit();
         setTitle(mMenuItems[0]);
+        createSharedUserObject();
+
     }
 
+    private void createSharedUserObject(){
+        Retrofit retrofit = Authorization.authorize(mActivity);
+        GebruikerAPI gebruikerAPI = retrofit.create(GebruikerAPI.class);
+        Call<Gebruiker> call = gebruikerAPI.getGebruiker();
+        call.enqueue(new Callback<Gebruiker>() {
+            @Override
+            public void onResponse(Response<Gebruiker> response, Retrofit retrofit) {
+                Gebruiker gebruiker = response.body();
+                SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                Gson gson = new Gson();
+                String json = gson.toJson(gebruiker);
+                prefsEditor.putString("Gebruiker", json);
+                prefsEditor.apply();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Toast.makeText(getBaseContext(),"failure gebruiker",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+    }
     private void logOut() {
         SharedPreferencesMethods.saveInSharedPreferences(this, getString(R.string.token), "");
         Intent intent = new Intent(this, FirstActivity.class);

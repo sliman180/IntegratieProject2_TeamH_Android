@@ -4,10 +4,53 @@
     android:layout_height="match_parent"
     tools:context="be.kdg.kandoe.kandoeandroid.profiel.ProfielFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:padding="15dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/profile_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:listSeparatorTextViewStyle"
+            android:text="@string/gegevens"
+            android:layout_marginBottom="15dp"/>
+
+        <TextView android:id="@+id/gebruikersnaam2"
+            android:layout_below="@id/profile_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gebruikersnaam"
+            android:padding="10dp"
+            android:textAppearance="?android:textAppearance"
+            android:background="@drawable/back_profile"
+            />
+
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:id="@+id/gebruikersnaam"
+            android:layout_below="@id/profile_header"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/gebruikersnaam2"
+            android:layout_alignParentEnd="true"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/opslaan"
+            android:id="@+id/buttonSave"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:theme="@style/MyButton"
+            android:textColor="#FFFFFF"
+            />
+    </RelativeLayout>
+
 
 </FrameLayout>

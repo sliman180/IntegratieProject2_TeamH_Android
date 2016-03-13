@@ -39,5 +39,9 @@
     <string name="deelnemen">Deelnemen</string>
     <string name="yes">JA</string>
     <string name="no">NEE</string>
+    <string name="gebruikersnaam">Gebruikersnaam</string>
+    <string name="gegevens">Gegevens</string>
+    <string name="aantal">Aantal :</string>
+    <string name="opslaan">Opslaan</string>
 
 </resources>

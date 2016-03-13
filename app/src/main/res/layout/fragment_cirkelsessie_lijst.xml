@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".login.cirkelsessie.CirkelSessieLijstFragment">
+    tools:context=".login.cirkelsessie.CirkelSessieLijstFragment"
+    android:padding="15dp">
+
+
 
     <include layout="@layout/content_cirkelsessie_lijst" />
 

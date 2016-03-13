@@ -75,21 +75,18 @@ public class CirkelsessieFragment extends Fragment {
     public void getData(){
         Retrofit retrofit = Authorization.authorize(getActivity());
         CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
-        Call<Cirkelsessie> call = cirkelsessieAPI.getCirkelsessie(cirkelsessieId);
+        Call<List<Spelkaart>> call = cirkelsessieAPI.getSpelkaarten(cirkelsessieId);
 
-        call.enqueue(new Callback<Cirkelsessie>() {
+        call.enqueue(new Callback<List<Spelkaart>>() {
 
             @Override
-            public void onResponse(Response<Cirkelsessie> response, Retrofit retrofit) {
+            public void onResponse(Response<List<Spelkaart>> response, Retrofit retrofit) {
                 if (response.body() !=null) {
                     if (linearLayout.getChildCount() != 0) {
                         linearLayout.removeAllViews();
                     }
                     createTextViews(response);
                 }
-
-//                Toast.makeText(getActivity().getBaseContext(), "data received",
-//                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -106,11 +103,10 @@ public class CirkelsessieFragment extends Fragment {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
-    public void createTextViews(Response<Cirkelsessie> response){
+    public void createTextViews(Response<List<Spelkaart>> response){
         List<Spelkaart> spelkaarts = new ArrayList<>();
 
-        spelkaarts.addAll(response.body().getSpelkaarten());
-
+        spelkaarts.addAll(response.body());
 
         int i = 0;
         for (final Spelkaart spelkaart : spelkaarts) {
