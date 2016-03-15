@@ -5,30 +5,29 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.AutoScrollHelper;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
-
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import java.util.LinkedHashMap;
-
 import be.kdg.kandoe.kandoeandroid.api.GebruikerAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.cirkelsessie.CirkelSessieLijstFragment;
+import be.kdg.kandoe.kandoeandroid.deelnames.DeelnameLijstFragment;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.organisaties.OrganisatieLijstFragment;
 import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
@@ -41,82 +40,97 @@ import retrofit.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_OUT_METHOD = "log_out";
-    private String[] mMenuItems;
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
+    private Drawer result;
     private LinkedHashMap<String, Object> menuMap;
-    private String token;
+    private String[] mMenuItems;
     private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mActivity = this;
         mMenuItems = getResources().getStringArray(R.array.menu_item_array);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                mDrawerLayout,
-                (Toolbar) findViewById(R.id.toolbar),
-                R.string.drawer_open,
-                R.string.drawer_close
-        ) {
+        //if you want to update the items at a later time it is recommended to keep it in a variable
+        SecondaryDrawerItem item1 = new SecondaryDrawerItem().withName("Home").withIcon(GoogleMaterial.Icon.gmd_home);
+        SecondaryDrawerItem profiel = new SecondaryDrawerItem().withName("Mijn profiel").withIcon(GoogleMaterial.Icon.gmd_account_circle);
+        SecondaryDrawerItem subthemas = new SecondaryDrawerItem().withName("Mijn subthemas").withIcon(GoogleMaterial.Icon.gmd_style);
+        SecondaryDrawerItem cirkelsessies = new SecondaryDrawerItem().withName("Cirkelsessies").withIcon(MaterialDesignIconic.Icon.gmi_dot_circle_alt);
+        SecondaryDrawerItem mijnCirkelsessies = new SecondaryDrawerItem().withName("Mijn cirkelsessies").withIcon(GoogleMaterial.Icon.gmd_folder_shared);
+        SecondaryDrawerItem mijnDeelnames = new SecondaryDrawerItem().withName("Mijn deelnames").withIcon(GoogleMaterial.Icon.gmd_playlist_add_check);
+        SecondaryDrawerItem mijnOrganisaties = new SecondaryDrawerItem().withName("Mijn organisaties").withIcon(GoogleMaterial.Icon.gmd_account_balance);
+        SecondaryDrawerItem instellingen = new SecondaryDrawerItem().withName("Instellingen").withIcon(GoogleMaterial.Icon.gmd_settings);
+        SecondaryDrawerItem help = new SecondaryDrawerItem().withName("Help").withIcon(GoogleMaterial.Icon.gmd_help);
 
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-//                getSupportActionBar().setTitle(mTitle);
-            }
+        // Create the AccountHeader
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.dark_)
+                .addProfiles(
+                        new ProfileDrawerItem().withName("Sliman Said").withEmail("sliman258@gmail.com")
+                )
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                        return false;
+                    }
+                })
+                .build();
+        //create the drawer and remember the `Drawer` result object
+        result = new DrawerBuilder()
+                .withActivity(this)
+                .withAccountHeader(headerResult)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        item1,
+                        profiel,
+                        new DividerDrawerItem(),
+                        cirkelsessies,
+                        new DividerDrawerItem(),
+                        mijnDeelnames,
+                        mijnOrganisaties,
+                        mijnCirkelsessies,
+                        subthemas,
+                        new DividerDrawerItem(),
+                        instellingen,
+                        help
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        // do something with the clicked item :D
+                       // Toast.makeText(getBaseContext(),String.valueOf(position),Toast.LENGTH_SHORT).show();
+                        selectedItem(position);
 
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-//                getSupportActionBar().setTitle(mDrawerTitle);
-            }
-        };
-
-        // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
-        else if (getActionBar() != null) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-            getActionBar().setHomeButtonEnabled(true);
-        }
-
-        // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<>(this,
-                R.layout.drawer_list_item, mMenuItems));
-        // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-
-
-        token = SharedPreferencesMethods.getFromSharedPreferences(this, getString(R.string.token));
-
+                        return true;
+                    }
+                })
+                .build();
+        result.addStickyFooterItem(new SecondaryDrawerItem().withName("Afmelden").withIcon(GoogleMaterial.Icon.gmd_power_settings_new));
         menuMap = new LinkedHashMap<>();
+        menuMap.put("Home", null);
         menuMap.put("Mijn profiel", ProfielFragment.newInstance());
-        menuMap.put("Mijn subthemas", SubthemaLijstFragment.newInstance());
+        menuMap.put("Divider", null);
         menuMap.put("Cirkelsessies", new CirkelSessieLijstFragment());
+        menuMap.put("Divider", null);
+        menuMap.put("Mijn deelnames", DeelnameLijstFragment.newInstance());
         menuMap.put("Mijn organisaties", OrganisatieLijstFragment.newInstance());
+        menuMap.put("Mijn cirkelsessies", null);
+        menuMap.put("Mijn subthemas", SubthemaLijstFragment.newInstance());
+        menuMap.put("Divider", null);
+        menuMap.put("Instellingen",null);
         menuMap.put("Afmelden", LOG_OUT_METHOD);
 
         // On start the first screen should be open
         getFragmentManager().beginTransaction().replace(R.id.content_frame,
-                (Fragment) menuMap.get(mMenuItems[0])).commit();
-        setTitle(mMenuItems[0]);
+                (Fragment) menuMap.get(mMenuItems[4])).commit();
+        setTitle(mMenuItems[4]);
+        result.setSelection(cirkelsessies);
         createSharedUserObject();
-
     }
-
     private void createSharedUserObject(){
         Retrofit retrofit = Authorization.authorize(mActivity);
         GebruikerAPI gebruikerAPI = retrofit.create(GebruikerAPI.class);
@@ -139,72 +153,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
+    @Override
+    public void setTitle(CharSequence title) {
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle(title);
+    }
+
     private void logOut() {
         SharedPreferencesMethods.saveInSharedPreferences(this, getString(R.string.token), "");
         Intent intent = new Intent(this, FirstActivity.class);
         startActivity(intent);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Always call the superclass so it can save the view hierarchy state
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectedItem(position);
-        }
-    }
-
     private void selectedItem(int position) {
-        if ((menuMap.get(mMenuItems[position])) instanceof Fragment) {
+        if (position == -1){
+            finish();
+            result.closeDrawer();
+            logOut();
+        }else if ((menuMap.get(mMenuItems[position])) instanceof Fragment) {
             Fragment fragment = (Fragment) menuMap.get(mMenuItems[position]);
 
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, fragment)
                     .commit();
-
-            mDrawerList.setItemChecked(position, true);
             setTitle(mMenuItems[position]);
-            mDrawerLayout.closeDrawer(mDrawerList);
-        }
-        else if ((menuMap.get(mMenuItems[position])).equals(LOG_OUT_METHOD)){
-            finish();
-            mDrawerList.setItemChecked(position, true);
-            mDrawerLayout.closeDrawer(mDrawerList);
-            logOut();
+            result.closeDrawer();
         }
     }
 
-    @Override
-    public void setTitle(CharSequence title) {
-        if (getSupportActionBar() != null) getSupportActionBar().setTitle(title);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-    }
 }

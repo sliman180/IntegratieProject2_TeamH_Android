@@ -108,9 +108,10 @@ public class ProfielFragment extends Fragment {
         Call<Gebruiker> call = gebruikerAPI.getGebruiker();
         call.enqueue(new Callback<Gebruiker>() {
             @Override
-            public void onResponse(Response<Gebruiker> response, Retrofit retrofit) {
+            public void onResponse(Response<Gebruiker> response, Retrofit retrofit){
+                if(response != null){
                 gebruiker = response.body();
-                editText.setText(response.body().getGebruikersnaam());
+                editText.setText(response.body().getGebruikersnaam());}
             }
 
             @Override

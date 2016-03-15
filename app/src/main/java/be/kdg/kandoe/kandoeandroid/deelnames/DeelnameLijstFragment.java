@@ -1,4 +1,4 @@
-package be.kdg.kandoe.kandoeandroid.organisaties;
+package be.kdg.kandoe.kandoeandroid.deelnames;
 
 
 import android.app.Activity;
@@ -18,24 +18,29 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
-import be.kdg.kandoe.kandoeandroid.api.OrganisatieAPI;
+import be.kdg.kandoe.kandoeandroid.api.DeelnameAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.cirkelsessie.CirkelsessieActivity;
+import be.kdg.kandoe.kandoeandroid.helpers.DeelnameModel;
 import be.kdg.kandoe.kandoeandroid.helpers.Model;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
-import be.kdg.kandoe.kandoeandroid.pojo.Organisatie;
-import be.kdg.kandoe.kandoeandroid.subthema.SubthemaActivity;
+import be.kdg.kandoe.kandoeandroid.pojo.Deelname;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-
-public class OrganisatieLijstFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class DeelnameLijstFragment extends Fragment {
 
 
     private String token;
@@ -46,16 +51,18 @@ public class OrganisatieLijstFragment extends Fragment {
 
     private TextView textViewAantal;
 
+    private View viewToChange;
+    private int tempPosition = 0;
+
     private View v;
 
-    public OrganisatieLijstFragment() {
+    public DeelnameLijstFragment() {
         // Required empty public constructor
     }
 
-    public static OrganisatieLijstFragment newInstance() {
-        return new OrganisatieLijstFragment();
+    public static DeelnameLijstFragment newInstance() {
+        return new DeelnameLijstFragment();
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,17 +70,19 @@ public class OrganisatieLijstFragment extends Fragment {
             mActivity = getActivity();
             token = SharedPreferencesMethods.getFromSharedPreferences(mActivity, getString(R.string.token));
         }
-        intent = new Intent(mActivity.getBaseContext(), SubthemaActivity.class);
+        intent = new Intent(mActivity.getBaseContext(), CirkelsessieActivity.class);
         getData();
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_organisatie_lijst, container, false);
-        textViewAantal = (TextView) v.findViewById(R.id.organisatie_header);
+        v = inflater.inflate(R.layout.fragment_deelname_lijst, container, false);
+        textViewAantal = (TextView) v.findViewById(R.id.deelname_header);
         return v;
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -86,13 +95,12 @@ public class OrganisatieLijstFragment extends Fragment {
     }
 
     public void getData(){
-        be.kdg.kandoe.kandoeandroid.api.OrganisatieAPI organisatieAPI =
-                Authorization.authorize(getActivity()).create(OrganisatieAPI.class);
-
-        Call<List<Organisatie>> call = organisatieAPI.getOrganisaties();
-        call.enqueue(new Callback<List<Organisatie>>() {
+        DeelnameAPI deelnameAPI =
+                Authorization.authorize(getActivity()).create(DeelnameAPI.class);
+        Call<List<Deelname>> call = deelnameAPI.getDeelnames();
+        call.enqueue(new Callback<List<Deelname>>() {
             @Override
-            public void onResponse(Response<List<Organisatie>> response, Retrofit retrofit) {
+            public void onResponse(Response<List<Deelname>> response, Retrofit retrofit) {
                 createList(response);
             }
 
@@ -105,25 +113,26 @@ public class OrganisatieLijstFragment extends Fragment {
         });
     }
 
-    public void createList(Response<List<Organisatie>> response){
+    public void createList(Response<List<Deelname>> response){
         ListView listview = null;
         if (getView() != null)
-            listview = (ListView) getView().findViewById(R.id.listview_organisaties);
+            listview = (ListView) getView().findViewById(R.id.listview_deelnames);
 
-        final ArrayList<Model> list = new ArrayList<>();
-        final ArrayList<Organisatie> list2 = new ArrayList<>();
-
+        final ArrayList<DeelnameModel> list = new ArrayList<>();
+        final ArrayList<Deelname> list2 = new ArrayList<>();
+        SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         for (int i = 0; i < response.body().size(); ++i) {
-            Model model = new Model(R.drawable.ic_arrow_right,response.body().get(i).getNaam(),String.valueOf(i+1));
+            Date date = new Date(response.body().get(i).getDatum());
+            DeelnameModel model = new DeelnameModel(R.drawable.ic_arrow_right,response.body().get(i).getCirkelsessie().getNaam(),ft.format(date),String.valueOf(i + 1));
             list.add(model);
             list2.add(response.body().get(i));
         }
 
-        ArrayAdapter<Model> adapter = null;
+        ArrayAdapter<DeelnameModel> adapter = null;
 
         if (mActivity != null) {
             adapter = new StableArrayAdapter(mActivity.getBaseContext(),
-                    R.layout.cirkelsessie_lijst_item, list);
+                    R.layout.deelname_lijst_item, list);
         }
 
         if (listview != null) {
@@ -134,9 +143,11 @@ public class OrganisatieLijstFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
-//                    intent.putExtra("subthemaId", String.valueOf(list2.get(position).getId()));
-//                    intent.putExtra("token", token);
-//                    startActivity(intent);
+                    intent.putExtra("cirkelsessieId", String.valueOf(list2.get(position).getCirkelsessie().getId()));
+                    startActivity(intent);
+                    viewToChange = view;
+                    tempPosition = position;
+                    viewToChange.setBackgroundColor(Color.LTGRAY);
                 }
 
             });
@@ -146,19 +157,22 @@ public class OrganisatieLijstFragment extends Fragment {
         textViewAantal.setText(textAantal);
     }
 
-    private class StableArrayAdapter extends ArrayAdapter<Model> {
+    private class StableArrayAdapter extends ArrayAdapter<DeelnameModel> {
 
         private Context context;
-        private ArrayList<Model> modelsArrayList;
+        private ArrayList<DeelnameModel> modelsArrayList;
         HashMap<String, Integer> mIdMap = new HashMap<>();
 
-        public StableArrayAdapter(Context context,int textViewResourceId, ArrayList<Model> modelsArrayList) {
+
+
+        public StableArrayAdapter(Context context,int textViewResourceId, ArrayList<DeelnameModel> modelsArrayList) {
 
             super(context, textViewResourceId, modelsArrayList);
 
             this.context = context;
             this.modelsArrayList = modelsArrayList;
         }
+
 
 
         @Override
@@ -172,21 +186,26 @@ public class OrganisatieLijstFragment extends Fragment {
 
             View rowView = null;
             if(!modelsArrayList.get(position).isGroupHeader()){
-                rowView = inflater.inflate(R.layout.cirkelsessie_lijst_item, parent, false);
+                rowView = inflater.inflate(R.layout.deelname_lijst_item, parent, false);
 
                 // 3. Get icon,title & counter views from the rowView
                 ImageView imgView = (ImageView) rowView.findViewById(R.id.item_icon);
                 TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
+                TextView dateView = (TextView) rowView.findViewById(R.id.date);
                 TextView counterView = (TextView) rowView.findViewById(R.id.item_counter);
 
                 // 4. Set the text for textView
                 imgView.setImageResource(modelsArrayList.get(position).getIcon());
-                titleView.setText(modelsArrayList.get(position).getTitle());
+                String titleText = "Cirkelsessie : " + modelsArrayList.get(position).getTitle();
+                titleView.setText(titleText);
+                String dateText = "Deelgenomen op : " + modelsArrayList.get(position).getDate();
+                dateView.setText(dateText);
                 counterView.setText(modelsArrayList.get(position).getCounter());
 
                 if (position % 2 == 1) {
                     rowView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     titleView.setTextColor(Color.WHITE);
+                    dateView.setTextColor(Color.WHITE);
                     counterView.setTextColor(Color.WHITE);
                     imgView.setImageResource(R.drawable.ic_arrow_right_bright);
 
@@ -195,10 +214,20 @@ public class OrganisatieLijstFragment extends Fragment {
                 }
             }
 
-
             // 5. retrn rowView
             return rowView;
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(viewToChange != null)
+            if ((tempPosition % 2 == 1)) {
+                viewToChange.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            } else {
+                viewToChange.setBackgroundColor(Color.WHITE);
+            }
+        getData();
+    }
 }

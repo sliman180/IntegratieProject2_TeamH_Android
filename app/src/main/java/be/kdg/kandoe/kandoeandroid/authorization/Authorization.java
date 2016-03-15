@@ -14,7 +14,10 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 public class Authorization {
+    private static Retrofit retrofit = null;
+
     public static Retrofit authorize(Activity activity){
+
         final String token = SharedPreferencesMethods.getFromSharedPreferences(activity, activity.getString(R.string.token));
         OkHttpClient client = new OkHttpClient();
         client.interceptors().add(new Interceptor() {
@@ -27,10 +30,15 @@ public class Authorization {
             }
         });
 
-        return new Retrofit.Builder()
-                //10.0.3.2 voor localhost
-                .baseUrl("http://10.0.3.2:8080").client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        if(retrofit == null){
+            retrofit = new Retrofit.Builder()
+                    //10.0.3.2 for localhost
+                    .baseUrl("http://teamh-spring.herokuapp.com")
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+
+        return retrofit;
     }
 }

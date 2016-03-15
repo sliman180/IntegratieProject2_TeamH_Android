@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KandoeAndroid</string>
+    <string name="app_name">Kandoe</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">Gebruikersnaam</string>
@@ -15,8 +15,8 @@
         completions."
     </string>
     <string name="title_activity_cirkelsessie">Cirkelsessie</string>
-    <string name="title_activity_cirkelsessie_lijst">CIrkelsessieLijstActivity</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_cirkelsessie_lijst">Alle Cirkelsessies</string>
+    <string name="title_activity_main">Home</string>
     <string name="drawer_open">open drawer</string>
     <string name="drawer_close">close drawer</string>
 

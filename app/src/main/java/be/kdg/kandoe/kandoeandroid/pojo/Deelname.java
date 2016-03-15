@@ -6,6 +6,9 @@ public class Deelname {
     private boolean medeorganisator;
     private Cirkelsessie cirkelsessie;
     private Gebruiker gebruiker;
+    private long datum;
+
+
 
     public int getId() {
         return id;
@@ -45,5 +48,13 @@ public class Deelname {
 
     public void setGebruiker(Gebruiker gebruiker) {
         this.gebruiker = gebruiker;
+    }
+
+    public long getDatum() {
+        return datum;
+    }
+
+    public void setDatum(long datum) {
+        this.datum = datum;
     }
 }

@@ -112,14 +112,17 @@ public class CirkelsessieActivity extends AppCompatActivity {
                List<Deelname> deelnames = response.body();
                for(int i = 0; i < deelnames.size(); i++){
                    if(deelnames.get(i).getCirkelsessie().getId() == Integer.parseInt(cirkelsessieId)){
-                       buttonDeelname.setVisibility(View.GONE);
+//                       buttonDeelname.setVisibility(View.GONE);
+                       buttonDeelname.setText("U hebt deelgenomen");
+                       buttonDeelname.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
+                       buttonDeelname.setEnabled(false);
                        isDeelnemer = true;
                    }
                }
                if(!isDeelnemer){
                    buttonDeelname.setVisibility(View.VISIBLE);
                    buttonAddKaart.setEnabled(false);
-                   buttonAddKaart.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+                   buttonAddKaart.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
                }
            }
 
@@ -144,7 +147,9 @@ public class CirkelsessieActivity extends AppCompatActivity {
                     public void onResponse(Response<Void> response, Retrofit retrofit) {
                         buttonAddKaart.setEnabled(true);
                         buttonAddKaart.getBackground().setColorFilter(null);
-                        buttonDeelname.setVisibility(View.GONE);
+                        buttonDeelname.setText("U hebt deelgenomen");
+                        buttonDeelname.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
+                        buttonDeelname.setEnabled(false);
                     }
 
                     @Override
@@ -251,8 +256,8 @@ public class CirkelsessieActivity extends AppCompatActivity {
         public CirkelsessieListAdapter(Context context) {
             this.context = context;
             this.parentItems = new ArrayList<>();
-            getSpelkaartenData();
             getData();
+            getSpelkaartenData();
         }
 
         private void getSpelkaartenData(){
@@ -465,6 +470,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+
         handler.postDelayed(cirkelRunnable, 2000);
     }
 

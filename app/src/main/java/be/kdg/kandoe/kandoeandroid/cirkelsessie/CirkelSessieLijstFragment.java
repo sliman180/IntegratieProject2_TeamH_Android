@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.AvoidXfermode;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,8 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import be.kdg.kandoe.kandoeandroid.MainActivity;
 import be.kdg.kandoe.kandoeandroid.R;
+import be.kdg.kandoe.kandoeandroid.api.ApiManager;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.Model;
@@ -82,7 +81,6 @@ public class CirkelSessieLijstFragment extends Fragment {
     public void getData(){
         CirkelsessieAPI cirkelsessieAPI =
                 Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
-
         Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessies();
         call.enqueue(new Callback<List<Cirkelsessie>>() {
 

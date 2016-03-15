@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="menu_item_array" >
+        <item>Divider</item>
+        <item>Home</item>
         <item>Mijn profiel</item>
+        <item>Divider</item>
         <item>Cirkelsessies</item>
-        <item>Mijn subthemas</item>
+        <item>Divider</item>
+        <item>Mijn deelnames</item>
         <item>Mijn organisaties</item>
-        <item>Afmelden</item>
+        <item>Mijn cirkelsessies</item>
+        <item>Mijn subthemas</item>
+        <item>Divider</item>
+        <item>Instellingen</item>
     </string-array>
 </resources>

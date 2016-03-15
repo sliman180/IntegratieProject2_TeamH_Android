@@ -298,7 +298,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.0.3.2:8080")
+                    .baseUrl("http://teamh-spring.herokuapp.com")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
