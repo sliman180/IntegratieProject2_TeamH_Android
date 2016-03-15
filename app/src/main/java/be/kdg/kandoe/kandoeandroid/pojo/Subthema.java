@@ -7,8 +7,27 @@ public class Subthema {
     private int id;
     private String naam;
     private String beschrijving;
-//    private Hoofdthema hoofdthema;
-//    private List<Cirkelsessie> cirkelsessies = new ArrayList<>();
+    private Hoofdthema hoofdthema;
+
+    public Organisatie getOrganisatie() {
+        return organisatie;
+    }
+
+    public void setOrganisatie(Organisatie organisatie) {
+        this.organisatie = organisatie;
+    }
+
+    private Organisatie organisatie;
+
+    public Hoofdthema getHoofdthema() {
+        return hoofdthema;
+    }
+
+    public void setHoofdthema(Hoofdthema hoofdthema) {
+        this.hoofdthema = hoofdthema;
+    }
+
+    //    private List<Cirkelsessie> cirkelsessies = new ArrayList<>();
 //    private List<Kaart> kaarten = new ArrayList<>();
 
     public int getId() {

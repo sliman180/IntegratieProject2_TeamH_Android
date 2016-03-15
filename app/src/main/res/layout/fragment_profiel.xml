@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="be.kdg.kandoe.kandoeandroid.profiel.ProfielFragment">
+    tools:context="be.kdg.kandoe.kandoeandroid.profiel.ProfielFragment"
+    android:background="@color/md_grey_300">
 
 
     <RelativeLayout

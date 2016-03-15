@@ -1,4 +1,4 @@
-package be.kdg.kandoe.kandoeandroid.helpers;
+package be.kdg.kandoe.kandoeandroid.helpers.adaptermodels;
 
 
 import java.util.Date;

@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="be.kdg.kandoe.kandoeandroid.hoofdthema.HoofdThemaLijstFragment"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:background="@color/md_grey_300">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <TextView
+                android:id="@+id/hoofdthema_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="?android:listSeparatorTextViewStyle"
+                android:text="@string/aantal"
+                android:layout_marginBottom="15dp"
+                />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listview_hoofdthemas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10.0sp"/>
+
+</LinearLayout>

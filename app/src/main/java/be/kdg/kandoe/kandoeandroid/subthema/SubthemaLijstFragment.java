@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,10 +25,10 @@ import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
-import be.kdg.kandoe.kandoeandroid.helpers.Model;
+import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.Model;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.api.*;
-import be.kdg.kandoe.kandoeandroid.pojo.Organisatie;
+import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.SubthemaModel;
 import be.kdg.kandoe.kandoeandroid.pojo.Subthema;
 import retrofit.Call;
 import retrofit.Callback;
@@ -120,20 +122,23 @@ public class SubthemaLijstFragment extends Fragment {
         if (getView() != null)
             listview = (ListView) getView().findViewById(R.id.listview_subthemas);
 
-        final ArrayList<Model> list = new ArrayList<>();
+        final ArrayList<SubthemaModel> list = new ArrayList<>();
         final ArrayList<Subthema> list2 = new ArrayList<>();
 
         for (int i = 0; i < response.body().size(); ++i) {
-            Model model = new Model(R.drawable.ic_arrow_right,response.body().get(i).getNaam(),String.valueOf(i+1));
+            SubthemaModel model = new SubthemaModel(R.drawable.ic_style,response.body().get(i).getNaam()
+                    ,response.body().get(i).getBeschrijving(),response.body().get(i).getHoofdthema().getOrganisatie().getNaam(),
+                    response.body().get(i).getHoofdthema().getBeschrijving());
+//            SubthemaModel model = new SubthemaModel();
             list.add(model);
             list2.add(response.body().get(i));
         }
 
-        ArrayAdapter<Model> adapter = null;
+        ArrayAdapter<SubthemaModel> adapter = null;
 
         if (mActivity != null) {
-            adapter = new StableArrayAdapter(mActivity.getBaseContext(),
-                    R.layout.cirkelsessie_lijst_item, list);
+            adapter = new SubthemaAdapter(mActivity.getBaseContext(),
+                    R.layout.subthema_lijst_item, list);
         }
 
         if (listview != null) {
@@ -144,9 +149,7 @@ public class SubthemaLijstFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
-//                    intent.putExtra("subthemaId", String.valueOf(list2.get(position).getId()));
-//                    intent.putExtra("token", token);
-//                    startActivity(intent);
+
                 }
 
             });
@@ -156,15 +159,15 @@ public class SubthemaLijstFragment extends Fragment {
         textViewAantal.setText(textAantal);
     }
 
-    private class StableArrayAdapter extends ArrayAdapter<Model> {
+    private class SubthemaAdapter extends ArrayAdapter<SubthemaModel> {
 
         private Context context;
-        private ArrayList<Model> modelsArrayList;
+        private ArrayList<SubthemaModel> modelsArrayList;
         HashMap<String, Integer> mIdMap = new HashMap<>();
 
 
 
-        public StableArrayAdapter(Context context,int textViewResourceId, ArrayList<Model> modelsArrayList) {
+        public SubthemaAdapter(Context context,int textViewResourceId, ArrayList<SubthemaModel> modelsArrayList) {
 
             super(context, textViewResourceId, modelsArrayList);
 
@@ -185,27 +188,22 @@ public class SubthemaLijstFragment extends Fragment {
 
             View rowView = null;
             if(!modelsArrayList.get(position).isGroupHeader()){
-                rowView = inflater.inflate(R.layout.cirkelsessie_lijst_item, parent, false);
+                rowView = inflater.inflate(R.layout.subthema_lijst_item, parent, false);
 
                 // 3. Get icon,title & counter views from the rowView
                 ImageView imgView = (ImageView) rowView.findViewById(R.id.item_icon);
                 TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
-                TextView counterView = (TextView) rowView.findViewById(R.id.item_counter);
+                TextView beschrijvingView = (TextView) rowView.findViewById(R.id.subthema_beschrijving);
+                TextView organisatieView = (TextView) rowView.findViewById(R.id.subthema_organisatie_beschrijving);
+                TextView hoofdthemaView = (TextView) rowView.findViewById(R.id.subthema_hoofdthema_beschrijving);
 
                 // 4. Set the text for textView
                 imgView.setImageResource(modelsArrayList.get(position).getIcon());
                 titleView.setText(modelsArrayList.get(position).getTitle());
-                counterView.setText(modelsArrayList.get(position).getCounter());
+                beschrijvingView.setText("Beschrijving : "+modelsArrayList.get(position).getBeschrijving());
+                organisatieView.setText("Organisatie : "+modelsArrayList.get(position).getOrganisatie());
+                hoofdthemaView.setText("Hoofdthema : "+modelsArrayList.get(position).getHoofdthema());
 
-                if (position % 2 == 1) {
-                    rowView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    titleView.setTextColor(Color.WHITE);
-                    counterView.setTextColor(Color.WHITE);
-                    imgView.setImageResource(R.drawable.ic_arrow_right_bright);
-
-                } else {
-                    rowView.setBackgroundColor(Color.WHITE);
-                }
             }
 
 

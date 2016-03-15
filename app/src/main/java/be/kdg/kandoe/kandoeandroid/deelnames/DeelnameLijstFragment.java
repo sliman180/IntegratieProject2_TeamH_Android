@@ -28,8 +28,7 @@ import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.DeelnameAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.cirkelsessie.CirkelsessieActivity;
-import be.kdg.kandoe.kandoeandroid.helpers.DeelnameModel;
-import be.kdg.kandoe.kandoeandroid.helpers.Model;
+import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.DeelnameModel;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.pojo.Deelname;
 import retrofit.Call;
@@ -131,7 +130,7 @@ public class DeelnameLijstFragment extends Fragment {
         ArrayAdapter<DeelnameModel> adapter = null;
 
         if (mActivity != null) {
-            adapter = new StableArrayAdapter(mActivity.getBaseContext(),
+            adapter = new DeelnameAdapter(mActivity.getBaseContext(),
                     R.layout.deelname_lijst_item, list);
         }
 
@@ -157,7 +156,7 @@ public class DeelnameLijstFragment extends Fragment {
         textViewAantal.setText(textAantal);
     }
 
-    private class StableArrayAdapter extends ArrayAdapter<DeelnameModel> {
+    private class DeelnameAdapter extends ArrayAdapter<DeelnameModel> {
 
         private Context context;
         private ArrayList<DeelnameModel> modelsArrayList;
@@ -165,7 +164,7 @@ public class DeelnameLijstFragment extends Fragment {
 
 
 
-        public StableArrayAdapter(Context context,int textViewResourceId, ArrayList<DeelnameModel> modelsArrayList) {
+        public DeelnameAdapter(Context context,int textViewResourceId, ArrayList<DeelnameModel> modelsArrayList) {
 
             super(context, textViewResourceId, modelsArrayList);
 
@@ -202,16 +201,6 @@ public class DeelnameLijstFragment extends Fragment {
                 dateView.setText(dateText);
                 counterView.setText(modelsArrayList.get(position).getCounter());
 
-                if (position % 2 == 1) {
-                    rowView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    titleView.setTextColor(Color.WHITE);
-                    dateView.setTextColor(Color.WHITE);
-                    counterView.setTextColor(Color.WHITE);
-                    imgView.setImageResource(R.drawable.ic_arrow_right_bright);
-
-                } else {
-                    rowView.setBackgroundColor(Color.WHITE);
-                }
             }
 
             // 5. retrn rowView

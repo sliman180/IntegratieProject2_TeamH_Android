@@ -75,7 +75,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         mActivity = this;
         isDeelnemer = false;
         cirkelsessieId = extras.getString("cirkelsessieId");
-        Log.d("cirkelsessieId",cirkelsessieId);
+        setTitle(extras.getString("cirkelsessieTitle"));
         setContentView(R.layout.activity_cirkelsessie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,7 +91,6 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
         buttonDeelname = (Button) findViewById(R.id.buttonDeelname);
         buttonAddKaart = (Button) findViewById(R.id.buttonAddKaart);
-
 
         handler = new Handler();
 
@@ -112,7 +111,6 @@ public class CirkelsessieActivity extends AppCompatActivity {
                List<Deelname> deelnames = response.body();
                for(int i = 0; i < deelnames.size(); i++){
                    if(deelnames.get(i).getCirkelsessie().getId() == Integer.parseInt(cirkelsessieId)){
-//                       buttonDeelname.setVisibility(View.GONE);
                        buttonDeelname.setText("U hebt deelgenomen");
                        buttonDeelname.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
                        buttonDeelname.setEnabled(false);
@@ -308,15 +306,13 @@ public class CirkelsessieActivity extends AppCompatActivity {
                         String circleLengthText = "Cirkel met grootte: " + String.valueOf(response.body().getAantalCirkels());
                         circleLengthTextView.setText(circleLengthText);
                         maxAantalCirkels = response.body().getAantalCirkels();
+
                     }
                 }
 
                 @Override
                 public void onFailure(Throwable t) {
-                    Toast.makeText(getBaseContext(), "failure",
-                            Toast.LENGTH_SHORT).show();
                     Log.d("failure", t.getMessage());
-
                 }
 
             });

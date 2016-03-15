@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,10 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
-import be.kdg.kandoe.kandoeandroid.api.ApiManager;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
-import be.kdg.kandoe.kandoeandroid.helpers.Model;
+import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.Model;
 import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import retrofit.Call;
 import retrofit.Callback;
@@ -115,10 +115,10 @@ public class CirkelSessieLijstFragment extends Fragment {
             list.add(model);
             list2.add(response.body().get(i));
         }
-        StableArrayAdapter adapter = null;
+        CirkelsessieAdapter adapter = null;
 
         if (mActivity != null) {
-            adapter = new StableArrayAdapter(mActivity.getBaseContext(),
+            adapter = new CirkelsessieAdapter(mActivity.getBaseContext(),
                     R.layout.cirkelsessie_lijst_item, list);
         }
 
@@ -131,6 +131,7 @@ public class CirkelSessieLijstFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
                     intent.putExtra("cirkelsessieId", String.valueOf(list2.get(position).getId()));
+                    intent.putExtra("cirkelsessieTitle", String.valueOf(list2.get(position).getNaam()));
                     startActivity(intent);
                     viewToChange = view;
                     tempPosition = position;
@@ -159,15 +160,11 @@ public class CirkelSessieLijstFragment extends Fragment {
 
     }
 
-    private class StableArrayAdapter extends ArrayAdapter<Model> {
-
+    private class CirkelsessieAdapter extends ArrayAdapter<Model> {
         private Context context;
         private ArrayList<Model> modelsArrayList;
-        HashMap<String, Integer> mIdMap = new HashMap<>();
 
-
-
-        public StableArrayAdapter(Context context,int textViewResourceId, ArrayList<Model> modelsArrayList) {
+        public CirkelsessieAdapter(Context context,int textViewResourceId, ArrayList<Model> modelsArrayList) {
 
             super(context, textViewResourceId, modelsArrayList);
 
@@ -191,6 +188,8 @@ public class CirkelSessieLijstFragment extends Fragment {
                 rowView = inflater.inflate(R.layout.cirkelsessie_lijst_item, parent, false);
 
                 // 3. Get icon,title & counter views from the rowView
+                RelativeLayout relativeLayout = (RelativeLayout) rowView.findViewById(R.id.backgroundLayout);
+                View view = rowView.findViewById(R.id.frontLine);
                 ImageView imgView = (ImageView) rowView.findViewById(R.id.item_icon);
                 TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
                 TextView counterView = (TextView) rowView.findViewById(R.id.item_counter);
@@ -204,13 +203,15 @@ public class CirkelSessieLijstFragment extends Fragment {
                     rowView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     titleView.setTextColor(Color.WHITE);
                     counterView.setTextColor(Color.WHITE);
+                    view.setBackgroundColor(Color.WHITE);
                     imgView.setImageResource(R.drawable.ic_arrow_right_bright);
+                    relativeLayout.setBackgroundResource(R.drawable.background_list_item_alt);
+
 
                 } else {
                     rowView.setBackgroundColor(Color.WHITE);
                 }
             }
-
 
             // 5. retrn rowView
             return rowView;

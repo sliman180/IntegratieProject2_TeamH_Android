@@ -43,5 +43,7 @@
     <string name="gegevens">Gegevens</string>
     <string name="aantal">Aantal :</string>
     <string name="opslaan">Opslaan</string>
+    <string name="title_activity_hoofdthema">HoofdthemaActivity</string>
+    <string name="subthema_van">Subthema\'s van:</string>
 
 </resources>

@@ -25,7 +25,7 @@ import java.util.List;
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.OrganisatieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
-import be.kdg.kandoe.kandoeandroid.helpers.Model;
+import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.OrganisatieModel;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.pojo.Organisatie;
 import be.kdg.kandoe.kandoeandroid.subthema.SubthemaActivity;
@@ -110,20 +110,21 @@ public class OrganisatieLijstFragment extends Fragment {
         if (getView() != null)
             listview = (ListView) getView().findViewById(R.id.listview_organisaties);
 
-        final ArrayList<Model> list = new ArrayList<>();
+        final ArrayList<OrganisatieModel> list = new ArrayList<>();
         final ArrayList<Organisatie> list2 = new ArrayList<>();
 
         for (int i = 0; i < response.body().size(); ++i) {
-            Model model = new Model(R.drawable.ic_arrow_right,response.body().get(i).getNaam(),String.valueOf(i+1));
+            OrganisatieModel model = new OrganisatieModel(R.drawable.ic_account_balance,response.body().get(i).getNaam(),
+                    response.body().get(i).getBeschrijving());
             list.add(model);
             list2.add(response.body().get(i));
         }
 
-        ArrayAdapter<Model> adapter = null;
+        ArrayAdapter<OrganisatieModel> adapter = null;
 
         if (mActivity != null) {
-            adapter = new StableArrayAdapter(mActivity.getBaseContext(),
-                    R.layout.cirkelsessie_lijst_item, list);
+            adapter = new OrganisatieAdapter(mActivity.getBaseContext(),
+                    R.layout.organisatie_lijst_item, list);
         }
 
         if (listview != null) {
@@ -146,13 +147,12 @@ public class OrganisatieLijstFragment extends Fragment {
         textViewAantal.setText(textAantal);
     }
 
-    private class StableArrayAdapter extends ArrayAdapter<Model> {
+    private class OrganisatieAdapter extends ArrayAdapter<OrganisatieModel> {
 
         private Context context;
-        private ArrayList<Model> modelsArrayList;
-        HashMap<String, Integer> mIdMap = new HashMap<>();
+        private ArrayList<OrganisatieModel> modelsArrayList;
 
-        public StableArrayAdapter(Context context,int textViewResourceId, ArrayList<Model> modelsArrayList) {
+        public OrganisatieAdapter(Context context,int textViewResourceId, ArrayList<OrganisatieModel> modelsArrayList) {
 
             super(context, textViewResourceId, modelsArrayList);
 
@@ -172,27 +172,21 @@ public class OrganisatieLijstFragment extends Fragment {
 
             View rowView = null;
             if(!modelsArrayList.get(position).isGroupHeader()){
-                rowView = inflater.inflate(R.layout.cirkelsessie_lijst_item, parent, false);
+                rowView = inflater.inflate(R.layout.organisatie_lijst_item, parent, false);
 
                 // 3. Get icon,title & counter views from the rowView
                 ImageView imgView = (ImageView) rowView.findViewById(R.id.item_icon);
                 TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
-                TextView counterView = (TextView) rowView.findViewById(R.id.item_counter);
+                TextView beschrijvingView = (TextView) rowView.findViewById(R.id.organisatie_beschrijving);
 
                 // 4. Set the text for textView
+
                 imgView.setImageResource(modelsArrayList.get(position).getIcon());
-                titleView.setText(modelsArrayList.get(position).getTitle());
-                counterView.setText(modelsArrayList.get(position).getCounter());
+                String titleText = modelsArrayList.get(position).getTitle();
+                titleView.setText(titleText);
+                String beschrijvingText = "Beschrijving : " + modelsArrayList.get(position).getBeschrijving();
+                beschrijvingView.setText(beschrijvingText);
 
-                if (position % 2 == 1) {
-                    rowView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                    titleView.setTextColor(Color.WHITE);
-                    counterView.setTextColor(Color.WHITE);
-                    imgView.setImageResource(R.drawable.ic_arrow_right_bright);
-
-                } else {
-                    rowView.setBackgroundColor(Color.WHITE);
-                }
             }
 
 

@@ -9,8 +9,8 @@ public class Hoofdthema {
     private String beschrijving;
     private Organisatie organisatie;
     private Gebruiker gebruiker;
-    private List<Subthema> subthemas = new ArrayList<>();
-    private List<Tag> tags = new ArrayList<>();
+//    private List<Subthema> subthemas = new ArrayList<>();
+//    private List<Tag> tags = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -52,19 +52,19 @@ public class Hoofdthema {
         this.gebruiker = gebruiker;
     }
 
-    public List<Subthema> getSubthemas() {
-        return subthemas;
-    }
-
-    public void setSubthemas(List<Subthema> subthemas) {
-        this.subthemas = subthemas;
-    }
-
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
+//    public List<Subthema> getSubthemas() {
+//        return subthemas;
+//    }
+//
+//    public void setSubthemas(List<Subthema> subthemas) {
+//        this.subthemas = subthemas;
+//    }
+//
+//    public List<Tag> getTags() {
+//        return tags;
+//    }
+//
+//    public void setTags(List<Tag> tags) {
+//        this.tags = tags;
+//    }
 }
