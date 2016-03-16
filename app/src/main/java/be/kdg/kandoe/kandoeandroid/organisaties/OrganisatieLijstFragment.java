@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -19,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
@@ -48,6 +48,11 @@ public class OrganisatieLijstFragment extends Fragment {
 
     private View v;
 
+    private ArrayList<Organisatie> unchangedList;
+
+    private ImageView mImageView;
+
+
     public OrganisatieLijstFragment() {
         // Required empty public constructor
     }
@@ -61,9 +66,10 @@ public class OrganisatieLijstFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getActivity() != null) {
             mActivity = getActivity();
+            unchangedList = new ArrayList<>();
             token = SharedPreferencesMethods.getFromSharedPreferences(mActivity, getString(R.string.token));
         }
-        intent = new Intent(mActivity.getBaseContext(), SubthemaActivity.class);
+        intent = new Intent(mActivity.getBaseContext(), OrganisatieActivity.class);
         getData();
     }
     @Override
@@ -106,6 +112,7 @@ public class OrganisatieLijstFragment extends Fragment {
     }
 
     public void createList(Response<List<Organisatie>> response){
+        unchangedList.clear();
         ListView listview = null;
         if (getView() != null)
             listview = (ListView) getView().findViewById(R.id.listview_organisaties);
@@ -114,33 +121,22 @@ public class OrganisatieLijstFragment extends Fragment {
         final ArrayList<Organisatie> list2 = new ArrayList<>();
 
         for (int i = 0; i < response.body().size(); ++i) {
-            OrganisatieModel model = new OrganisatieModel(R.drawable.ic_account_balance,response.body().get(i).getNaam(),
-                    response.body().get(i).getBeschrijving());
+            OrganisatieModel model = new OrganisatieModel(String.valueOf(i+1),response.body().get(i).getNaam(),
+                    response.body().get(i).getBeschrijving(),R.drawable.ic_turned_in);
             list.add(model);
             list2.add(response.body().get(i));
+            unchangedList.add(response.body().get(i));
         }
 
         ArrayAdapter<OrganisatieModel> adapter = null;
 
         if (mActivity != null) {
             adapter = new OrganisatieAdapter(mActivity.getBaseContext(),
-                    R.layout.organisatie_lijst_item, list);
+                    R.layout.item_list_organisatie, list);
         }
 
         if (listview != null) {
             listview.setAdapter(adapter);
-
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, final View view,
-                                        int position, long id) {
-//                    intent.putExtra("subthemaId", String.valueOf(list2.get(position).getId()));
-//                    intent.putExtra("token", token);
-//                    startActivity(intent);
-                }
-
-            });
         }
 
         String textAantal = "Aantal : " + String.valueOf(list2.size());
@@ -169,26 +165,37 @@ public class OrganisatieLijstFragment extends Fragment {
 
 
             // 2. Get rowView from inflater
-
             View rowView = null;
             if(!modelsArrayList.get(position).isGroupHeader()){
-                rowView = inflater.inflate(R.layout.organisatie_lijst_item, parent, false);
+                rowView = inflater.inflate(R.layout.item_list_organisatie, parent, false);
 
                 // 3. Get icon,title & counter views from the rowView
-                ImageView imgView = (ImageView) rowView.findViewById(R.id.item_icon);
-                TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
-                TextView beschrijvingView = (TextView) rowView.findViewById(R.id.organisatie_beschrijving);
+                final TextView counterView = (TextView) rowView.findViewById(R.id.item_counter);
+                final TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
+                final TextView beschrijvingView = (TextView) rowView.findViewById(R.id.organisatie_beschrijving);
+                final ImageView clickImgView = (ImageView) rowView.findViewById(R.id.click_icon);
+                clickImgView.setColorFilter(null);
+                mImageView = clickImgView;
 
                 // 4. Set the text for textView
 
-                imgView.setImageResource(modelsArrayList.get(position).getIcon());
+                counterView.setText(modelsArrayList.get(position).getCounter());
+                clickImgView.setImageResource(modelsArrayList.get(position).getClickIcon());
                 String titleText = modelsArrayList.get(position).getTitle();
                 titleView.setText(titleText);
                 String beschrijvingText = "Beschrijving : " + modelsArrayList.get(position).getBeschrijving();
                 beschrijvingView.setText(beschrijvingText);
 
+                final int positionId = position;
+                clickImgView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        intent.putExtra("organisatieId", String.valueOf(unchangedList.get(positionId).getId()));
+                        intent.putExtra("organisatieTitle", String.valueOf(unchangedList.get(positionId).getNaam()));
+                        startActivity(intent);
+                    }
+                });
             }
-
 
             // 5. retrn rowView
             return rowView;

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,10 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +21,6 @@ import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
-import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.Model;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.api.*;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.SubthemaModel;
@@ -126,7 +121,7 @@ public class SubthemaLijstFragment extends Fragment {
         final ArrayList<Subthema> list2 = new ArrayList<>();
 
         for (int i = 0; i < response.body().size(); ++i) {
-            SubthemaModel model = new SubthemaModel(R.drawable.ic_style,response.body().get(i).getNaam()
+            SubthemaModel model = new SubthemaModel(String.valueOf(i+1),response.body().get(i).getNaam()
                     ,response.body().get(i).getBeschrijving(),response.body().get(i).getHoofdthema().getOrganisatie().getNaam(),
                     response.body().get(i).getHoofdthema().getBeschrijving());
 //            SubthemaModel model = new SubthemaModel();
@@ -191,14 +186,14 @@ public class SubthemaLijstFragment extends Fragment {
                 rowView = inflater.inflate(R.layout.subthema_lijst_item, parent, false);
 
                 // 3. Get icon,title & counter views from the rowView
-                ImageView imgView = (ImageView) rowView.findViewById(R.id.item_icon);
+                TextView counterView = (TextView) rowView.findViewById(R.id.item_counter);
                 TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
                 TextView beschrijvingView = (TextView) rowView.findViewById(R.id.subthema_beschrijving);
                 TextView organisatieView = (TextView) rowView.findViewById(R.id.subthema_organisatie_beschrijving);
                 TextView hoofdthemaView = (TextView) rowView.findViewById(R.id.subthema_hoofdthema_beschrijving);
 
                 // 4. Set the text for textView
-                imgView.setImageResource(modelsArrayList.get(position).getIcon());
+                counterView.setText(modelsArrayList.get(position).getCounter());
                 titleView.setText(modelsArrayList.get(position).getTitle());
                 beschrijvingView.setText("Beschrijving : "+modelsArrayList.get(position).getBeschrijving());
                 organisatieView.setText("Organisatie : "+modelsArrayList.get(position).getOrganisatie());
@@ -210,5 +205,11 @@ public class SubthemaLijstFragment extends Fragment {
             // 5. retrn rowView
             return rowView;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 }

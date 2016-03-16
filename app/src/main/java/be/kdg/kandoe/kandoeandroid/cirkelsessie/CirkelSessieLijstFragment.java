@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
@@ -119,7 +118,7 @@ public class CirkelSessieLijstFragment extends Fragment {
 
         if (mActivity != null) {
             adapter = new CirkelsessieAdapter(mActivity.getBaseContext(),
-                    R.layout.cirkelsessie_lijst_item, list);
+                    R.layout.item_list_cirkelsessie, list);
         }
 
         if (listview != null) {
@@ -185,7 +184,7 @@ public class CirkelSessieLijstFragment extends Fragment {
 
             View rowView = null;
             if(!modelsArrayList.get(position).isGroupHeader()){
-                rowView = inflater.inflate(R.layout.cirkelsessie_lijst_item, parent, false);
+                rowView = inflater.inflate(R.layout.item_list_cirkelsessie, parent, false);
 
                 // 3. Get icon,title & counter views from the rowView
                 RelativeLayout relativeLayout = (RelativeLayout) rowView.findViewById(R.id.backgroundLayout);

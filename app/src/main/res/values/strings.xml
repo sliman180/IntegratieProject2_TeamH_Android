@@ -45,5 +45,8 @@
     <string name="opslaan">Opslaan</string>
     <string name="title_activity_hoofdthema">HoofdthemaActivity</string>
     <string name="subthema_van">Subthema\'s van:</string>
+    <string name="title_activity_organisatie">OrganisatieActivity</string>
+    <string name="hoofdthema_no_subthemas">Dit hoofdthema heeft geen subthema\'s</string>
+    <string name="organisatie_no_hoofdthema">Dit organisatie heeft geen hoofdthema\'s</string>
 
 </resources>

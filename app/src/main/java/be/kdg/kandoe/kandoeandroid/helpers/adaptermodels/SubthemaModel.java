@@ -1,7 +1,7 @@
 package be.kdg.kandoe.kandoeandroid.helpers.adaptermodels;
 
 public class SubthemaModel {
-    private int icon;
+    private String counter;
     private String title;
     private String beschrijving;
     private String organisatie;
@@ -12,28 +12,22 @@ public class SubthemaModel {
 
     private boolean isGroupHeader = false;
 
-    public SubthemaModel(String title, String beschrijving, String organisatie, String hoofdthema) {
-        this(-1,title,beschrijving,organisatie,hoofdthema);
-        isGroupHeader = false;
-    }
-
-    public SubthemaModel() {
-    }
-
-    public SubthemaModel(int icon, String title, String beschrijving, String organisatie, String hoofdthema) {
+    public SubthemaModel(String counter, String title, String beschrijving, String organisatie, String hoofdthema) {
         super();
         this.hoofdthema = hoofdthema;
         this.organisatie = organisatie;
         this.beschrijving = beschrijving;
         this.title = title;
-        this.icon = icon;
-    }
-    public int getIcon() {
-        return icon;
+        this.counter = counter;
+        isGroupHeader = false;
     }
 
-    public void setIcon(int icon) {
-        this.icon = icon;
+    public String getCounter() {
+        return counter;
+    }
+
+    public void setCounter(String counter) {
+        this.counter = counter;
     }
 
     public String getTitle() {

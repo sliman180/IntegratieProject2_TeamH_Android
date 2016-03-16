@@ -80,6 +80,16 @@ public class CirkelsessieActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if(toolbar != null){
+            toolbar.setNavigationIcon(R.drawable.ic_chevron_left);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
+
         elv = (ExpandableListView) findViewById(R.id.card_list);
         cirkelsessieListAdapter = new CirkelsessieListAdapter(getBaseContext());
         elv.setAdapter(cirkelsessieListAdapter);
@@ -172,7 +182,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
     public void addCard(View v) {
         final Dialog newCardDialog = new Dialog(this);
-        newCardDialog.setContentView(R.layout.custom_dialog);
+        newCardDialog.setContentView(R.layout.dialog_custom);
         newCardDialog.setTitle("Vul de kaart tekst in");
 
         final EditText newCardInput = (EditText) newCardDialog.findViewById(R.id.dialogtext);

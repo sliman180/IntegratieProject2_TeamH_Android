@@ -9,8 +9,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="be.kdg.kandoe.kandoeandroid.hoofdthema.HoofdthemaActivity"
-    tools:showIn="@layout/activity_hoofdthema"
+    tools:context="be.kdg.kandoe.kandoeandroid.organisaties.OrganisatieActivity"
+    tools:showIn="@layout/activity_organisatie"
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,31 +19,33 @@
         android:orientation="horizontal"
         >
         <TextView
-            android:id="@+id/hoofdthema_activity_header"
+            android:id="@+id/organisatie_activity_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?android:listSeparatorTextViewStyle"
             android:text="@string/subthema_van"
             android:layout_marginBottom="15dp"
             />
+
     </LinearLayout>
 
     <ListView
-        android:id="@+id/listview_subthemas"
+        android:id="@+id/listview_hoofdthemas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0sp"/>
 
     <TextView
-        android:id="@+id/hoofdthema_no_subthemas"
+        android:id="@+id/organisatie_no_hoofdthema"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/hoofdthema_no_subthemas"
+        android:text="@string/organisatie_no_hoofdthema"
         android:visibility="gone"
         android:textSize="20sp"
         android:textStyle="bold">
     </TextView>
+
 
 </LinearLayout>

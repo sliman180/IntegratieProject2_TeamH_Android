@@ -3,10 +3,7 @@ package be.kdg.kandoe.kandoeandroid.hoofdthema;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -14,13 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
@@ -46,6 +41,15 @@ public class HoofdthemaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hoofdthema);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if(toolbar != null){
+            toolbar.setNavigationIcon(R.drawable.ic_chevron_left);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
         textViewAantal = (TextView) findViewById(R.id.hoofdthema_activity_header);
 
         Intent intent = getIntent();
@@ -65,10 +69,12 @@ public class HoofdthemaActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Subthema>>() {
             @Override
             public void onResponse(Response<List<Subthema>> response, Retrofit retrofit) {
+                if(response.body().size() == 0){
+                    TextView textView = (TextView) findViewById(R.id.hoofdthema_no_subthemas);
+                    textView.setVisibility(View.VISIBLE);
+                }else {
                 createList(response);
-                Toast.makeText(getBaseContext(),"succes",Toast.LENGTH_SHORT).show();
-
-
+                Toast.makeText(getBaseContext(),"succes",Toast.LENGTH_SHORT).show();}
             }
 
             @Override
@@ -85,7 +91,7 @@ public class HoofdthemaActivity extends AppCompatActivity {
         final ArrayList<Subthema> list2 = new ArrayList<>();
 
         for (int i = 0; i < response.body().size(); ++i) {
-            SubthemaModel model = new SubthemaModel(R.drawable.ic_style,response.body().get(i).getNaam()
+            SubthemaModel model = new SubthemaModel(String.valueOf(i+1),response.body().get(i).getNaam()
                     ,response.body().get(i).getBeschrijving(),response.body().get(i).getHoofdthema().getOrganisatie().getNaam(),
                     response.body().get(i).getHoofdthema().getBeschrijving());
             list.add(model);
@@ -143,14 +149,14 @@ public class HoofdthemaActivity extends AppCompatActivity {
                 rowView = inflater.inflate(R.layout.subthema_lijst_item, parent, false);
 
                 // 3. Get icon,title & counter views from the rowView
-                ImageView imgView = (ImageView) rowView.findViewById(R.id.item_icon);
+                TextView counterView = (TextView) rowView.findViewById(R.id.item_counter);
                 TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
                 TextView beschrijvingView = (TextView) rowView.findViewById(R.id.subthema_beschrijving);
                 TextView organisatieView = (TextView) rowView.findViewById(R.id.subthema_organisatie_beschrijving);
                 TextView hoofdthemaView = (TextView) rowView.findViewById(R.id.subthema_hoofdthema_beschrijving);
 
                 // 4. Set the text for textView
-                imgView.setImageResource(modelsArrayList.get(position).getIcon());
+                counterView.setText(modelsArrayList.get(position).getCounter());
                 titleView.setText(modelsArrayList.get(position).getTitle());
                 beschrijvingView.setText("Beschrijving : "+modelsArrayList.get(position).getBeschrijving());
                 organisatieView.setText("Organisatie : "+modelsArrayList.get(position).getOrganisatie());

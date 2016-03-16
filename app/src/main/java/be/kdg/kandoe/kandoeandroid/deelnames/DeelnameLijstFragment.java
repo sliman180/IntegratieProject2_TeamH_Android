@@ -131,7 +131,7 @@ public class DeelnameLijstFragment extends Fragment {
 
         if (mActivity != null) {
             adapter = new DeelnameAdapter(mActivity.getBaseContext(),
-                    R.layout.deelname_lijst_item, list);
+                    R.layout.item_list_deelname, list);
         }
 
         if (listview != null) {
@@ -143,6 +143,7 @@ public class DeelnameLijstFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
                     intent.putExtra("cirkelsessieId", String.valueOf(list2.get(position).getCirkelsessie().getId()));
+                    intent.putExtra("cirkelsessieTitle", String.valueOf(list2.get(position).getCirkelsessie().getNaam()));
                     startActivity(intent);
                     viewToChange = view;
                     tempPosition = position;
@@ -185,7 +186,7 @@ public class DeelnameLijstFragment extends Fragment {
 
             View rowView = null;
             if(!modelsArrayList.get(position).isGroupHeader()){
-                rowView = inflater.inflate(R.layout.deelname_lijst_item, parent, false);
+                rowView = inflater.inflate(R.layout.item_list_deelname, parent, false);
 
                 // 3. Get icon,title & counter views from the rowView
                 ImageView imgView = (ImageView) rowView.findViewById(R.id.item_icon);

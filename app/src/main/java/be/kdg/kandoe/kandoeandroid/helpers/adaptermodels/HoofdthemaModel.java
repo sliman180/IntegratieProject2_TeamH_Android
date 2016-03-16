@@ -2,7 +2,7 @@ package be.kdg.kandoe.kandoeandroid.helpers.adaptermodels;
 
 
 public class HoofdthemaModel {
-    private int icon;
+    private String counter;
     private String title;
     private String beschrijving;
     private String organisatie;
@@ -11,25 +11,26 @@ public class HoofdthemaModel {
 
     private boolean isGroupHeader = false;
 
-    public HoofdthemaModel(String title,String beschrijving,String organisatie) {
-        this(-1,title,beschrijving,organisatie,-1);
+    public HoofdthemaModel(String counter,String title,String beschrijving,String organisatie) {
+        this(counter,title,beschrijving,organisatie,-1);
         isGroupHeader = false;
     }
-    public HoofdthemaModel(int icon,String title, String beschrijving, String organisatie, int clickIcon) {
+
+    public HoofdthemaModel(String counter,String title, String beschrijving, String organisatie, int clickIcon) {
         super();
-        this.icon = icon;
+        this.counter = counter;
         this.title = title;
         this.beschrijving = beschrijving;
         this.organisatie = organisatie;
         this.clickIcon = clickIcon;
     }
 
-    public int getIcon() {
-        return icon;
+    public String getCounter() {
+        return counter;
     }
 
-    public void setIcon(int icon) {
-        this.icon = icon;
+    public void setCounter(String counter) {
+        this.counter = counter;
     }
 
     public int getClickIcon() {

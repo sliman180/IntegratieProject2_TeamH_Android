@@ -4,19 +4,20 @@
     android:layout_height="65dp"
     android:background="#FFFFFF"
     android:theme="@style/MyButton"
-
     >
 
-    <!-- icon -->
-    <ImageView
-        android:id="@+id/item_icon"
+    <!-- counter -->
+    <TextView
+        android:id="@+id/item_counter"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="15dp"
-        android:contentDescription="@null"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:textStyle="bold"
         />
 
     <!-- title -->
@@ -26,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="15dp"
-        android:layout_toEndOf="@+id/item_icon"
+        android:layout_toEndOf="@+id/item_counter"
         android:text="New text"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -37,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_title"
-        android:layout_toEndOf="@+id/item_icon"
+        android:layout_toEndOf="@+id/item_counter"
         android:text="New text"
         android:layout_marginEnd="8dp"
         android:textSize="12sp"
@@ -49,6 +50,26 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
         android:id="@+id/frontLine" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_toStartOf="@+id/click_icon"
+        android:layout_height="match_parent"
+        android:background="@color/md_grey_500"
+        android:id="@+id/backLine" />
+
+    <!-- icon -->
+    <ImageView
+        android:id="@+id/click_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="@null"
+        />
 
 
 </RelativeLayout>
