@@ -1,6 +1,7 @@
-package be.kdg.kandoe.kandoeandroid.pojo;
+package be.kdg.kandoe.kandoeandroid.pojo.response;
 
 
+import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
 
 public class Kaart {
 
@@ -11,6 +12,16 @@ public class Kaart {
     private String imageUrl;
 
     private boolean commentsToelaatbaar;
+
+    private Gebruiker gebruiker;
+
+    public Gebruiker getGebruiker() {
+        return gebruiker;
+    }
+
+    public void setGebruiker(Gebruiker gebruiker) {
+        this.gebruiker = gebruiker;
+    }
 
     public int getId() {
         return id;

@@ -37,10 +37,12 @@ import be.kdg.kandoe.kandoeandroid.api.GebruikerAPI;
 import be.kdg.kandoe.kandoeandroid.api.SpelkaartenAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.Parent;
+import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import be.kdg.kandoe.kandoeandroid.pojo.Deelname;
 import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
-import be.kdg.kandoe.kandoeandroid.pojo.Kaart;
+import be.kdg.kandoe.kandoeandroid.pojo.request.KaartRequest;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Kaart;
 import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
 import retrofit.Call;
 import retrofit.Callback;
@@ -93,7 +95,6 @@ public class CirkelsessieActivity extends AppCompatActivity {
         elv = (ExpandableListView) findViewById(R.id.card_list);
         cirkelsessieListAdapter = new CirkelsessieListAdapter(getBaseContext());
         elv.setAdapter(cirkelsessieListAdapter);
-        checkIsDeelnemer();
 
         fragment = (CirkelsessieFragment) getFragmentManager().findFragmentById(R.id.cirkelsessie_fragment);
 
@@ -104,27 +105,30 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
         handler = new Handler();
 
-        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String json = SharedPreferencesMethods.getFromSharedPreferences(mActivity, mActivity.getString(R.string.gebruiker));
         Gson gson = new Gson();
-        String json = mPrefs.getString("Gebruiker", "");
         gebruiker = gson.fromJson(json, Gebruiker.class);
-    }
 
+        checkIsDeelnemer();
+    }
 
     public void checkIsDeelnemer(){
         Retrofit retrofit = Authorization.authorize(mActivity);
-        GebruikerAPI gebruikerAPI = retrofit.create(GebruikerAPI.class);
-        Call<List<Deelname>> call = gebruikerAPI.getDeelnames();
+        DeelnameAPI deelnameAPI = retrofit.create(DeelnameAPI.class);
+        Call<List<Deelname>> call = deelnameAPI.getDeelnamesVanCirkelsessie(cirkelsessieId);
         call.enqueue(new Callback<List<Deelname>>() {
            @Override
            public void onResponse(Response<List<Deelname>> response, Retrofit retrofit) {
                List<Deelname> deelnames = response.body();
                for(int i = 0; i < deelnames.size(); i++){
                    if(deelnames.get(i).getCirkelsessie().getId() == Integer.parseInt(cirkelsessieId)){
-                       buttonDeelname.setText("U hebt deelgenomen");
+                       if(deelnames.get(i).getGebruiker().getId() == gebruiker.getId()){
+                       String textDeelgenomen = "U hebt deelgenomen";
+                       buttonDeelname.setText(textDeelgenomen);
                        buttonDeelname.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
                        buttonDeelname.setEnabled(false);
                        isDeelnemer = true;
+                       }
                    }
                }
                if(!isDeelnemer){
@@ -149,7 +153,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Retrofit retrofit = Authorization.authorize(mActivity);
                 DeelnameAPI deelnameAPI = retrofit.create(DeelnameAPI.class);
-                Call<Void> call = deelnameAPI.doeDeelname(String.valueOf(cirkelsessieId));
+                Call<Void> call = deelnameAPI.doeDeelname(cirkelsessieId);
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Response<Void> response, Retrofit retrofit) {
@@ -194,7 +198,8 @@ public class CirkelsessieActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Retrofit retrofit = Authorization.authorize(mActivity);
                 final CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
-                Kaart kaart = new Kaart(newCardInput.getText().toString(), newCardInput.getText().toString(), false);
+                KaartRequest kaart = new KaartRequest(newCardInput.getText().toString(), newCardInput.getText().toString(), false);
+                kaart.setGebruiker(gebruiker.getId());
                 Call<Kaart> call = cirkelsessieAPI.createSpelKaart(cirkelsessieId, kaart);
 
                 call.enqueue(new Callback<Kaart>() {

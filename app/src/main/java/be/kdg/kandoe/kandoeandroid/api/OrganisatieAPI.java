@@ -11,8 +11,8 @@ import retrofit.http.Path;
 
 
 public interface OrganisatieAPI {
-    @GET("/api/organisaties/my")
-    Call<List<Organisatie>> getOrganisaties();
+    @GET("/api/gebruikers/{id}/organisaties")
+    Call<List<Organisatie>> getOrganisaties(@Path("id") String id);
 
     @GET("/api/organisaties/{id}/hoofdthemas")
     Call<List<Hoofdthema>> getHoofthemasFromOrganisaties(@Path("id") String id);

@@ -308,7 +308,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             //10.0.3.2:8080 for localhost
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.0.3.2:8080")
+                    .baseUrl("http://teamh-spring.herokuapp.com")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
@@ -316,6 +316,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             Call<Token> call = authAPI.login(new Credentials(mUsername, mPassword));
             try {
+                token = null;
                 token = call.execute().body();
                 return token != null;
             } catch (IOException e) {
@@ -332,8 +333,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 SharedPreferencesMethods.saveInSharedPreferences(activity, getString(R.string.token), token.getToken());
                 createSharedUserObject();
-//                intent.putExtra("token", token.getToken());
-                startActivity(intent);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -348,17 +347,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 @Override
                 public void onResponse(Response<Gebruiker> response, Retrofit retrofit) {
                     Gebruiker gebruiker = response.body();
-                    SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    SharedPreferences.Editor prefsEditor = mPrefs.edit();
                     Gson gson = new Gson();
                     String json = gson.toJson(gebruiker);
-                    prefsEditor.putString("Gebruiker", json);
-                    prefsEditor.apply();
+                    SharedPreferencesMethods.saveInSharedPreferences(activity, getString(R.string.gebruiker), json);
+                    startActivity(intent);
                 }
 
                 @Override
                 public void onFailure(Throwable t) {
-                    Toast.makeText(getBaseContext(), "failure gebruiker", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "failure loginActivity", Toast.LENGTH_SHORT).show();
                 }
             });
 

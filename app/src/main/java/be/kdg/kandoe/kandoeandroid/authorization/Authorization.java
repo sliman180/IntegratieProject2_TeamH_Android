@@ -14,7 +14,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 public class Authorization {
-    private static Retrofit retrofit = null;
+    private static Retrofit retrofit;
 
     public static Retrofit authorize(Activity activity){
 
@@ -30,15 +30,14 @@ public class Authorization {
             }
         });
 
-        if(retrofit == null){
             retrofit = new Retrofit.Builder()
                     //10.0.3.2:8080 for localhost
                     //http://teamh-spring.herokuapp.com
-                    .baseUrl("http://10.0.3.2:8080")
+                    .baseUrl("http://teamh-spring.herokuapp.com")
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-        }
+
 
         return retrofit;
     }

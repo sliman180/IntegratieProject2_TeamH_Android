@@ -17,8 +17,6 @@ public interface GebruikerAPI {
     @GET("api/gebruikers/myinfo")
     Call<Gebruiker> getGebruiker();
 
-    @GET("api/gebruikers/deelnames")
-    Call<List<Deelname>> getDeelnames();
 
     @PUT("/api/gebruikers/{id}")
     Call<Void> updateGegevens(@Path("id") String id, @Body Gebruiker gebruiker);

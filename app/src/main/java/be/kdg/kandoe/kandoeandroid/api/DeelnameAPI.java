@@ -10,11 +10,15 @@ import retrofit.http.Path;
 
 public interface DeelnameAPI {
 
-    @POST("/api/deelnames/{id}")
+    @POST("/api/cirkelsessies/{id}/deelnames")
     Call<Void> doeDeelname(@Path("id") String Id);
 
-    @GET("/api/gebruikers/deelnames")
-    Call<List<Deelname>> getDeelnames();
+    @GET("/api/gebruikers/{id}/deelnames")
+    Call<List<Deelname>> getDeelnames(@Path("id") String id);
+
+    @GET("/api/cirkelsessies/{id}/deelnames")
+    Call<List<Deelname>> getDeelnamesVanCirkelsessie(@Path("id") String id);
+
 
 
 

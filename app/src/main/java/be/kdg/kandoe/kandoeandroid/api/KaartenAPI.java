@@ -3,7 +3,7 @@ package be.kdg.kandoe.kandoeandroid.api;
 
 import java.util.List;
 
-import be.kdg.kandoe.kandoeandroid.pojo.Kaart;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Kaart;
 import retrofit.Call;
 import retrofit.http.GET;
 

@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -51,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mActivity = this;
-        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Gson gson = new Gson();
-        String json = mPrefs.getString("Gebruiker", "");
+        String json = SharedPreferencesMethods.getFromSharedPreferences(mActivity,getString(R.string.gebruiker));
+
         Gebruiker gebruiker = gson.fromJson(json, Gebruiker.class);
         mMenuItems = getResources().getStringArray(R.array.menu_item_array);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.dark_)
                 .addProfiles(
-                        new ProfileDrawerItem().withName(gebruiker.getGebruikersnaam()).withEmail(gebruiker.getGebruikersnaam()+"@kandoe.be")
+                        new ProfileDrawerItem().withName(gebruiker.getGebruikersnaam()).withEmail(gebruiker.getGebruikersnaam() + "@kandoe.be")
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -142,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logOut() {
-        SharedPreferencesMethods.saveInSharedPreferences(this, getString(R.string.token), "");
+        PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
         Intent intent = new Intent(this, FirstActivity.class);
         startActivity(intent);
     }

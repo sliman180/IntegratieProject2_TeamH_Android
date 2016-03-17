@@ -4,9 +4,11 @@ package be.kdg.kandoe.kandoeandroid.deelnames;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +35,7 @@ import be.kdg.kandoe.kandoeandroid.cirkelsessie.CirkelsessieActivity;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.DeelnameModel;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.pojo.Deelname;
+import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -42,7 +47,6 @@ import retrofit.Retrofit;
 public class DeelnameLijstFragment extends Fragment {
 
 
-    private String token;
 
     private Activity mActivity;
 
@@ -52,6 +56,7 @@ public class DeelnameLijstFragment extends Fragment {
 
     private View viewToChange;
     private int tempPosition = 0;
+    private Gebruiker gebruiker;
 
     private View v;
 
@@ -67,7 +72,9 @@ public class DeelnameLijstFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getActivity() != null) {
             mActivity = getActivity();
-            token = SharedPreferencesMethods.getFromSharedPreferences(mActivity, getString(R.string.token));
+            String json = SharedPreferencesMethods.getFromSharedPreferences(mActivity, mActivity.getString(R.string.gebruiker));
+            Gson gson = new Gson();
+            gebruiker = gson.fromJson(json, Gebruiker.class);
         }
         intent = new Intent(mActivity.getBaseContext(), CirkelsessieActivity.class);
         getData();
@@ -96,7 +103,7 @@ public class DeelnameLijstFragment extends Fragment {
     public void getData(){
         DeelnameAPI deelnameAPI =
                 Authorization.authorize(getActivity()).create(DeelnameAPI.class);
-        Call<List<Deelname>> call = deelnameAPI.getDeelnames();
+        Call<List<Deelname>> call = deelnameAPI.getDeelnames(String.valueOf(gebruiker.getId()));
         call.enqueue(new Callback<List<Deelname>>() {
             @Override
             public void onResponse(Response<List<Deelname>> response, Retrofit retrofit) {
@@ -122,7 +129,7 @@ public class DeelnameLijstFragment extends Fragment {
         SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         for (int i = 0; i < response.body().size(); ++i) {
             Date date = new Date(response.body().get(i).getDatum());
-            DeelnameModel model = new DeelnameModel(R.drawable.ic_arrow_right,response.body().get(i).getCirkelsessie().getNaam(),ft.format(date),String.valueOf(i + 1));
+            DeelnameModel model = new DeelnameModel(R.drawable.ic_arrow_right,"",ft.format(date),String.valueOf(i + 1));
             list.add(model);
             list2.add(response.body().get(i));
         }
@@ -142,8 +149,8 @@ public class DeelnameLijstFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
-                    intent.putExtra("cirkelsessieId", String.valueOf(list2.get(position).getCirkelsessie().getId()));
-                    intent.putExtra("cirkelsessieTitle", String.valueOf(list2.get(position).getCirkelsessie().getNaam()));
+                    intent.putExtra("cirkelsessieId", "1");
+                    intent.putExtra("cirkelsessieTitle", "title");
                     startActivity(intent);
                     viewToChange = view;
                     tempPosition = position;
@@ -163,8 +170,6 @@ public class DeelnameLijstFragment extends Fragment {
         private ArrayList<DeelnameModel> modelsArrayList;
         HashMap<String, Integer> mIdMap = new HashMap<>();
 
-
-
         public DeelnameAdapter(Context context,int textViewResourceId, ArrayList<DeelnameModel> modelsArrayList) {
 
             super(context, textViewResourceId, modelsArrayList);
@@ -172,7 +177,6 @@ public class DeelnameLijstFragment extends Fragment {
             this.context = context;
             this.modelsArrayList = modelsArrayList;
         }
-
 
 
         @Override

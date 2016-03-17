@@ -12,6 +12,7 @@ import android.widget.Toast;
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.AuthAPI;
 import be.kdg.kandoe.kandoeandroid.pojo.RegisterDetails;
+import be.kdg.kandoe.kandoeandroid.pojo.request.RegistratieRequest;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -60,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
         AuthAPI authAPI = Authorization.authorize(this).create(AuthAPI.class);
-        Call<Void> call = authAPI.register(new RegisterDetails(username, password, email));
+        Call<Void> call = authAPI.register(new RegistratieRequest(username, password, password));
 
         call.enqueue(new Callback<Void>() {
             @Override

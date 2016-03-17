@@ -9,7 +9,7 @@ import retrofit.http.Path;
 
 public interface SubthemaAPI {
 
-    @GET("/api/gebruikers/subthemas")
-    Call<List<Subthema>> getSubThemas();
+    @GET("/api/gebruikers/{id}/subthemas")
+    Call<List<Subthema>> getSubThemas(@Path("id") String id);
 
 }

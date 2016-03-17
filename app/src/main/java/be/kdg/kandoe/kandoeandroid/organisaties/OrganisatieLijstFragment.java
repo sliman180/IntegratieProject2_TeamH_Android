@@ -4,10 +4,12 @@ package be.kdg.kandoe.kandoeandroid.organisaties;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +31,7 @@ import be.kdg.kandoe.kandoeandroid.api.OrganisatieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.OrganisatieModel;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
+import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
 import be.kdg.kandoe.kandoeandroid.pojo.Organisatie;
 import be.kdg.kandoe.kandoeandroid.subthema.SubthemaActivity;
 import retrofit.Call;
@@ -37,8 +42,6 @@ import retrofit.Retrofit;
 
 public class OrganisatieLijstFragment extends Fragment {
 
-
-    private String token;
 
     private Activity mActivity;
 
@@ -51,6 +54,8 @@ public class OrganisatieLijstFragment extends Fragment {
     private ArrayList<Organisatie> unchangedList;
 
     private ImageView mImageView;
+
+    private Gebruiker gebruiker;
 
 
     public OrganisatieLijstFragment() {
@@ -67,7 +72,9 @@ public class OrganisatieLijstFragment extends Fragment {
         if (getActivity() != null) {
             mActivity = getActivity();
             unchangedList = new ArrayList<>();
-            token = SharedPreferencesMethods.getFromSharedPreferences(mActivity, getString(R.string.token));
+            String json = SharedPreferencesMethods.getFromSharedPreferences(mActivity, mActivity.getString(R.string.gebruiker));
+            Gson gson = new Gson();
+            gebruiker = gson.fromJson(json, Gebruiker.class);
         }
         intent = new Intent(mActivity.getBaseContext(), OrganisatieActivity.class);
         getData();
@@ -95,7 +102,7 @@ public class OrganisatieLijstFragment extends Fragment {
         be.kdg.kandoe.kandoeandroid.api.OrganisatieAPI organisatieAPI =
                 Authorization.authorize(getActivity()).create(OrganisatieAPI.class);
 
-        Call<List<Organisatie>> call = organisatieAPI.getOrganisaties();
+        Call<List<Organisatie>> call = organisatieAPI.getOrganisaties(String.valueOf(gebruiker.getId()));
         call.enqueue(new Callback<List<Organisatie>>() {
             @Override
             public void onResponse(Response<List<Organisatie>> response, Retrofit retrofit) {

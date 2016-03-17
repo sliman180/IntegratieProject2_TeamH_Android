@@ -37,6 +37,7 @@ public class OrganisatieActivity extends AppCompatActivity {
     private String id;
     private Activity mActivity;
     private TextView textViewAantal;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,6 @@ public class OrganisatieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_organisatie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         if(toolbar != null){
             toolbar.setNavigationIcon(R.drawable.ic_chevron_left);
@@ -56,12 +56,11 @@ public class OrganisatieActivity extends AppCompatActivity {
                 }
             });
         }
-        textViewAantal = (TextView) findViewById(R.id.organisatie_activity_header);
 
-        Intent intent = getIntent();
+        textViewAantal = (TextView) findViewById(R.id.organisatie_activity_header);
+        intent = getIntent();
         id = intent.getStringExtra("organisatieId");
         setTitle(intent.getStringExtra("organisatieTitle"));
-
         getData();
     }
 
@@ -98,8 +97,8 @@ public class OrganisatieActivity extends AppCompatActivity {
         final ArrayList<Hoofdthema> list2 = new ArrayList<>();
 
         for (int i = 0; i < response.body().size(); ++i) {
-            HoofdthemaModel model = new HoofdthemaModel(String.valueOf(i+1),response.body().get(i).getNaam()
-                    ,response.body().get(i).getBeschrijving(),response.body().get(i).getOrganisatie().getNaam(),
+            HoofdthemaModel model = new HoofdthemaModel(String.valueOf(i + 1),response.body().get(i).getNaam()
+                    ,response.body().get(i).getBeschrijving(),"",
                     0);
             list.add(model);
             list2.add(response.body().get(i));
@@ -126,7 +125,7 @@ public class OrganisatieActivity extends AppCompatActivity {
             });
         }
 
-        String textAantal = "Hoofdthema's van : " + String.valueOf(response.body().get(0).getOrganisatie().getNaam());
+        String textAantal = "Hoofdthema's van : " + intent.getStringExtra("organisatieTitle");
         textViewAantal.setText(textAantal);
     }
 

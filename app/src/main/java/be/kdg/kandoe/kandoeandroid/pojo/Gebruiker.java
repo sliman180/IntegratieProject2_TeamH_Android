@@ -3,6 +3,8 @@ package be.kdg.kandoe.kandoeandroid.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.kdg.kandoe.kandoeandroid.pojo.response.Kaart;
+
 public class Gebruiker {
     private int id;
     private String gebruikersnaam;
@@ -77,7 +79,7 @@ public class Gebruiker {
 //    public void setBerichten(List<Bericht> berichten) {
 //        this.berichten = berichten;
 //    }
-//
+
 //    public List<Rol> getRollen() {
 //        return rollen;
 //    }

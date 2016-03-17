@@ -33,6 +33,7 @@ public class HoofdthemaActivity extends AppCompatActivity {
     private String id;
     private Activity mActivity;
     private TextView textViewAantal;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class HoofdthemaActivity extends AppCompatActivity {
         }
         textViewAantal = (TextView) findViewById(R.id.hoofdthema_activity_header);
 
-        Intent intent = getIntent();
+        intent = getIntent();
         id = intent.getStringExtra("hoofdthemaId");
         setTitle(intent.getStringExtra("hoofdthemaTitle"));
 
@@ -91,9 +92,9 @@ public class HoofdthemaActivity extends AppCompatActivity {
         final ArrayList<Subthema> list2 = new ArrayList<>();
 
         for (int i = 0; i < response.body().size(); ++i) {
-            SubthemaModel model = new SubthemaModel(String.valueOf(i+1),response.body().get(i).getNaam()
-                    ,response.body().get(i).getBeschrijving(),response.body().get(i).getHoofdthema().getOrganisatie().getNaam(),
-                    response.body().get(i).getHoofdthema().getBeschrijving());
+            SubthemaModel model = new SubthemaModel(String.valueOf(i + 1),response.body().get(i).getNaam()
+                    ,response.body().get(i).getBeschrijving(),"",
+                    "");
             list.add(model);
             list2.add(response.body().get(i));
         }
@@ -119,7 +120,7 @@ public class HoofdthemaActivity extends AppCompatActivity {
             });
         }
 
-        String textAantal = "Subthema's van : " + String.valueOf(response.body().get(0).getHoofdthema().getNaam());
+        String textAantal = "Subthema's van : " + intent.getStringExtra("hoofdthemaTitle");
         textViewAantal.setText(textAantal);
     }
 

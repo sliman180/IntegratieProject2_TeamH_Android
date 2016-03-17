@@ -3,6 +3,8 @@ package be.kdg.kandoe.kandoeandroid.pojo;
 
 import java.util.Date;
 
+import be.kdg.kandoe.kandoeandroid.pojo.response.Kaart;
+
 public class Commentaar {
     private int id;
     private String tekst;

@@ -1,6 +1,8 @@
 package be.kdg.kandoe.kandoeandroid.pojo;
 
 
+import be.kdg.kandoe.kandoeandroid.pojo.response.Kaart;
+
 public class Spelkaart {
 
     private int id;

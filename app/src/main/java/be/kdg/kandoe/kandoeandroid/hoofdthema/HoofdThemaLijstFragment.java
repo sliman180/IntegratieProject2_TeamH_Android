@@ -4,10 +4,12 @@ package be.kdg.kandoe.kandoeandroid.hoofdthema;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +30,7 @@ import be.kdg.kandoe.kandoeandroid.api.HoofdthemaAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.HoofdthemaModel;
+import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
 import be.kdg.kandoe.kandoeandroid.pojo.Hoofdthema;
 import retrofit.Call;
 import retrofit.Callback;
@@ -37,14 +42,13 @@ public class HoofdThemaLijstFragment extends Fragment {
 
 
 
-    private String token;
-
     private Activity mActivity;
     private Intent intent;
 
     private TextView textViewAantal;
     private ArrayList<Hoofdthema> unchangedList;
     private View v;
+    private Gebruiker gebruiker;
 
     public HoofdThemaLijstFragment() {
         // Required empty public constructor
@@ -60,7 +64,9 @@ public class HoofdThemaLijstFragment extends Fragment {
         if (getActivity() != null) {
             mActivity = getActivity();
             unchangedList = new ArrayList<>();
-            token = SharedPreferencesMethods.getFromSharedPreferences(mActivity, getString(R.string.token));
+            String json = SharedPreferencesMethods.getFromSharedPreferences(mActivity, mActivity.getString(R.string.gebruiker));
+            Gson gson = new Gson();
+            gebruiker = gson.fromJson(json, Gebruiker.class);
         }
         intent = new Intent(mActivity.getBaseContext(), HoofdthemaActivity.class);
         getData();
@@ -89,7 +95,7 @@ public class HoofdThemaLijstFragment extends Fragment {
         HoofdthemaAPI hoofdthemaAPI =
                 Authorization.authorize(getActivity()).create(HoofdthemaAPI.class);
 
-        Call<List<Hoofdthema>> call = hoofdthemaAPI.getHoofdthemas();
+        Call<List<Hoofdthema>> call = hoofdthemaAPI.getHoofdthemas(String.valueOf(gebruiker.getId()));
         call.enqueue(new Callback<List<Hoofdthema>>() {
             @Override
             public void onResponse(Response<List<Hoofdthema>> response, Retrofit retrofit) {
@@ -118,7 +124,7 @@ public class HoofdThemaLijstFragment extends Fragment {
             HoofdthemaModel model = new HoofdthemaModel(String.valueOf(i+1)
                     ,response.body().get(i).getNaam()
                     ,response.body().get(i).getBeschrijving()
-                    ,response.body().get(i).getOrganisatie().getBeschrijving()
+                    ,response.body().get(i).getOrganisatie().getNaam()
                     ,R.drawable.ic_style);
             list.add(model);
             list2.add(response.body().get(i));

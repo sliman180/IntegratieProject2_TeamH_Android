@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +28,7 @@ import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.api.*;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.SubthemaModel;
+import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
 import be.kdg.kandoe.kandoeandroid.pojo.Subthema;
 import retrofit.Call;
 import retrofit.Callback;
@@ -48,6 +53,8 @@ public class SubthemaLijstFragment extends Fragment {
 
     private View v;
 
+    private Gebruiker gebruiker;
+
     public SubthemaLijstFragment() {
         // Required empty public constructor
     }
@@ -67,7 +74,9 @@ public class SubthemaLijstFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getActivity() != null) {
             mActivity = getActivity();
-            token = SharedPreferencesMethods.getFromSharedPreferences(mActivity, getString(R.string.token));
+            String json = SharedPreferencesMethods.getFromSharedPreferences(mActivity, mActivity.getString(R.string.gebruiker));
+            Gson gson = new Gson();
+            gebruiker = gson.fromJson(json, Gebruiker.class);
         }
         intent = new Intent(mActivity.getBaseContext(), SubthemaActivity.class);
         getData();
@@ -96,7 +105,7 @@ public class SubthemaLijstFragment extends Fragment {
        SubthemaAPI subthemaAPI =
                 Authorization.authorize(getActivity()).create(SubthemaAPI.class);
 
-        Call<List<Subthema>> call = subthemaAPI.getSubThemas();
+        Call<List<Subthema>> call = subthemaAPI.getSubThemas(String.valueOf(gebruiker.getId()));
         call.enqueue(new Callback<List<Subthema>>() {
             @Override
             public void onResponse(Response<List<Subthema>> response, Retrofit retrofit) {
@@ -123,7 +132,7 @@ public class SubthemaLijstFragment extends Fragment {
         for (int i = 0; i < response.body().size(); ++i) {
             SubthemaModel model = new SubthemaModel(String.valueOf(i+1),response.body().get(i).getNaam()
                     ,response.body().get(i).getBeschrijving(),response.body().get(i).getHoofdthema().getOrganisatie().getNaam(),
-                    response.body().get(i).getHoofdthema().getBeschrijving());
+                    response.body().get(i).getHoofdthema().getNaam());
 //            SubthemaModel model = new SubthemaModel();
             list.add(model);
             list2.add(response.body().get(i));

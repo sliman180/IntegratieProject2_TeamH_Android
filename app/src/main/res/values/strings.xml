@@ -25,6 +25,7 @@
     <string name="title_activity_subthema">SubthemaActivity</string>
     <string name="subthema">Subthema</string>
     <string name="token">token</string>
+    <string name="gebruiker">gebruiker</string>
     <string name="ok">OK</string>
     <string name="cancel">Annuleer</string>
     <string name="kandoe_circle">Kandoe Circle</string>

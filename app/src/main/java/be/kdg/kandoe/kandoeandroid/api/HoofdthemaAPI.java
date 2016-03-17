@@ -10,8 +10,8 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 
 public interface HoofdthemaAPI {
-    @GET("/api/gebruikers/hoofdthemas")
-    Call<List<Hoofdthema>> getHoofdthemas();
+    @GET("/api/gebruikers/{id}/hoofdthemas")
+    Call<List<Hoofdthema>> getHoofdthemas(@Path("id") String id);
 
     @GET("/api/hoofdthemas/{id}/subthemas")
     Call<List<Subthema>> getSubthemasFromHoofdthema(@Path("id") String id);

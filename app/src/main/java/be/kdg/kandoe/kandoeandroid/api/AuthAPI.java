@@ -3,6 +3,7 @@ package be.kdg.kandoe.kandoeandroid.api;
 import be.kdg.kandoe.kandoeandroid.pojo.Credentials;
 import be.kdg.kandoe.kandoeandroid.pojo.RegisterDetails;
 import be.kdg.kandoe.kandoeandroid.pojo.Token;
+import be.kdg.kandoe.kandoeandroid.pojo.request.RegistratieRequest;
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.POST;
@@ -12,5 +13,5 @@ public interface AuthAPI {
     Call<Token> login(@Body Credentials credentials);
 
     @POST("auth/register")
-    Call<Void> register(@Body RegisterDetails registerDetails);
+    Call<Void> register(@Body RegistratieRequest registratieRequest);
 }
