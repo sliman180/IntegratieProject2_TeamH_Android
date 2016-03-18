@@ -1,11 +1,10 @@
 package be.kdg.kandoe.kandoeandroid.pojo;
 
-import java.util.Date;
 
 public class Bericht {
     private int id;
     private String tekst;
-    private Date datum;
+    private long datum;
     private Chat chat;
     private Gebruiker gebruiker;
 
@@ -25,11 +24,11 @@ public class Bericht {
         this.tekst = tekst;
     }
 
-    public Date getDatum() {
+    public long getDatum() {
         return datum;
     }
 
-    public void setDatum(Date datum) {
+    public void setDatum(long datum) {
         this.datum = datum;
     }
 

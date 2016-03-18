@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:orientation="vertical"
+    tools:context="be.kdg.kandoe.kandoeandroid.cirkelsessie.ChatFragment">
+
+        <ListView
+            android:id="@+id/listview_chat"
+            android:layout_width="wrap_content"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="20.0sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_above="@+id/llSend"
+            android:layout_height="match_parent"
+            android:transcriptMode="alwaysScroll"
+            android:stackFromBottom="true"/>
+
+        <RelativeLayout
+            android:id="@+id/llSend"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:layout_height="wrap_content" >
+            <EditText
+                android:id="@+id/etChat"
+                android:layout_toStartOf="@+id/btSend"
+                android:layout_alignBottom="@+id/btSend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:hint="@string/chat_bericht"
+                android:inputType="textShortMessage"
+                android:imeOptions="actionSend"
+                />
+
+            <Button
+                android:id="@+id/btSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|end"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:theme="@style/MyButton"
+                android:layout_alignParentEnd="true"
+                android:text="@string/chat_verzenden"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF">
+            </Button>
+
+        </RelativeLayout>
+
+</RelativeLayout>

@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.Gson;
@@ -71,14 +72,38 @@ public class CirkelsessieActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
-
-        mActivity = this;
-        isDeelnemer = false;
-        cirkelsessieId = extras.getString("cirkelsessieId");
-        setTitle(extras.getString("cirkelsessieTitle"));
         setContentView(R.layout.activity_cirkelsessie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mActivity = this;
+        isDeelnemer = false;
+
+        TabHost host = (TabHost)findViewById(R.id.tabHost);
+        if(host !=null)
+            host.setup();
+        //Tab 1
+        TabHost.TabSpec spec = null;
+        if (host != null) {
+            spec = host.newTabSpec("Deelnemers");
+            spec.setContent(R.id.tab1);
+            spec.setIndicator("Deelnemers");
+            host.addTab(spec);
+            //Tab 2
+            spec = host.newTabSpec("Sessie");
+            spec.setContent(R.id.tab2);
+            spec.setIndicator("Sessie");
+            host.addTab(spec);
+
+            //Tab 3
+            spec = host.newTabSpec("Chat");
+            spec.setContent(R.id.tab3);
+            spec.setIndicator("Chat");
+            host.addTab(spec);
+        }
+
+        cirkelsessieId = extras.getString("cirkelsessieId");
+        setTitle(extras.getString("cirkelsessieTitle"));
+
 
         if(toolbar != null){
             toolbar.setNavigationIcon(R.drawable.ic_chevron_left);
@@ -108,6 +133,10 @@ public class CirkelsessieActivity extends AppCompatActivity {
         gebruiker = gson.fromJson(json, Gebruiker.class);
 
         checkIsDeelnemer();
+    }
+
+    public Gebruiker getGebruiker() {
+        return gebruiker;
     }
 
     public void checkIsDeelnemer(){

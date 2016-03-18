@@ -47,6 +47,8 @@ public class CirkelSessieLijstFragment extends Fragment {
     private Button buttonGesloten;
     private Button buttonEnd;
     private CirkelsessieAdapter adapter = null;
+    private ArrayList<CirkelsessieModel> list = new ArrayList<>();
+    private ArrayList<Cirkelsessie> list2 = new ArrayList<>();
 
     @Override
     public void onAttach(Context context) {
@@ -89,6 +91,7 @@ public class CirkelSessieLijstFragment extends Fragment {
         if (getActivity() != null)
             mActivity = getActivity();
         intent = new Intent(mActivity.getBaseContext(), CirkelsessieActivity.class);
+        createAdapter();
         getData();
 
     }
@@ -103,14 +106,14 @@ public class CirkelSessieLijstFragment extends Fragment {
                 call.enqueue(new Callback<List<Cirkelsessie>>() {
                     @Override
                     public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
-                        createList(response);
-                        adapter.notifyDataSetChanged();
+                        addData(response);
                         buttonOpen.setBackgroundResource(R.color.colorAccent);
                         buttonGesloten.setBackgroundResource(R.color.colorPrimary);
                         buttonEnd.setBackgroundResource(R.color.colorPrimary);
 
 
                     }
+
                     @Override
                     public void onFailure(Throwable t) {
                         Toast.makeText(mActivity.getBaseContext(), "failure",
@@ -129,13 +132,10 @@ public class CirkelSessieLijstFragment extends Fragment {
                 call.enqueue(new Callback<List<Cirkelsessie>>() {
                     @Override
                     public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
-                        createList(response);
-                        adapter.notifyDataSetChanged();
+                        addData(response);
                         buttonGesloten.setBackgroundResource(R.color.colorAccent);
                         buttonOpen.setBackgroundResource(R.color.colorPrimary);
                         buttonEnd.setBackgroundResource(R.color.colorPrimary);
-
-
                     }
                     @Override
                     public void onFailure(Throwable t) {
@@ -155,12 +155,12 @@ public class CirkelSessieLijstFragment extends Fragment {
                 call.enqueue(new Callback<List<Cirkelsessie>>() {
                     @Override
                     public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
-                        createList(response);
-                        adapter.notifyDataSetChanged();
+                        addData(response);
                         buttonEnd.setBackgroundResource(R.color.colorAccent);
                         buttonOpen.setBackgroundResource(R.color.colorPrimary);
                         buttonGesloten.setBackgroundResource(R.color.colorPrimary);
                     }
+
                     @Override
                     public void onFailure(Throwable t) {
                         Toast.makeText(mActivity.getBaseContext(), "failure",
@@ -178,9 +178,10 @@ public class CirkelSessieLijstFragment extends Fragment {
         call.enqueue(new Callback<List<Cirkelsessie>>() {
             @Override
             public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
-                createList(response);
+                addData(response);
                 buttonOpen.setBackgroundResource(R.color.colorAccent);
             }
+
             @Override
             public void onFailure(Throwable t) {
                 Toast.makeText(mActivity.getBaseContext(), "failure",
@@ -189,14 +190,9 @@ public class CirkelSessieLijstFragment extends Fragment {
         });
     }
 
-    public void createList(Response<List<Cirkelsessie>> response){
-        ListView listview = null;
-        if (getView() != null)
-            listview = (ListView) getView().findViewById(R.id.listview);
-
-        final ArrayList<CirkelsessieModel> list = new ArrayList<>();
-        final ArrayList<Cirkelsessie> list2 = new ArrayList<>();
-
+    private void addData(Response<List<Cirkelsessie>> response){
+        list.clear();
+        list2.clear();
         for (int i = 0; i < response.body().size(); ++i) {
             CirkelsessieModel cirkelsessieModel = new CirkelsessieModel(R.drawable.ic_arrow_right
                     ,response.body().get(i).getNaam(),response.body().get(i).getGebruiker().getGebruikersnaam()
@@ -205,9 +201,16 @@ public class CirkelSessieLijstFragment extends Fragment {
             list.add(cirkelsessieModel);
             list2.add(response.body().get(i));
         }
+        if(adapter !=null){
+            adapter.notifyDataSetChanged();
+        }
+    }
+    public void createAdapter(){
+        ListView listview = null;
+        if (getView() != null)
+            listview = (ListView) getView().findViewById(R.id.listview);
 
-
-        if (mActivity != null) {
+        if (mActivity != null && adapter ==null) {
             adapter = new CirkelsessieAdapter(mActivity.getBaseContext(),
                     R.layout.item_list_cirkelsessie, list);
         }

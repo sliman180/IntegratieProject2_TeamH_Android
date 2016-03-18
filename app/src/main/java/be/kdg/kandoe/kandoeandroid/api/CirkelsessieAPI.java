@@ -3,7 +3,9 @@ package be.kdg.kandoe.kandoeandroid.api;
 
 import java.util.List;
 
+import be.kdg.kandoe.kandoeandroid.pojo.Bericht;
 import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
+import be.kdg.kandoe.kandoeandroid.pojo.request.BerichtRequest;
 import be.kdg.kandoe.kandoeandroid.pojo.request.KaartRequest;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Kaart;
 import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
@@ -15,8 +17,6 @@ import retrofit.http.Path;
 
 public interface CirkelsessieAPI {
 
-    @GET("/api/cirkelsessies")
-    Call<List<Cirkelsessie>> getCirkelsessies();
 
     @GET("/api/cirkelsessies/gesloten")
     Call<List<Cirkelsessie>> getCirkelsessiesGesloten();
@@ -35,4 +35,10 @@ public interface CirkelsessieAPI {
 
     @POST("/api/cirkelsessies/{id}/spelkaarten")
     Call<Kaart> createSpelKaart(@Path("id") String id, @Body KaartRequest kaart);
+
+    @POST("/api/cirkelsessies/{id}/berichten")
+    Call<Void> addBericht(@Path("id") String id, @Body BerichtRequest bericht);
+
+    @GET("/api/cirkelsessies/{id}/berichten")
+    Call<List<Bericht>> getBerichten(@Path("id") String id);
 }

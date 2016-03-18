@@ -53,5 +53,8 @@
     <string name="help_deelnemen">Deelnemen</string>
     <string name="help_cirkelsessies">Cirkelsessies</string>
     <string name="help_kaarten">Kaarten</string>
+    <string name="title_activity_tab">TabActivity</string>
+    <string name="chat_verzenden">Verzenden</string>
+    <string name="chat_bericht">Schrijf uw bericht</string>
 
 </resources>
