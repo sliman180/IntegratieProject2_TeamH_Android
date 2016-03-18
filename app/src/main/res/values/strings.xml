@@ -56,5 +56,8 @@
     <string name="title_activity_tab">TabActivity</string>
     <string name="chat_verzenden">Verzenden</string>
     <string name="chat_bericht">Schrijf uw bericht</string>
-
+    <string name="sourceURL">http://teamh-spring.herokuapp.com</string>
+    <string name="session">Sessie</string>
+    <string name="chat">Chat</string>
+    <string name="participants">Deelnemers</string>
 </resources>

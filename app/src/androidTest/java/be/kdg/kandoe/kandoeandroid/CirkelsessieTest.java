@@ -2,30 +2,21 @@ package be.kdg.kandoe.kandoeandroid;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoActivityResumedException;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
 import android.support.test.rule.ActivityTestRule;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
-import android.view.View;
-import android.widget.ExpandableListAdapter;
-import android.widget.TextView;
 
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Random;
 
-import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
-
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -82,12 +73,15 @@ public class CirkelsessieTest {
                 .atPosition(0)
                 .perform(click());
 
-        onView(withId(R.id.buttonDeelname))
-                .perform(click());
-        onView(withText(R.string.yes))
-                .perform(click());
+//        onView(withId(R.id.buttonDeelname))
+//                .perform(click());
+//        onView(withText(R.string.yes))
+//                .perform(click());
 
         sleep(SHORT_WAIT_TIME);
+
+        onView(withText("Sessie"))
+                .perform(click());
 
         onView(withId(R.id.buttonAddKaart))
                 .perform(click());
@@ -108,19 +102,40 @@ public class CirkelsessieTest {
 
 //    @Test
 //    public void moveCard() {
+//        String typedText = generateString(10);
+//
 //        onData(anything())
 //                .inAdapterView(withId(R.id.listview))
 //                .atPosition(0)
 //                .perform(click());
 //
+//        sleep(SHORT_WAIT_TIME);
+//
+//        onView(withId(R.id.buttonAddKaart))
+//                .perform(click());
+//
+//        sleep(SHORT_WAIT_TIME);
+//
+//        onView(withId(R.id.dialogtext))
+//                .perform(typeText(typedText));
+//
+//        onView(withId(R.id.dialogButtonOK))
+//                .perform(click());
+//
+//        onView(withText(typedText))
+//                .perform(click());
+//
 //        onData(anything())
 //                .inAdapterView(withId(R.id.card_list))
 //                .atPosition(0)
-//                .perform(getText(isDisplayed()));
+//                .check(assertThat("", ));
 //
-//
+//        onData(withItemContent(""))
+//                .inAdapterView(withId(R.id.card_list))
+//                .atPosition(0)
+//                .check(matches());
 //    }
-//
+
 //    String getText(final Matcher<View> matcher) {
 //        final String[] stringHolder = { null };
 //        onView(matcher).perform(new ViewAction() {

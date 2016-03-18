@@ -41,4 +41,20 @@ public class Spelkaart {
     public void setPositie(int positie) {
         this.positie = positie;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Spelkaart spelkaart = (Spelkaart) o;
+
+        return kaart.equals(spelkaart.kaart);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return kaart.hashCode();
+    }
 }

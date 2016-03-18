@@ -60,4 +60,20 @@ public class Kaart {
     public void setCommentsToelaatbaar(boolean commentsToelaatbaar) {
         this.commentsToelaatbaar = commentsToelaatbaar;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Kaart kaart = (Kaart) o;
+
+        return tekst.equals(kaart.tekst);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return tekst.hashCode();
+    }
 }
