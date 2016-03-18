@@ -85,6 +85,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle("Aanmelden");
         intent = new Intent(this, MainActivity.class);
         activity = this;
         // Set up the login form.
@@ -104,12 +105,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         Button mSignInButton = (Button) findViewById(R.id.sign_in_button);
-        mSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        if (mSignInButton != null) {
+            mSignInButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    attemptLogin();
+                }
+            });
+        }
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);

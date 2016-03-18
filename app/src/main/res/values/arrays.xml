@@ -2,7 +2,6 @@
 <resources>
     <string-array name="menu_item_array" >
         <item>Divider</item>
-        <item>Home</item>
         <item>Mijn profiel</item>
         <item>Divider</item>
         <item>Cirkelsessies</item>
@@ -12,6 +11,6 @@
         <item>Mijn hoofdthemas</item>
         <item>Mijn subthemas</item>
         <item>Divider</item>
-        <item>Instellingen</item>
+        <item>Help</item>
     </string-array>
 </resources>

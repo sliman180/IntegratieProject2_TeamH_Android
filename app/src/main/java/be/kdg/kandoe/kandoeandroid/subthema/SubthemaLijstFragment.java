@@ -44,8 +44,6 @@ import retrofit.Retrofit;
  */
 public class SubthemaLijstFragment extends Fragment {
 
-    private String token;
-
     private Activity mActivity;
     private Intent intent;
 
@@ -59,12 +57,6 @@ public class SubthemaLijstFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment SubthemaLijstFragment.
-     */
     public static SubthemaLijstFragment newInstance() {
         return new SubthemaLijstFragment();
     }

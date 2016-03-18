@@ -18,6 +18,15 @@ public interface CirkelsessieAPI {
     @GET("/api/cirkelsessies")
     Call<List<Cirkelsessie>> getCirkelsessies();
 
+    @GET("/api/cirkelsessies/gesloten")
+    Call<List<Cirkelsessie>> getCirkelsessiesGesloten();
+
+    @GET("/api/cirkelsessies/gepland")
+    Call<List<Cirkelsessie>> getCirkelsessiesOpen();
+
+    @GET("/api/cirkelsessies/beindigd")
+    Call<List<Cirkelsessie>> getCirkelsessiesEnded();
+
     @GET("/api/cirkelsessies/{id}")
     Call<Cirkelsessie> getCirkelsessie(@Path("id") String id);
 

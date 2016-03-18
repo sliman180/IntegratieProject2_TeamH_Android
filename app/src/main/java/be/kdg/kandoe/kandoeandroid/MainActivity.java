@@ -4,16 +4,13 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -26,20 +23,16 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import java.util.LinkedHashMap;
-import be.kdg.kandoe.kandoeandroid.api.GebruikerAPI;
-import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+
 import be.kdg.kandoe.kandoeandroid.cirkelsessie.CirkelSessieLijstFragment;
 import be.kdg.kandoe.kandoeandroid.deelnames.DeelnameLijstFragment;
+import be.kdg.kandoe.kandoeandroid.help.HelpFragment;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.hoofdthema.HoofdThemaLijstFragment;
 import be.kdg.kandoe.kandoeandroid.organisaties.OrganisatieLijstFragment;
 import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
 import be.kdg.kandoe.kandoeandroid.profiel.ProfielFragment;
 import be.kdg.kandoe.kandoeandroid.subthema.SubthemaLijstFragment;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_OUT_METHOD = "log_out";
@@ -62,14 +55,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //if you want to update the items at a later time it is recommended to keep it in a variable
-        SecondaryDrawerItem item1 = new SecondaryDrawerItem().withName("Home").withIcon(GoogleMaterial.Icon.gmd_home);
         SecondaryDrawerItem profiel = new SecondaryDrawerItem().withName("Mijn profiel").withIcon(GoogleMaterial.Icon.gmd_account_circle);
         SecondaryDrawerItem subthemas = new SecondaryDrawerItem().withName("Mijn subthema's").withIcon(GoogleMaterial.Icon.gmd_style);
         SecondaryDrawerItem cirkelsessies = new SecondaryDrawerItem().withName("Cirkelsessies").withIcon(MaterialDesignIconic.Icon.gmi_dot_circle_alt);
         SecondaryDrawerItem mijnCirkelsessies = new SecondaryDrawerItem().withName("Mijn hoofdthema's").withIcon(GoogleMaterial.Icon.gmd_turned_in);
         SecondaryDrawerItem mijnDeelnames = new SecondaryDrawerItem().withName("Mijn deelnames").withIcon(GoogleMaterial.Icon.gmd_playlist_add_check);
         SecondaryDrawerItem mijnOrganisaties = new SecondaryDrawerItem().withName("Mijn organisaties").withIcon(GoogleMaterial.Icon.gmd_account_balance);
-        SecondaryDrawerItem instellingen = new SecondaryDrawerItem().withName("Instellingen").withIcon(GoogleMaterial.Icon.gmd_settings);
         SecondaryDrawerItem help = new SecondaryDrawerItem().withName("Help").withIcon(GoogleMaterial.Icon.gmd_help);
 
         // Create the AccountHeader
@@ -87,12 +78,12 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .build();
         //create the drawer and remember the `Drawer` result object
+        assert toolbar != null;
         result = new DrawerBuilder()
                 .withActivity(this)
                 .withAccountHeader(headerResult)
                 .withToolbar(toolbar)
                 .addDrawerItems(
-                        item1,
                         profiel,
                         new DividerDrawerItem(),
                         cirkelsessies,
@@ -102,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
                         mijnCirkelsessies,
                         subthemas,
                         new DividerDrawerItem(),
-                        instellingen,
                         help
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -118,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         result.addStickyFooterItem(new SecondaryDrawerItem().withName("Afmelden").withIcon(GoogleMaterial.Icon.gmd_power_settings_new));
         menuMap = new LinkedHashMap<>();
-        menuMap.put("Home", null);
         menuMap.put("Mijn profiel", ProfielFragment.newInstance());
         menuMap.put("Divider", null);
         menuMap.put("Cirkelsessies", new CirkelSessieLijstFragment());
@@ -128,13 +117,13 @@ public class MainActivity extends AppCompatActivity {
         menuMap.put("Mijn hoofdthemas", HoofdThemaLijstFragment.newInstance());
         menuMap.put("Mijn subthemas", SubthemaLijstFragment.newInstance());
         menuMap.put("Divider", null);
-        menuMap.put("Instellingen",null);
+        menuMap.put("Help", HelpFragment.newInstance());
         menuMap.put("Afmelden", LOG_OUT_METHOD);
 
         // On start the first screen should be open
         getFragmentManager().beginTransaction().replace(R.id.content_frame,
-                (Fragment) menuMap.get(mMenuItems[4])).commit();
-        setTitle(mMenuItems[4]);
+                (Fragment) menuMap.get(mMenuItems[3])).commit();
+        setTitle(mMenuItems[3]);
         result.setSelection(cirkelsessies);
     }
 

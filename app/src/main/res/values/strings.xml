@@ -49,5 +49,9 @@
     <string name="title_activity_organisatie">OrganisatieActivity</string>
     <string name="hoofdthema_no_subthemas">Dit hoofdthema heeft geen subthema\'s</string>
     <string name="organisatie_no_hoofdthema">Dit organisatie heeft geen hoofdthema\'s</string>
+    <string name="hoe_spelen">Hoe speel je het spel?</string>
+    <string name="help_deelnemen">Deelnemen</string>
+    <string name="help_cirkelsessies">Cirkelsessies</string>
+    <string name="help_kaarten">Kaarten</string>
 
 </resources>

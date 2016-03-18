@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,6 +15,8 @@
         android:orientation="vertical"
         >
 
+
+
         <ProgressBar
             android:id="@+id/pbHeaderProgress"
             style="?android:attr/progressBarStyleLarge"
@@ -24,6 +25,30 @@
         </ProgressBar>
     </LinearLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OPEN"
+        android:id="@+id/buttonOpen"
+        android:textColor="#FFFFFF"
+        />
+    <Button
+        android:layout_toEndOf="@id/buttonOpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GESLOTEN"
+        android:textColor="#FFFFFF"
+        android:id="@+id/buttonGesloten"
+        />
+    <Button
+        android:layout_toEndOf="@id/buttonGesloten"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="beëindigd"
+        android:textColor="#FFFFFF"
+        android:id="@+id/buttonEnd"
+        />
+
     <TextView
         android:id="@+id/cirkelsessie_header"
         android:layout_width="match_parent"
@@ -31,8 +56,8 @@
         style="?android:listSeparatorTextViewStyle"
         android:text="@string/aantal"
         android:layout_marginBottom="15dp"
+        android:layout_below="@id/buttonOpen"
         />
-
 
     <ListView
         android:id="@+id/listview"

@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="be.kdg.kandoe.kandoeandroid.help.HelpFragment"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:background="@color/md_grey_300">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/help_spelen_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:listSeparatorTextViewStyle"
+            android:text="@string/hoe_spelen"
+            android:layout_marginBottom="15dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/help_deelnemen_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:listSeparatorTextViewStyle"
+            android:text="@string/help_deelnemen"
+            android:layout_marginBottom="15dp"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/help_cirkelsessies_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:listSeparatorTextViewStyle"
+            android:text="@string/help_cirkelsessies"
+            android:layout_marginBottom="15dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/help_kaart_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:listSeparatorTextViewStyle"
+            android:text="@string/help_kaarten"
+            android:layout_marginBottom="15dp"
+            />
+
+    </LinearLayout>
+</LinearLayout>

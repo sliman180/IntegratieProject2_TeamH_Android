@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="75dp"
     android:background="#FFFFFF"
     >
 
@@ -32,6 +32,20 @@
             android:layout_toEndOf="@+id/item_counter"
             android:layout_alignBaseline="@+id/item_counter"
             android:textSize="14sp"
+            android:text="New Text"
+            android:textStyle="bold"
+            />
+
+        <!-- organisator -->
+        <TextView
+            android:id="@+id/item_organisator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_title"
+            android:layout_toEndOf="@+id/item_counter"
+            android:textSize="14sp"
+            android:layout_marginTop="15dp"
+            android:text="New Text"
             android:textStyle="bold"
             />
 
@@ -47,6 +61,7 @@
             android:gravity="center"
             android:textSize="12sp"
             android:textStyle="bold"
+
             />
 
         <View

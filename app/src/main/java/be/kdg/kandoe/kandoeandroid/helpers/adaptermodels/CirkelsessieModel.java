@@ -1,22 +1,24 @@
 package be.kdg.kandoe.kandoeandroid.helpers.adaptermodels;
 
 
-public class Model {
+public class CirkelsessieModel {
 
     private int icon;
     private String title;
     private String counter;
+    private String organisator;
 
     private boolean isGroupHeader = false;
 
-    public Model(String title) {
-        this(-1,title,null);
+    public CirkelsessieModel(String title,String organisator) {
+        this(-1,title,organisator,null);
         isGroupHeader = false;
     }
-    public Model(int icon, String title, String counter) {
+    public CirkelsessieModel(int icon, String title,String organisator, String counter) {
         super();
         this.icon = icon;
         this.title = title;
+        this.organisator = organisator;
         this.counter = counter;
     }
 
@@ -50,5 +52,13 @@ public class Model {
 
     public void setCounter(String counter) {
         this.counter = counter;
+    }
+
+    public String getOrganisator() {
+        return organisator;
+    }
+
+    public void setOrganisator(String organisator) {
+        this.organisator = organisator;
     }
 }

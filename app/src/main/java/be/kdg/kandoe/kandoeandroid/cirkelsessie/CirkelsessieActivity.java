@@ -53,10 +53,8 @@ import retrofit.Retrofit;
 public class CirkelsessieActivity extends AppCompatActivity {
 
     private CirkelsessieListAdapter cirkelsessieListAdapter;
-
     private String cirkelsessieId;
     private int maxAantalCirkels;
-
     private Activity mActivity;
     private ExpandableListView elv;
     private CirkelsessieFragment fragment;
@@ -378,7 +376,6 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = infalInflater.inflate(R.layout.cirkel_header_list, viewGroup ,false);
                 view.setBackgroundColor(Color.WHITE);
-
             }
 
                 LinearLayout lL = (LinearLayout) view.findViewById(R.id.header_linear);
@@ -413,7 +410,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
             txtListChild.setText(childText);
             txtListChild.setTextColor(getResources().getColor(R.color.colorPrimary));
-            txtListChild.setBackground(getResources().getDrawable(R.drawable.back));
+            txtListChild.setBackgroundResource(R.drawable.back);
 
             final View finalView = view;
             txtListChild.setOnClickListener(new View.OnClickListener() {

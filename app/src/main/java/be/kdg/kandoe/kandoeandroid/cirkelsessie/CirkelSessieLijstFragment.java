@@ -6,12 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -19,13 +19,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
-import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.Model;
+import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.CirkelsessieModel;
 import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import retrofit.Call;
 import retrofit.Callback;
@@ -41,7 +43,10 @@ public class CirkelSessieLijstFragment extends Fragment {
     private int tempPosition = 0;
     private LinearLayout linlaHeaderProgress;
     private TextView textViewAantal;
-
+    private Button buttonOpen;
+    private Button buttonGesloten;
+    private Button buttonEnd;
+    private CirkelsessieAdapter adapter = null;
 
     @Override
     public void onAttach(Context context) {
@@ -55,14 +60,25 @@ public class CirkelSessieLijstFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_cirkelsessie_lijst, null);
         super.onCreate(savedInstanceState);
+        View v = inflater.inflate(R.layout.fragment_cirkelsessie_lijst, null);
         listView = (ListView) v.findViewById(R.id.listview);
         textViewAantal = (TextView) v.findViewById(R.id.cirkelsessie_header);
         listView.setSelector(R.drawable.my_selector);
         listView.setVisibility(View.GONE);
         linlaHeaderProgress = (LinearLayout) v.findViewById(R.id.linlaHeaderProgress);
         linlaHeaderProgress.setVisibility(View.VISIBLE);
+
+        buttonOpen = (Button) v.findViewById(R.id.buttonOpen);
+        buttonGesloten = (Button) v.findViewById(R.id.buttonGesloten);
+        buttonEnd = (Button) v.findViewById(R.id.buttonEnd);
+
+        buttonEnd.setBackgroundResource(R.color.colorPrimary);
+        buttonGesloten.setBackgroundResource(R.color.colorPrimary);
+        buttonOpen.setBackgroundResource(R.color.colorPrimary);
+
+
+        buttonInit();
 
         return v;
     }
@@ -73,31 +89,103 @@ public class CirkelSessieLijstFragment extends Fragment {
         if (getActivity() != null)
             mActivity = getActivity();
         intent = new Intent(mActivity.getBaseContext(), CirkelsessieActivity.class);
-
         getData();
+
+    }
+
+    public void buttonInit(){
+        buttonOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CirkelsessieAPI cirkelsessieAPI =
+                        Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
+                Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesOpen();
+                call.enqueue(new Callback<List<Cirkelsessie>>() {
+                    @Override
+                    public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
+                        createList(response);
+                        adapter.notifyDataSetChanged();
+                        buttonOpen.setBackgroundResource(R.color.colorAccent);
+                        buttonGesloten.setBackgroundResource(R.color.colorPrimary);
+                        buttonEnd.setBackgroundResource(R.color.colorPrimary);
+
+
+                    }
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(mActivity.getBaseContext(), "failure",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        buttonGesloten.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CirkelsessieAPI cirkelsessieAPI =
+                        Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
+                Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesGesloten();
+                call.enqueue(new Callback<List<Cirkelsessie>>() {
+                    @Override
+                    public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
+                        createList(response);
+                        adapter.notifyDataSetChanged();
+                        buttonGesloten.setBackgroundResource(R.color.colorAccent);
+                        buttonOpen.setBackgroundResource(R.color.colorPrimary);
+                        buttonEnd.setBackgroundResource(R.color.colorPrimary);
+
+
+                    }
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(mActivity.getBaseContext(), "failure",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        buttonEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CirkelsessieAPI cirkelsessieAPI =
+                        Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
+                Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesEnded();
+                call.enqueue(new Callback<List<Cirkelsessie>>() {
+                    @Override
+                    public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
+                        createList(response);
+                        adapter.notifyDataSetChanged();
+                        buttonEnd.setBackgroundResource(R.color.colorAccent);
+                        buttonOpen.setBackgroundResource(R.color.colorPrimary);
+                        buttonGesloten.setBackgroundResource(R.color.colorPrimary);
+                    }
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(mActivity.getBaseContext(), "failure",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     public void getData(){
         CirkelsessieAPI cirkelsessieAPI =
                 Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
-        Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessies();
+        Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesOpen();
         call.enqueue(new Callback<List<Cirkelsessie>>() {
-
             @Override
             public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
                 createList(response);
-                Toast.makeText(mActivity.getBaseContext(), "cirkelsessie received",
-                        Toast.LENGTH_SHORT).show();
+                buttonOpen.setBackgroundResource(R.color.colorAccent);
             }
-
             @Override
             public void onFailure(Throwable t) {
                 Toast.makeText(mActivity.getBaseContext(), "failure",
                         Toast.LENGTH_SHORT).show();
-                Log.d("CirkelsessieFragment", t.getMessage());
-
             }
-
         });
     }
 
@@ -106,15 +194,18 @@ public class CirkelSessieLijstFragment extends Fragment {
         if (getView() != null)
             listview = (ListView) getView().findViewById(R.id.listview);
 
-        final ArrayList<Model> list = new ArrayList<>();
+        final ArrayList<CirkelsessieModel> list = new ArrayList<>();
         final ArrayList<Cirkelsessie> list2 = new ArrayList<>();
 
         for (int i = 0; i < response.body().size(); ++i) {
-            Model model = new Model(R.drawable.ic_arrow_right,response.body().get(i).getNaam(),String.valueOf(i+1));
-            list.add(model);
+            CirkelsessieModel cirkelsessieModel = new CirkelsessieModel(R.drawable.ic_arrow_right
+                    ,response.body().get(i).getNaam(),response.body().get(i).getGebruiker().getGebruikersnaam()
+                    ,String.valueOf(i+1));
+
+            list.add(cirkelsessieModel);
             list2.add(response.body().get(i));
         }
-        CirkelsessieAdapter adapter = null;
+
 
         if (mActivity != null) {
             adapter = new CirkelsessieAdapter(mActivity.getBaseContext(),
@@ -134,11 +225,12 @@ public class CirkelSessieLijstFragment extends Fragment {
                     startActivity(intent);
                     viewToChange = view;
                     tempPosition = position;
-                    viewToChange.setBackgroundColor(Color.LTGRAY);
+                    viewToChange.setBackgroundResource(R.color.lightBlue);
                 }
 
             });
         }
+
         linlaHeaderProgress.setVisibility(View.GONE);
         listView.setVisibility(View.VISIBLE);
         String textAantal = "Aantal : " + String.valueOf(list2.size());
@@ -151,19 +243,21 @@ public class CirkelSessieLijstFragment extends Fragment {
         super.onResume();
         if(viewToChange != null)
         if ((tempPosition % 2 == 1)) {
-            viewToChange.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            viewToChange.setBackgroundResource(R.color.colorPrimary);
         } else {
             viewToChange.setBackgroundColor(Color.WHITE);
         }
+        buttonEnd.setBackgroundResource(R.color.colorPrimary);
+        buttonGesloten.setBackgroundResource(R.color.colorPrimary);
         getData();
 
     }
 
-    private class CirkelsessieAdapter extends ArrayAdapter<Model> {
+    private class CirkelsessieAdapter extends ArrayAdapter<CirkelsessieModel> {
         private Context context;
-        private ArrayList<Model> modelsArrayList;
+        private ArrayList<CirkelsessieModel> modelsArrayList;
 
-        public CirkelsessieAdapter(Context context,int textViewResourceId, ArrayList<Model> modelsArrayList) {
+        public CirkelsessieAdapter(Context context,int textViewResourceId, ArrayList<CirkelsessieModel> modelsArrayList) {
 
             super(context, textViewResourceId, modelsArrayList);
 
@@ -191,22 +285,23 @@ public class CirkelSessieLijstFragment extends Fragment {
                 View view = rowView.findViewById(R.id.frontLine);
                 ImageView imgView = (ImageView) rowView.findViewById(R.id.item_icon);
                 TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
+                TextView organisatorView = (TextView) rowView.findViewById(R.id.item_organisator);
                 TextView counterView = (TextView) rowView.findViewById(R.id.item_counter);
 
                 // 4. Set the text for textView
                 imgView.setImageResource(modelsArrayList.get(position).getIcon());
                 titleView.setText(modelsArrayList.get(position).getTitle());
+                organisatorView.setText("Organisator: "+ modelsArrayList.get(position).getOrganisator());
                 counterView.setText(modelsArrayList.get(position).getCounter());
 
                 if (position % 2 == 1) {
-                    rowView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    rowView.setBackgroundResource(R.color.colorPrimary);
                     titleView.setTextColor(Color.WHITE);
                     counterView.setTextColor(Color.WHITE);
                     view.setBackgroundColor(Color.WHITE);
                     imgView.setImageResource(R.drawable.ic_arrow_right_bright);
                     relativeLayout.setBackgroundResource(R.drawable.background_list_item_alt);
-
-
+                    organisatorView.setTextColor(Color.WHITE);
                 } else {
                     rowView.setBackgroundColor(Color.WHITE);
                 }
