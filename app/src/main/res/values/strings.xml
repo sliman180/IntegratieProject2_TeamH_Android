@@ -73,6 +73,5 @@
     <string name="verplaats_kaart_q">Verplaats kaart?</string>
     <string name="sourceURL">http://teamh-spring.herokuapp.com</string>
     <string name="session">Sessie</string>
-    <string name="chat">Chat</string>
     <string name="participants">Deelnemers</string>
 </resources>
