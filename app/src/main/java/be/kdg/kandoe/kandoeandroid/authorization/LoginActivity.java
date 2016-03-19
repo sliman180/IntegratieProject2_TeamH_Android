@@ -354,6 +354,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     String json = gson.toJson(gebruiker);
                     SharedPreferencesMethods.saveInSharedPreferences(activity, getString(R.string.gebruiker), json);
                     startActivity(intent);
+                    finish();
                 }
 
                 @Override

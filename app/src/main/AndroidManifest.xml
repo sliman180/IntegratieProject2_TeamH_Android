@@ -17,16 +17,19 @@
         <activity
             android:name=".authorization.LoginActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".cirkelsessie.CirkelsessieActivity"
             android:label="@string/title_activity_cirkelsessie"
             android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".subthema.SubthemaActivity"
             android:label="@string/title_activity_subthema"
             android:parentActivityName=".MainActivity"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -35,6 +38,7 @@
         <activity
             android:name=".FirstActivity"
             android:theme="@style/AppTheme"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,19 +48,23 @@
         </activity>
         <activity
             android:name=".authorization.RegisterActivity"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".hoofdthema.HoofdthemaActivity"
             android:label="@string/title_activity_hoofdthema"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".organisaties.OrganisatieActivity"
             android:label="@string/title_activity_organisatie"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

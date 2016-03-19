@@ -1,0 +1,56 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+
+        <TextView
+            android:id="@+id/item_deelnemer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="5dp"
+            android:text="Deelnemer :"
+            android:layout_gravity="end"
+            android:paddingTop="5dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:orientation="vertical"
+        android:background="@drawable/chat_blue">
+
+
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="20dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:text="Sample"
+        android:textColor="#FFFFFF" />
+        <TextView
+            android:id="@+id/item_datum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginStart="20dp"
+            android:text="Datum :"
+            android:textColor="#FFFFFF"
+            android:paddingTop="5dp"
+            android:textSize="10sp"/>
+    </LinearLayout>
+</LinearLayout>

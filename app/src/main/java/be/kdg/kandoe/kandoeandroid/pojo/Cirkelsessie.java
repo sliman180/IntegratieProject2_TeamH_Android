@@ -1,14 +1,22 @@
 package be.kdg.kandoe.kandoeandroid.pojo;
 
 
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
+
 
 public class Cirkelsessie {
+
+    @SerializedName("id")
     private int id;
+    @SerializedName("naam")
     private String naam;
+    @SerializedName("status")
     private String status;
+    @SerializedName("aantalCirkels")
     private int aantalCirkels;
+    @SerializedName("maxAantalKaarten")
     private int maxAantalKaarten;
+    @SerializedName("gebruiker")
     private Gebruiker gebruiker;
 
 

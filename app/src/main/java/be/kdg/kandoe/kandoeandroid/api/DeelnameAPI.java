@@ -14,7 +14,7 @@ public interface DeelnameAPI {
     Call<Void> doeDeelname(@Path("id") String Id);
 
     @GET("/api/gebruikers/{id}/deelnames")
-    Call<List<Deelname>> getDeelnames(@Path("id") String id);
+    Call<List<Deelname>> getDeelnamesGebruiker(@Path("id") String id);
 
     @GET("/api/cirkelsessies/{id}/deelnames")
     Call<List<Deelname>> getDeelnamesVanCirkelsessie(@Path("id") String id);

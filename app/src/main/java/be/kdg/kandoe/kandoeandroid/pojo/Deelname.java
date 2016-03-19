@@ -1,14 +1,31 @@
 package be.kdg.kandoe.kandoeandroid.pojo;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Deelname {
+
+    @SerializedName("id")
     private int id;
+    @SerializedName("aangemaakteKaarten")
     private int aangemaakteKaarten;
+    @SerializedName("medeorganisator")
     private boolean medeorganisator;
+    @SerializedName("cirkelsessie")
     private Cirkelsessie cirkelsessie;
+    @SerializedName("gebruiker")
     private Gebruiker gebruiker;
+    @SerializedName("datum")
     private long datum;
+    @SerializedName("aanDeBeurt")
+    private boolean isAanDeBeurt;
 
+    public boolean isAanDeBeurt() {
+        return isAanDeBeurt;
+    }
 
+    public void setIsAanDeBeurt(boolean isAanDeBeurt) {
+        this.isAanDeBeurt = isAanDeBeurt;
+    }
 
     public int getId() {
         return id;

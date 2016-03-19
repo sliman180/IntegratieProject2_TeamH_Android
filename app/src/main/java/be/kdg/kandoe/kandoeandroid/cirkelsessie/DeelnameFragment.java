@@ -27,4 +27,6 @@ public class DeelnameFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_deelname, container, false);
     }
 
+
+
 }

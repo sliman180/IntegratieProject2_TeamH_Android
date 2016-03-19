@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,7 +32,6 @@ import java.util.List;
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.api.DeelnameAPI;
-import be.kdg.kandoe.kandoeandroid.api.GebruikerAPI;
 import be.kdg.kandoe.kandoeandroid.api.SpelkaartenAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.Parent;
@@ -65,7 +62,10 @@ public class CirkelsessieActivity extends AppCompatActivity {
     private Handler handler;
     private Gebruiker gebruiker;
     private boolean isDeelnemer;
+    private boolean beurt;
     private ArrayList<Spelkaart> spelkaarten = new ArrayList<>();
+
+    private final static long REFRESH_TIME = 2000;
 
 
     @Override
@@ -77,16 +77,17 @@ public class CirkelsessieActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mActivity = this;
         isDeelnemer = false;
+        beurt = false;
 
         TabHost host = (TabHost)findViewById(R.id.tabHost);
         if(host !=null)
             host.setup();
         //Tab 1
-        TabHost.TabSpec spec = null;
+        TabHost.TabSpec spec;
         if (host != null) {
-            spec = host.newTabSpec(getString(R.string.participants));
+            spec = host.newTabSpec(getString(R.string.deelnemers));
             spec.setContent(R.id.tab1);
-            spec.setIndicator(getString(R.string.participants));
+            spec.setIndicator(getString(R.string.deelnemers));
             host.addTab(spec);
             //Tab 2
             spec = host.newTabSpec(getString(R.string.session));
@@ -139,6 +140,10 @@ public class CirkelsessieActivity extends AppCompatActivity {
         return gebruiker;
     }
 
+    public boolean isBeurt() {
+        return beurt;
+    }
+
     public void checkIsDeelnemer(){
         Retrofit retrofit = Authorization.authorize(mActivity);
         DeelnameAPI deelnameAPI = retrofit.create(DeelnameAPI.class);
@@ -150,8 +155,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
                for(int i = 0; i < deelnames.size(); i++){
                    if(deelnames.get(i).getCirkelsessie().getId() == Integer.parseInt(cirkelsessieId)){
                        if(deelnames.get(i).getGebruiker().getId() == gebruiker.getId()){
-                       String textDeelgenomen = "U hebt deelgenomen";
-                       buttonDeelname.setText(textDeelgenomen);
+                       buttonDeelname.setText(R.string.deelgenomen);
                        buttonDeelname.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
                        buttonDeelname.setEnabled(false);
                        isDeelnemer = true;
@@ -172,9 +176,30 @@ public class CirkelsessieActivity extends AppCompatActivity {
        });
     }
 
+    public void checkBeurt(){
+        Retrofit retrofit = Authorization.authorize(mActivity);
+        DeelnameAPI deelnameAPI = retrofit.create(DeelnameAPI.class);
+        Call<List<Deelname>> call = deelnameAPI.getDeelnamesVanCirkelsessie(cirkelsessieId);
+        call.enqueue(new Callback<List<Deelname>>() {
+            @Override
+            public void onResponse(Response<List<Deelname>> response, Retrofit retrofit) {
+                List<Deelname> deelnames = response.body();
+                for(int x = 0; x < deelnames.size();x++){
+                    if(deelnames.get(x).getGebruiker().getId() == gebruiker.getId()){
+                        beurt = deelnames.get(x).isAanDeBeurt();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
     public void onClickDeelnemen(View v){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Wilt u zeker deelnemen?");
+        builder.setTitle(R.string.deelnemen_y_n);
         builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -186,16 +211,16 @@ public class CirkelsessieActivity extends AppCompatActivity {
                     public void onResponse(Response<Void> response, Retrofit retrofit) {
                         buttonAddKaart.setEnabled(true);
                         buttonAddKaart.getBackground().setColorFilter(null);
-                        buttonDeelname.setText("U hebt deelgenomen");
+                        buttonDeelname.setText(R.string.deelgenomen);
                         buttonDeelname.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
                         buttonDeelname.setEnabled(false);
+                        isDeelnemer = true;
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
-                        Toast.makeText(mActivity.getBaseContext(), "Deelname niet gelukt",
+                        Toast.makeText(mActivity.getBaseContext(), R.string.deelname_niet_gelukt,
                                 Toast.LENGTH_SHORT).show();
-                        Log.d("failure deelname",t.getMessage());
                     }
                 });
 
@@ -214,7 +239,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
     public void addCard(View v) {
         final Dialog newCardDialog = new Dialog(this);
         newCardDialog.setContentView(R.layout.dialog_custom);
-        newCardDialog.setTitle("Vul de kaart tekst in");
+        newCardDialog.setTitle(R.string.vul_kaart_tekst);
 
         final EditText newCardInput = (EditText) newCardDialog.findViewById(R.id.dialogtext);
         Button okButton = (Button) newCardDialog.findViewById(R.id.dialogButtonOK);
@@ -238,7 +263,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Throwable t) {
-                        Toast.makeText(mActivity.getBaseContext(), "kaart niet aangemaakt",
+                        Toast.makeText(mActivity.getBaseContext(), R.string.kaart_niet_aangemaakt,
                                 Toast.LENGTH_SHORT).show();
                         newCardDialog.dismiss();
                     }
@@ -269,14 +294,14 @@ public class CirkelsessieActivity extends AppCompatActivity {
         call.enqueue(new Callback<Spelkaart>() {
             @Override
             public void onResponse(Response<Spelkaart> response, Retrofit retrofit) {
-                Toast.makeText(mActivity.getBaseContext(), "kaart verplaatst",
+                Toast.makeText(mActivity.getBaseContext(), R.string.kaart_verplaatst,
                         Toast.LENGTH_SHORT).show();
                 cirkelsessieListAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Toast.makeText(mActivity.getBaseContext(), "kaart is niet verplaatst",
+                Toast.makeText(mActivity.getBaseContext(), R.string.kaart_n_verplaatst,
                         Toast.LENGTH_SHORT).show();
             }
         });
@@ -296,8 +321,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         public CirkelsessieListAdapter(Context context) {
             this.context = context;
             this.parentItems = new ArrayList<>();
-            getData();
-            getSpelkaartenData();
+            getCirkelData();
         }
 
         private void getSpelkaartenData(){
@@ -307,12 +331,10 @@ public class CirkelsessieActivity extends AppCompatActivity {
             call.enqueue(new Callback<List<Spelkaart>>() {
                 @Override
                 public void onResponse(Response<List<Spelkaart>> response, Retrofit retrofit) {
-                    if(parentItems.size() != 0){
-                        parentItems.clear();
-                        spelkaarten.clear();
-                    }
+                    parentItems.clear();
+                    spelkaarten.clear();
+
                     spelkaarten.addAll(response.body());
-                    int getal = maxAantalCirkels;
                     for (int i = 1; i < maxAantalCirkels + 1; i++) {
                         final ArrayList<Spelkaart> tempSpelkaarten = new ArrayList<>();
                         final Parent parent = new Parent();
@@ -323,8 +345,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
                             }
                         }
                         parent.setChildren(tempSpelkaarten);
-                        parent.setCircleLength(getal);
-                        getal--;
+                        parent.setCircleLength(maxAantalCirkels - i);
                         parentItems.add(parent);
                     }
                     notifyDataSetChanged();
@@ -337,7 +358,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
             });
         }
 
-        private void getData(){
+        private void getCirkelData(){
             Retrofit retrofit = Authorization.authorize(mActivity);
             CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
             Call<Cirkelsessie> scondcall = cirkelsessieAPI.getCirkelsessie(cirkelsessieId);
@@ -345,20 +366,15 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Response<Cirkelsessie> response, Retrofit retrofit) {
                     if (response.body() != null) {
-                        String circleLengthText = "Cirkel met grootte: " + String.valueOf(response.body().getAantalCirkels());
-                        circleLengthTextView.setText(circleLengthText);
                         maxAantalCirkels = response.body().getAantalCirkels();
-
                     }
                 }
-
                 @Override
                 public void onFailure(Throwable t) {
                     Log.d("failure", t.getMessage());
                 }
 
             });
-
         }
 
         @Override
@@ -406,20 +422,11 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 view = infalInflater.inflate(R.layout.cirkel_header_list, viewGroup ,false);
                 view.setBackgroundColor(Color.WHITE);
             }
-
-                LinearLayout lL = (LinearLayout) view.findViewById(R.id.header_linear);
-                if (lL.getChildCount() == 0) {
-                    for (int j = 0; j < parent.getCircleLength(); j++) {
-                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        if (j == 0) {
-                            lp.setMargins(dpToPx(25), 0, 0, 0);
-                        }
-                        ImageView item = new ImageView(getBaseContext());
-                        item.setLayoutParams(lp);
-                        item.setImageResource(R.drawable.cirkel);
-                        lL.addView(item);
-                    }
-                }
+                TextView textView = (TextView) view.findViewById(R.id.title_header);
+                textView.setText(String.valueOf(getGroupCount() - i));
+                ImageView imageView = (ImageView) view.findViewById(R.id.image_header);
+                imageView.setBackgroundResource(R.drawable.cirkel);
+             elv.setGroupIndicator(null);
              elv.expandGroup(i);
             return view;
         }
@@ -442,18 +449,20 @@ public class CirkelsessieActivity extends AppCompatActivity {
             txtListChild.setBackgroundResource(R.drawable.back);
 
             final View finalView = view;
+            if(isDeelnemer){
             txtListChild.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(beurt){
                     finalView.setBackgroundColor(Color.LTGRAY);
                     AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-                    builder.setTitle("Verplaats kaart?");
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    builder.setTitle(R.string.verplaats_kaart_q);
+                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Spelkaart spelkaart = getChild(groupPos, childPos);
                             if (spelkaart.getPositie() == maxAantalCirkels) {
-                                Toast.makeText(getBaseContext(), "max positie bereikt",
+                                Toast.makeText(getBaseContext(), R.string.max_positie,
                                         Toast.LENGTH_SHORT).show();
                             }else{
                                 Parent oldParent = getGroup(groupPos);
@@ -464,7 +473,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
                             }
                         }
                     });
-                    builder.setNegativeButton("Annuleer", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(R.string.annuleer, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -473,8 +482,12 @@ public class CirkelsessieActivity extends AppCompatActivity {
                     });
 
                     builder.show();
+                    }else {
+                        Toast.makeText(getBaseContext(),R.string.n_beurt,Toast.LENGTH_SHORT).show();
+
+                    }
                 }
-            });
+            });}
 
             return view;
 
@@ -491,9 +504,11 @@ public class CirkelsessieActivity extends AppCompatActivity {
         @Override
         public void run()
         {
+            checkBeurt();
             cirkelsessieListAdapter.getSpelkaartenData();
+
             //Do task
-            handler.postDelayed(cirkelRunnable, 2000);
+            handler.postDelayed(cirkelRunnable, REFRESH_TIME);
         }
     };
 
@@ -507,8 +522,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-
-        handler.postDelayed(cirkelRunnable, 2000);
+        handler.postDelayed(cirkelRunnable, REFRESH_TIME);
     }
 
     public static int dpToPx(int dp) {
