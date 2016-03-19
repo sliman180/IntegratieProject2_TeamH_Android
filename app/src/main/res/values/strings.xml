@@ -57,6 +57,11 @@
     <string name="chat_verzenden">Verzenden</string>
     <string name="chat_bericht">Schrijf uw bericht</string>
     <string name="deelgenomen">U hebt deelgenomen</string>
+    <string name="sessie_gesloten">Cirkelsessie gesloten</string>
+    <string name="sessie_open">Cirkelsessie open</string>
+    <string name="sessie_gestart">Cirkelsessie gestart</string>
+    <string name="sessie_beindigd">Cirkelsessie beëindigd</string>
+    <string name="geen_deelname">Geen deelname</string>
     <string name="deelnemen_y_n">Wilt u zeker deelnemen?</string>
     <string name="vul_kaart_tekst">Vul de kaarttekst in</string>
     <string name="kaart_niet_aangemaakt">kaart niet aangemaakt</string>

@@ -21,7 +21,9 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,6 +53,8 @@ public class CirkelSessieLijstFragment extends Fragment {
     private CirkelsessieAdapter adapter = null;
     private ArrayList<CirkelsessieModel> list = new ArrayList<>();
     private ArrayList<Cirkelsessie> list2 = new ArrayList<>();
+    private SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+
 
     @Override
     public void onAttach(Context context) {
@@ -191,13 +195,8 @@ public class CirkelSessieLijstFragment extends Fragment {
         call.enqueue(new Callback<List<Cirkelsessie>>() {
             @Override
             public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
-                Response<List<Cirkelsessie>> listResponse = response;
-                for(int i = 0; i < listResponse.body().size();i++){
-                    if(Objects.equals(listResponse.body().get(i).getStatus(), "GESLOTEN")){
-                        listResponse.body().remove(i);
-                    }
-                }
-                addData(listResponse);
+                addData(response);
+
                 buttonOpen.setBackgroundResource(R.color.colorAccent);
                 buttonGesloten.setBackgroundResource(R.color.colorPrimary);
                 buttonEnd.setBackgroundResource(R.color.colorPrimary);
@@ -217,8 +216,12 @@ public class CirkelSessieLijstFragment extends Fragment {
         list2.clear();
         for (int i = 0; i < response.body().size(); ++i) {
             CirkelsessieModel cirkelsessieModel = new CirkelsessieModel(R.drawable.ic_arrow_right
-                    ,response.body().get(i).getNaam(),response.body().get(i).getGebruiker().getGebruikersnaam()
-                    ,String.valueOf(i+1));
+                    ,response.body().get(i).getNaam()
+                    ,response.body().get(i).getGebruiker().getGebruikersnaam()
+                    ,String.valueOf(i + 1)
+                    ,response.body().get(i).getStartDatum()
+                    ,response.body().get(i).getSubthema()
+                    );
 
             list.add(cirkelsessieModel);
             list2.add(response.body().get(i));
@@ -247,6 +250,13 @@ public class CirkelSessieLijstFragment extends Fragment {
                                         int position, long id) {
                     intent.putExtra("cirkelsessieId", String.valueOf(list2.get(position).getId()));
                     intent.putExtra("cirkelsessieTitle", String.valueOf(list2.get(position).getNaam()));
+                    Date date = new Date(list2.get(position).getStartDatum());
+                    Date dateNow = new Date();
+                    if (dateNow.after(date)) {
+                        intent.putExtra("status", "GESTART");
+                    } else {
+                        intent.putExtra("status", list2.get(position).getStatus());
+                    }
                     startActivity(intent);
                     viewToChange = view;
                     tempPosition = position;
@@ -283,9 +293,7 @@ public class CirkelSessieLijstFragment extends Fragment {
         private ArrayList<CirkelsessieModel> modelsArrayList;
 
         public CirkelsessieAdapter(Context context,int textViewResourceId, ArrayList<CirkelsessieModel> modelsArrayList) {
-
             super(context, textViewResourceId, modelsArrayList);
-
             this.context = context;
             this.modelsArrayList = modelsArrayList;
         }
@@ -297,10 +305,7 @@ public class CirkelSessieLijstFragment extends Fragment {
             // 1. Create inflater
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-
             // 2. Get rowView from inflater
-
             View rowView = null;
             if(!modelsArrayList.get(position).isGroupHeader()){
                 rowView = inflater.inflate(R.layout.item_list_cirkelsessie, parent, false);
@@ -312,12 +317,18 @@ public class CirkelSessieLijstFragment extends Fragment {
                 TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
                 TextView organisatorView = (TextView) rowView.findViewById(R.id.item_organisator);
                 TextView counterView = (TextView) rowView.findViewById(R.id.item_counter);
+                TextView datumView = (TextView) rowView.findViewById(R.id.item_datum);
+                TextView subthemaView = (TextView) rowView.findViewById(R.id.item_subthema);
 
                 // 4. Set the text for textView
                 imgView.setImageResource(modelsArrayList.get(position).getIcon());
                 titleView.setText(modelsArrayList.get(position).getTitle());
-                organisatorView.setText("Organisator: "+ modelsArrayList.get(position).getOrganisator());
+                organisatorView.setText("Organisator: " + modelsArrayList.get(position).getOrganisator());
                 counterView.setText(modelsArrayList.get(position).getCounter());
+                Date date = new Date(modelsArrayList.get(position).getDatum());
+                datumView.setText("Startdatum: " + String.valueOf(ft.format(date)));
+                if(modelsArrayList.get(position).getSubthema() != null)
+                subthemaView.setText("Subthema: " + modelsArrayList.get(position).getSubthema().getNaam());
 
                 if (position % 2 == 1) {
                     rowView.setBackgroundResource(R.color.colorPrimary);
@@ -327,11 +338,12 @@ public class CirkelSessieLijstFragment extends Fragment {
                     imgView.setImageResource(R.drawable.ic_arrow_right_bright);
                     relativeLayout.setBackgroundResource(R.drawable.background_list_item_alt);
                     organisatorView.setTextColor(Color.WHITE);
+                    subthemaView.setTextColor(Color.WHITE);
+                    datumView.setTextColor(Color.WHITE);
                 } else {
                     rowView.setBackgroundColor(Color.WHITE);
                 }
             }
-
             // 5. retrn rowView
             return rowView;
         }

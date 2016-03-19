@@ -56,7 +56,7 @@ public class CirkelsessieTest {
                 .atPosition(0)
                 .perform(click());
 
-        onView(withId(R.id.circle_length))
+        onView(withId(R.id.buttonInfo))
                 .check(matches(isDisplayed()));
 
         CommonMethods.goBackN(TAG);
@@ -65,6 +65,11 @@ public class CirkelsessieTest {
     @Test
     public void testCreateCard() {
         String typedText = CommonMethods.generateString(10);
+
+        onView(withId(R.id.buttonGestart)).perform(click());
+
+        CommonMethods.sleep(SHORT_WAIT_TIME);
+
         onData(anything())
                 .inAdapterView(withId(R.id.listview))
                 .atPosition(0)
@@ -84,6 +89,8 @@ public class CirkelsessieTest {
 
         onView(withText("Sessie"))
                 .perform(click());
+
+        CommonMethods.sleep(LONG_WAIT_TIME);
 
         onView(withId(R.id.buttonAddKaart))
                 .perform(click());

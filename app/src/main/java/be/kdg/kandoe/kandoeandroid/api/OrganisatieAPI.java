@@ -10,6 +10,9 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 
 
+/**
+ *  interface om de organisatie web api aan te spreken
+ */
 public interface OrganisatieAPI {
 
     @GET("/api/gebruikers/{id}/organisaties")
@@ -17,6 +20,5 @@ public interface OrganisatieAPI {
 
     @GET("/api/organisaties/{id}/hoofdthemas")
     Call<List<Hoofdthema>> getHoofthemasFromOrganisaties(@Path("id") String id);
-
 
 }

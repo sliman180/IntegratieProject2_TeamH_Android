@@ -50,7 +50,7 @@ public class AuthorizationTest {
 
     @Before
     public void setRandomUser() {
-        randomUser = CommonMethods.generateString(6);
+        randomUser = CommonMethods.generateString(10);
     }
 
     @Test

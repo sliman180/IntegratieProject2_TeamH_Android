@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +35,9 @@ public class CirkelsessieFragment extends Fragment {
     private LinearLayout linearLayout;
     private Handler handler;
 
-    private TextView aantalKaartenTextView;
+    private TextView beurtTextView;
     private boolean beurt;
+    private String status;
 
     private final static long REFRESH_TIME = 2000;
 
@@ -52,11 +54,13 @@ public class CirkelsessieFragment extends Fragment {
 
         cirkelsessieId = ((CirkelsessieActivity) getActivity()).getCirkelsessieId();
 
+        status = ((CirkelsessieActivity) getActivity()).getStatus();
+
         handler = new Handler();
 
         linearLayout = (LinearLayout) v.findViewById(R.id.spelKaartLayout);
 
-        aantalKaartenTextView = (TextView) getActivity().findViewById(R.id.aantalKaarten);
+        beurtTextView = (TextView) getActivity().findViewById(R.id.isBeurt);
 
         getData();
 
@@ -125,12 +129,12 @@ public class CirkelsessieFragment extends Fragment {
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             llp.setMarginEnd(dpToPx(5));
             textView.setLayoutParams(llp);
-            textView.setBackground(getResources().getDrawable(R.drawable.back));
+            textView.setBackgroundResource(R.drawable.back);
 
                     textView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(beurt) {
+                            if(beurt && status.equals("GESTART")) {
                                 textView.setBackgroundColor(Color.LTGRAY);
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                                 builder.setTitle("Verplaats kaart?");
@@ -150,8 +154,10 @@ public class CirkelsessieFragment extends Fragment {
                                 });
 
                             builder.show();
-                            }else {
+                            }else if(!beurt && status.equals("GESTART")){
                                 Toast.makeText(getActivity().getBaseContext(),R.string.n_beurt,Toast.LENGTH_SHORT).show();
+                            }else {
+                                Toast.makeText(getActivity().getBaseContext(),"Cirkelsessie is niet gestart",Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -160,10 +166,13 @@ public class CirkelsessieFragment extends Fragment {
 
         }
             if(beurt){
+                beurtTextView.setText(R.string.beurt);
+                beurtTextView.setTextColor(ContextCompat.getColor(getActivity(), R.color.md_green_600));
 
-                aantalKaartenTextView.setText(R.string.beurt);
             }else {
-            aantalKaartenTextView.setText(R.string.n_beurt);
+            beurtTextView.setText(R.string.n_beurt);
+                beurtTextView.setTextColor(ContextCompat.getColor(getActivity(), R.color.md_red_600));
+
             }
         }
     }

@@ -9,6 +9,9 @@ import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Path;
 
+/**
+ *  interface om de hoofdthema web api aan te spreken
+ */
 public interface HoofdthemaAPI {
     @GET("/api/gebruikers/{id}/hoofdthemas")
     Call<List<Hoofdthema>> getHoofdthemas(@Path("id") String id);

@@ -1,29 +1,51 @@
 package be.kdg.kandoe.kandoeandroid.helpers.adaptermodels;
 
 
+import be.kdg.kandoe.kandoeandroid.pojo.Subthema;
+
 public class CirkelsessieModel {
 
     private int icon;
     private String title;
     private String counter;
     private String organisator;
+    private long datum;
+    private Subthema subthema;
 
     private boolean isGroupHeader = false;
 
-    public CirkelsessieModel(String title,String organisator) {
-        this(-1,title,organisator,null);
+    public CirkelsessieModel(String title,String organisator,long datum,Subthema subthema) {
+        this(-1,title,organisator,null,datum,subthema);
         isGroupHeader = false;
     }
-    public CirkelsessieModel(int icon, String title,String organisator, String counter) {
+    public CirkelsessieModel(int icon, String title,String organisator, String counter,long datum,Subthema subthema) {
         super();
         this.icon = icon;
         this.title = title;
         this.organisator = organisator;
         this.counter = counter;
+        this.datum = datum;
+        this.subthema = subthema;
     }
 
     public int getIcon() {
         return icon;
+    }
+
+    public long getDatum() {
+        return datum;
+    }
+
+    public void setDatum(long datum) {
+        this.datum = datum;
+    }
+
+    public Subthema getSubthema() {
+        return subthema;
+    }
+
+    public void setSubthema(Subthema subthema) {
+        this.subthema = subthema;
     }
 
     public void setIcon(int icon) {

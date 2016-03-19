@@ -15,8 +15,10 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
 
+/**
+ *  interface om de cirkelsessie web api aan te spreken
+ */
 public interface CirkelsessieAPI {
-
 
     @GET("/api/cirkelsessies/gesloten")
     Call<List<Cirkelsessie>> getCirkelsessiesGesloten();

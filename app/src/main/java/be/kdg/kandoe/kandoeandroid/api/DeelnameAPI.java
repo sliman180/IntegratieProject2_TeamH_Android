@@ -8,8 +8,10 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
 
+/**
+ *  interface om de deelname web api aan te spreken
+ */
 public interface DeelnameAPI {
-
     @POST("/api/cirkelsessies/{id}/deelnames")
     Call<Void> doeDeelname(@Path("id") String Id);
 
@@ -18,8 +20,4 @@ public interface DeelnameAPI {
 
     @GET("/api/cirkelsessies/{id}/deelnames")
     Call<List<Deelname>> getDeelnamesVanCirkelsessie(@Path("id") String id);
-
-
-
-
 }

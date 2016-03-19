@@ -16,9 +16,28 @@ public class Cirkelsessie {
     private int aantalCirkels;
     @SerializedName("maxAantalKaarten")
     private int maxAantalKaarten;
+    @SerializedName("startDatum")
+    private long startDatum;
+    @SerializedName("subthema")
+    private Subthema subthema;
     @SerializedName("gebruiker")
     private Gebruiker gebruiker;
 
+    public long getStartDatum() {
+        return startDatum;
+    }
+
+    public void setStartDatum(long startDatum) {
+        this.startDatum = startDatum;
+    }
+
+    public Subthema getSubthema() {
+        return subthema;
+    }
+
+    public void setSubthema(Subthema subthema) {
+        this.subthema = subthema;
+    }
 
     public int getId() {
         return id;

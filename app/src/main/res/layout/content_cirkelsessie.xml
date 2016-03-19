@@ -37,28 +37,12 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <Button
+                    <fragment
+                        android:name="be.kdg.kandoe.kandoeandroid.cirkelsessie.DeelnameFragment"
+                        android:id="@+id/deelname_fragment"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/deelnemen"
-                        android:id="@+id/buttonDeelname"
-                        android:textColor="#FFFFFF"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:theme="@style/MyButton"
-                        android:onClick="onClickDeelnemen"/>
-
-                    <TextView
-                        android:id="@+id/circle_length"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/cirkel_grootte"
-                        android:layout_toStartOf="@id/buttonDeelname"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="5dp"
-                        />
-
+                        android:layout_height="wrap_content">
+                    </fragment>
 
 
                 </RelativeLayout>
@@ -102,10 +86,11 @@
                             android:background="@color/colorPrimary"
                             android:id="@+id/view" />
                         <TextView
-                            android:id="@+id/aantalKaarten"
+                            android:id="@+id/isBeurt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/kaarten_text"
+                            android:layout_marginStart="10dp"
+                            android:textStyle="bold"
                             android:layout_marginTop="15dp"
                             android:textSize="16sp"
                             />
@@ -119,7 +104,7 @@
                             android:textColor="#FFFFFF"
                             android:layout_alignParentEnd="true"
                             android:theme="@style/MyButton"
-                            android:onClick="addCard"/>
+                            android:onClick="voegKaartToe"/>
 
 
                     </RelativeLayout>

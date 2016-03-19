@@ -6,8 +6,12 @@ import retrofit.Call;
 import retrofit.http.POST;
 import retrofit.http.Path;
 
-public interface SpelkaartenAPI {
+/**
+ *  interface om de spelkaarten web api aan te spreken
+ */
+public interface SpelkaartAPI {
 
     @POST("/api/spelkaarten/{id}/verschuif")
     Call<Spelkaart> verschuif(@Path("id") String id);
+
 }

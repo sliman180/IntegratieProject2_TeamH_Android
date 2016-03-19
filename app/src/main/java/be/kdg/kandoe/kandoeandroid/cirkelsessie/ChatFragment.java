@@ -4,9 +4,11 @@ package be.kdg.kandoe.kandoeandroid.cirkelsessie;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +55,9 @@ public class ChatFragment extends Fragment {
     private int maxAantalMessages = 0;
     private ArrayList<ChatModel> list = new ArrayList<>();
     private SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    private DeelnameFragment deelnameFragment;
+    private String status;
+
 
 
     public ChatFragment() {
@@ -80,10 +85,17 @@ public class ChatFragment extends Fragment {
         mActivity= getActivity();
         cirkelsessieId = ((CirkelsessieActivity) getActivity()).getCirkelsessieId();
         gebruiker = ((CirkelsessieActivity) getActivity()).getGebruiker();
+        status = ((CirkelsessieActivity) getActivity()).getStatus();
+        deelnameFragment = (DeelnameFragment) getFragmentManager().findFragmentById(R.id.deelname_fragment);
         handler = new Handler();
         createAdapter();
         getData();
     }
+
+    public Button getChatButton() {
+        return chatButton;
+    }
+
     private void chatButtonClick(){
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +123,17 @@ public class ChatFragment extends Fragment {
     }
 
     public void getData(){
+        boolean isDeelnemer = deelnameFragment.isDeelnemer();
+        if(!isDeelnemer){
+            chatButton.setEnabled(false);
+            chatButton.getBackground().setColorFilter(ContextCompat.getColor(getActivity(), R.color.md_grey_400), PorterDuff.Mode.SRC_ATOP);
+        }else if(status.equals("GESTART")){
+            chatButton.setEnabled(true);
+            chatButton.getBackground().setColorFilter(null);
+        }else {
+            chatButton.setEnabled(false);
+            chatButton.getBackground().setColorFilter(ContextCompat.getColor(getActivity(), R.color.md_grey_400), PorterDuff.Mode.SRC_ATOP);
+        }
         CirkelsessieAPI cirkelsessieAPI =
                 Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
         Call<List<Bericht>> call = cirkelsessieAPI.getBerichten(cirkelsessieId);
@@ -118,8 +141,6 @@ public class ChatFragment extends Fragment {
             @Override
             public void onResponse(Response<List<Bericht>> response, Retrofit retrofit) {
                 addData(response);
-//                adapter.notifyDataSetChanged();
-//                buttonOpen.setBackgroundResource(R.color.colorAccent);
             }
 
             @Override

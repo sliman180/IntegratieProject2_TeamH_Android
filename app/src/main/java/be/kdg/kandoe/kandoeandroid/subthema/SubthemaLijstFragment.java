@@ -94,10 +94,10 @@ public class SubthemaLijstFragment extends Fragment {
     }
 
     public void getData(){
-       SubthemaAPI subthemaAPI =
-                Authorization.authorize(getActivity()).create(SubthemaAPI.class);
+       GebruikerAPI gebruikerAPI =
+                Authorization.authorize(getActivity()).create(GebruikerAPI.class);
 
-        Call<List<Subthema>> call = subthemaAPI.getSubThemas(String.valueOf(gebruiker.getId()));
+        Call<List<Subthema>> call = gebruikerAPI.getSubThemas(String.valueOf(gebruiker.getId()));
         call.enqueue(new Callback<List<Subthema>>() {
             @Override
             public void onResponse(Response<List<Subthema>> response, Retrofit retrofit) {
