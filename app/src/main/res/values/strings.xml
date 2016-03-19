@@ -71,6 +71,8 @@
     <string name="max_positie">Max positie bereikt!</string>
     <string name="annuleer">Annuleer</string>
     <string name="verplaats_kaart_q">Verplaats kaart?</string>
-
-
+    <string name="sourceURL">http://teamh-spring.herokuapp.com</string>
+    <string name="session">Sessie</string>
+    <string name="chat">Chat</string>
+    <string name="participants">Deelnemers</string>
 </resources>

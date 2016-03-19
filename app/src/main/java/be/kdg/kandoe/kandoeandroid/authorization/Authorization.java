@@ -33,7 +33,7 @@ public class Authorization {
             retrofit = new Retrofit.Builder()
                     //10.0.3.2:8080 for localhost
                     //http://teamh-spring.herokuapp.com
-                    .baseUrl("http://teamh-spring.herokuapp.com")
+                    .baseUrl(activity.getString(R.string.sourceURL))
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

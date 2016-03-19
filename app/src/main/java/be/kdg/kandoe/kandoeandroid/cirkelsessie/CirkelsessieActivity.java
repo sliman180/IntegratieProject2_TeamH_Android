@@ -90,9 +90,9 @@ public class CirkelsessieActivity extends AppCompatActivity {
             spec.setIndicator(getString(R.string.deelnemers));
             host.addTab(spec);
             //Tab 2
-            spec = host.newTabSpec(getString(R.string.sessie));
+            spec = host.newTabSpec(getString(R.string.session));
             spec.setContent(R.id.tab2);
-            spec.setIndicator(getString(R.string.sessie));
+            spec.setIndicator(getString(R.string.session));
             host.addTab(spec);
 
             //Tab 3

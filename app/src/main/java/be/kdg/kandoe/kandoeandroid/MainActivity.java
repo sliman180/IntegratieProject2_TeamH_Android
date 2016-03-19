@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.google.gson.Gson;
@@ -108,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .build();
         result.addStickyFooterItem(new SecondaryDrawerItem().withName("Afmelden").withIcon(GoogleMaterial.Icon.gmd_power_settings_new));
+
+        result.getDrawerLayout().setId(R.id.drawer);
+
         menuMap = new LinkedHashMap<>();
         menuMap.put("Mijn profiel", ProfielFragment.newInstance());
         menuMap.put("Divider", null);
