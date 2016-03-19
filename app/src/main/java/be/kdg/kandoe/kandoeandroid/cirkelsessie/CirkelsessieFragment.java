@@ -21,7 +21,6 @@ import java.util.List;
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
-import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
 import retrofit.Call;
 import retrofit.Callback;
@@ -36,6 +35,7 @@ public class CirkelsessieFragment extends Fragment {
     private Handler handler;
 
     private TextView aantalKaartenTextView;
+    private boolean beurt;
 
     private final static long REFRESH_TIME = 2000;
 
@@ -73,6 +73,7 @@ public class CirkelsessieFragment extends Fragment {
     };
 
     public void getData(){
+        beurt = ((CirkelsessieActivity) getActivity()).isBeurt();
         Retrofit retrofit = Authorization.authorize(getActivity());
         CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
         Call<List<Spelkaart>> call = cirkelsessieAPI.getSpelkaarten(cirkelsessieId);
@@ -108,7 +109,6 @@ public class CirkelsessieFragment extends Fragment {
 
         spelkaarts.addAll(response.body());
 
-        int i = 0;
         for (final Spelkaart spelkaart : spelkaarts) {
 
             if(spelkaart.getPositie() == 0){
@@ -116,8 +116,6 @@ public class CirkelsessieFragment extends Fragment {
             final TextView textView = new TextView(getActivity());
             textView.setText(spelkaart.getKaart().getTekst());
             linearLayout.addView(textView);
-
-            textView.setId(i);
 
             int padding = dpToPx(15);
 
@@ -128,41 +126,44 @@ public class CirkelsessieFragment extends Fragment {
             llp.setMarginEnd(dpToPx(5));
             textView.setLayoutParams(llp);
             textView.setBackground(getResources().getDrawable(R.drawable.back));
-            textView.getLayoutParams();
 
-                String aantalKaartenText = "Aantal kaarten: " + String.valueOf(linearLayout.getChildCount());
-                aantalKaartenTextView.setText(aantalKaartenText);
-
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    textView.setBackgroundColor(Color.LTGRAY);
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("Verplaats kaart?");
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    textView.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ((CirkelsessieActivity) getActivity()).changeCardPosition(spelkaart);
-                            linearLayout.removeView(textView);
+                        public void onClick(View v) {
+                            if(beurt) {
+                                textView.setBackgroundColor(Color.LTGRAY);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setTitle("Verplaats kaart?");
+                                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        ((CirkelsessieActivity) getActivity()).changeCardPosition(spelkaart);
+                                        linearLayout.removeView(textView);
+                                    }
+                                });
+                                builder.setNegativeButton(R.string.annuleer, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                        textView.setBackground(getResources().getDrawable(R.drawable.back));
+                                    }
+                                });
+
+                            builder.show();
+                            }else {
+                                Toast.makeText(getActivity().getBaseContext(),R.string.n_beurt,Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
-                    builder.setNegativeButton("Annuleer", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            textView.setBackground(getResources().getDrawable(R.drawable.back));
-                        }
-                    });
 
-                    builder.show();
-                }
-            });
 
-            i++;
 
-        }else {
-                String aantalKaartenText = "Aantal kaarten: 0";
-                aantalKaartenTextView.setText(aantalKaartenText);
+        }
+            if(beurt){
+
+                aantalKaartenTextView.setText(R.string.beurt);
+            }else {
+            aantalKaartenTextView.setText(R.string.n_beurt);
             }
         }
     }

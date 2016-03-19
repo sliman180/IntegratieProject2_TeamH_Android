@@ -1,26 +1,41 @@
 package be.kdg.kandoe.kandoeandroid.helpers.adaptermodels;
 
-/**
- * Created by S on 18-3-2016.
- */
+import java.util.Date;
+
 public class ChatModel {
     private int icon;
     private String title;
     private String counter;
     private String organisator;
+    private boolean left = false;
+    private long date;
 
     private boolean isGroupHeader = false;
 
-    public ChatModel(String title,String organisator) {
-        this(-1,title,organisator,null);
-        isGroupHeader = false;
-    }
-    public ChatModel(int icon, String title,String organisator, String counter) {
+
+    public ChatModel(boolean left, String title,String organisator,long date) {
         super();
-        this.icon = icon;
+        this.left = left;
         this.title = title;
         this.organisator = organisator;
-        this.counter = counter;
+        this.date = date;
+        isGroupHeader = false;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public boolean isLeft() {
+        return left;
+    }
+
+    public void setLeft(boolean left) {
+        this.left = left;
     }
 
     public int getIcon() {

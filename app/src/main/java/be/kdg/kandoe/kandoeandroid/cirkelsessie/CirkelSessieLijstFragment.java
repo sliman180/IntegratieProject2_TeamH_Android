@@ -23,6 +23,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
@@ -46,6 +47,7 @@ public class CirkelSessieLijstFragment extends Fragment {
     private Button buttonOpen;
     private Button buttonGesloten;
     private Button buttonEnd;
+    private Button buttonGestart;
     private CirkelsessieAdapter adapter = null;
     private ArrayList<CirkelsessieModel> list = new ArrayList<>();
     private ArrayList<Cirkelsessie> list2 = new ArrayList<>();
@@ -71,10 +73,12 @@ public class CirkelSessieLijstFragment extends Fragment {
         linlaHeaderProgress = (LinearLayout) v.findViewById(R.id.linlaHeaderProgress);
         linlaHeaderProgress.setVisibility(View.VISIBLE);
 
+        buttonGestart = (Button) v.findViewById(R.id.buttonGestart);
         buttonOpen = (Button) v.findViewById(R.id.buttonOpen);
         buttonGesloten = (Button) v.findViewById(R.id.buttonGesloten);
         buttonEnd = (Button) v.findViewById(R.id.buttonEnd);
 
+        buttonGestart.setBackgroundResource(R.color.colorPrimary);
         buttonEnd.setBackgroundResource(R.color.colorPrimary);
         buttonGesloten.setBackgroundResource(R.color.colorPrimary);
         buttonOpen.setBackgroundResource(R.color.colorPrimary);
@@ -100,26 +104,7 @@ public class CirkelSessieLijstFragment extends Fragment {
         buttonOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CirkelsessieAPI cirkelsessieAPI =
-                        Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
-                Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesOpen();
-                call.enqueue(new Callback<List<Cirkelsessie>>() {
-                    @Override
-                    public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
-                        addData(response);
-                        buttonOpen.setBackgroundResource(R.color.colorAccent);
-                        buttonGesloten.setBackgroundResource(R.color.colorPrimary);
-                        buttonEnd.setBackgroundResource(R.color.colorPrimary);
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        Toast.makeText(mActivity.getBaseContext(), "failure",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+                getData();
             }
         });
 
@@ -136,7 +121,9 @@ public class CirkelSessieLijstFragment extends Fragment {
                         buttonGesloten.setBackgroundResource(R.color.colorAccent);
                         buttonOpen.setBackgroundResource(R.color.colorPrimary);
                         buttonEnd.setBackgroundResource(R.color.colorPrimary);
+                        buttonGestart.setBackgroundResource(R.color.colorPrimary);
                     }
+
                     @Override
                     public void onFailure(Throwable t) {
                         Toast.makeText(mActivity.getBaseContext(), "failure",
@@ -159,6 +146,32 @@ public class CirkelSessieLijstFragment extends Fragment {
                         buttonEnd.setBackgroundResource(R.color.colorAccent);
                         buttonOpen.setBackgroundResource(R.color.colorPrimary);
                         buttonGesloten.setBackgroundResource(R.color.colorPrimary);
+                        buttonGestart.setBackgroundResource(R.color.colorPrimary);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(mActivity.getBaseContext(), "failure",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        buttonGestart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CirkelsessieAPI cirkelsessieAPI =
+                        Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
+                Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesStarted();
+                call.enqueue(new Callback<List<Cirkelsessie>>() {
+                    @Override
+                    public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
+                        addData(response);
+                        buttonGestart.setBackgroundResource(R.color.colorAccent);
+                        buttonEnd.setBackgroundResource(R.color.colorPrimary);
+                        buttonOpen.setBackgroundResource(R.color.colorPrimary);
+                        buttonGesloten.setBackgroundResource(R.color.colorPrimary);
                     }
 
                     @Override
@@ -174,12 +187,21 @@ public class CirkelSessieLijstFragment extends Fragment {
     public void getData(){
         CirkelsessieAPI cirkelsessieAPI =
                 Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
-        Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesOpen();
+        Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesGepland();
         call.enqueue(new Callback<List<Cirkelsessie>>() {
             @Override
             public void onResponse(Response<List<Cirkelsessie>> response, Retrofit retrofit) {
-                addData(response);
+                Response<List<Cirkelsessie>> listResponse = response;
+                for(int i = 0; i < listResponse.body().size();i++){
+                    if(Objects.equals(listResponse.body().get(i).getStatus(), "GESLOTEN")){
+                        listResponse.body().remove(i);
+                    }
+                }
+                addData(listResponse);
                 buttonOpen.setBackgroundResource(R.color.colorAccent);
+                buttonGesloten.setBackgroundResource(R.color.colorPrimary);
+                buttonEnd.setBackgroundResource(R.color.colorPrimary);
+                buttonGestart.setBackgroundResource(R.color.colorPrimary);
             }
 
             @Override

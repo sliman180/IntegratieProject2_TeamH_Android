@@ -22,10 +22,13 @@ public interface CirkelsessieAPI {
     Call<List<Cirkelsessie>> getCirkelsessiesGesloten();
 
     @GET("/api/cirkelsessies/gepland")
-    Call<List<Cirkelsessie>> getCirkelsessiesOpen();
+    Call<List<Cirkelsessie>> getCirkelsessiesGepland();
 
     @GET("/api/cirkelsessies/beindigd")
     Call<List<Cirkelsessie>> getCirkelsessiesEnded();
+
+    @GET("/api/cirkelsessies/actief")
+    Call<List<Cirkelsessie>> getCirkelsessiesStarted();
 
     @GET("/api/cirkelsessies/{id}")
     Call<Cirkelsessie> getCirkelsessie(@Path("id") String id);

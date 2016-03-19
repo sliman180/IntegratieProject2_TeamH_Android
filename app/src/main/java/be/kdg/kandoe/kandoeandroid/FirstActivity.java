@@ -37,19 +37,24 @@ public class FirstActivity extends AppCompatActivity {
         Button login = (Button) findViewById(R.id.login_button);
         Button register = (Button) findViewById(R.id.register_button);
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mActivity, LoginActivity.class));
-            }
-        });
+        if (login != null) {
+            login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mActivity, RegisterActivity.class));
-            }
-        });
+                }
+            });
+        }
+
+        if (register != null) {
+            register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(mActivity, RegisterActivity.class));
+                }
+            });
+        }
         //endregion
     }
 }

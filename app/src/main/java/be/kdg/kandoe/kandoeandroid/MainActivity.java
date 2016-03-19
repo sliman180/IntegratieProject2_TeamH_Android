@@ -3,6 +3,7 @@ package be.kdg.kandoe.kandoeandroid;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -132,8 +133,20 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) getSupportActionBar().setTitle(title);
     }
 
+    public void freeMemory(){
+        System.runFinalization();
+        Runtime.getRuntime().gc();
+        System.gc();
+    }
     private void logOut() {
         PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
+        for (String mMenuItem : mMenuItems) {
+            if((menuMap.get(mMenuItem)) instanceof Fragment){
+            getFragmentManager().beginTransaction().remove((Fragment) menuMap.get(mMenuItem)).commit();
+            }
+        }
+        freeMemory();
+        finish();
         Intent intent = new Intent(this, FirstActivity.class);
         startActivity(intent);
     }

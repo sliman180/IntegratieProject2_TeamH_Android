@@ -103,7 +103,7 @@ public class DeelnameLijstFragment extends Fragment {
     public void getData(){
         DeelnameAPI deelnameAPI =
                 Authorization.authorize(getActivity()).create(DeelnameAPI.class);
-        Call<List<Deelname>> call = deelnameAPI.getDeelnames(String.valueOf(gebruiker.getId()));
+        Call<List<Deelname>> call = deelnameAPI.getDeelnamesGebruiker(String.valueOf(gebruiker.getId()));
         call.enqueue(new Callback<List<Deelname>>() {
             @Override
             public void onResponse(Response<List<Deelname>> response, Retrofit retrofit) {

@@ -11,28 +11,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.joda.time.DateTime;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.ChatModel;
-import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.CirkelsessieModel;
 import be.kdg.kandoe.kandoeandroid.pojo.Bericht;
-import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
 import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
 import be.kdg.kandoe.kandoeandroid.pojo.request.BerichtRequest;
 import retrofit.Call;
@@ -56,7 +51,8 @@ public class ChatFragment extends Fragment {
     private Activity mActivity;
     private int aantalMessages = 0;
     private int maxAantalMessages = 0;
-    ArrayList<ChatModel> list = new ArrayList<>();
+    private ArrayList<ChatModel> list = new ArrayList<>();
+    private SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
 
     public ChatFragment() {
@@ -100,12 +96,13 @@ public class ChatFragment extends Fragment {
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Response<Void> response, Retrofit retrofit) {
-                        Toast.makeText(getActivity().getBaseContext(), "message sent", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getBaseContext(), "Bericht verzonden", Toast.LENGTH_SHORT).show();
+                        chatEditText.setText("");
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
-                        Toast.makeText(getActivity().getBaseContext(), "message not sent", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getBaseContext(), "Bericht niet verzonden", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -137,10 +134,16 @@ public class ChatFragment extends Fragment {
     public void addData(Response<List<Bericht>> response){
         list.clear();
         for (int i = 0; i < response.body().size(); ++i) {
-            ChatModel chatModel = new ChatModel(R.drawable.ic_arrow_right
-                    ,response.body().get(i).getTekst(),response.body().get(i).getGebruiker().getGebruikersnaam()
-                    ,String.valueOf(i+1));
-
+            ChatModel chatModel;
+            if(response.body().get(i).getGebruiker().getId() == gebruiker.getId()){
+                chatModel = new ChatModel(true
+                        ,response.body().get(i).getTekst(),response.body().get(i).getGebruiker().getGebruikersnaam()
+                        ,response.body().get(i).getDatum());
+            }else {
+                chatModel = new ChatModel(false
+                        ,response.body().get(i).getTekst(),response.body().get(i).getGebruiker().getGebruikersnaam()
+                        ,response.body().get(i).getDatum());
+            }
             list.add(chatModel);
         }
         if(response!=null){
@@ -158,7 +161,7 @@ public class ChatFragment extends Fragment {
 
         if (mActivity != null && adapter ==null) {
             adapter = new ChatAdapter(mActivity.getBaseContext(),
-                    R.layout.item_list_chat, list);
+                    R.layout.item_list_chat_left, list);
         }
 
         if (listview != null) {
@@ -214,31 +217,25 @@ public class ChatFragment extends Fragment {
 
             View rowView = null;
             if(!modelsArrayList.get(position).isGroupHeader()){
-                rowView = inflater.inflate(R.layout.item_list_chat, parent, false);
+                if(modelsArrayList.get(position).isLeft()){
+                    rowView = inflater.inflate(R.layout.item_list_chat_left, parent, false);
+                }
+                else {
+                    rowView = inflater.inflate(R.layout.item_list_chat_right, parent, false);
+                }
 
                 // 3. Get icon,title & counter views from the rowView
-                View view = rowView.findViewById(R.id.frontLine);
-                ImageView imgView = (ImageView) rowView.findViewById(R.id.item_icon);
                 TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
-                TextView organisatorView = (TextView) rowView.findViewById(R.id.item_organisator);
-                TextView counterView = (TextView) rowView.findViewById(R.id.item_counter);
+                TextView deelnemerView = (TextView) rowView.findViewById(R.id.item_deelnemer);
+                TextView datumView = (TextView) rowView.findViewById(R.id.item_datum);
+
 
                 // 4. Set the text for textView
-                imgView.setImageResource(modelsArrayList.get(position).getIcon());
                 titleView.setText(modelsArrayList.get(position).getTitle());
-                organisatorView.setText("Deelnemer: "+ modelsArrayList.get(position).getOrganisator());
-                counterView.setText(modelsArrayList.get(position).getCounter());
+                deelnemerView.setText(modelsArrayList.get(position).getOrganisator());
+                Date date = new Date(modelsArrayList.get(position).getDate());
+                datumView.setText(String.valueOf(ft.format(date)));
 
-                if (position % 2 == 1) {
-                    rowView.setBackgroundResource(R.color.colorPrimary);
-                    titleView.setTextColor(Color.WHITE);
-                    counterView.setTextColor(Color.WHITE);
-                    view.setBackgroundColor(Color.WHITE);
-                    imgView.setImageResource(R.drawable.ic_arrow_right_bright);
-                    organisatorView.setTextColor(Color.WHITE);
-                } else {
-                    rowView.setBackgroundColor(Color.WHITE);
-                }
             }
 
             // 5. retrn rowView

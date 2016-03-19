@@ -1,12 +1,18 @@
 package be.kdg.kandoe.kandoeandroid.pojo;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Chat {
+    @SerializedName("id")
     private int id;
+    @SerializedName("naam")
     private String naam;
+    @SerializedName("berichten")
     private List<Bericht> berichten = new ArrayList<>();
+    @SerializedName("cirkelsessie")
     private Cirkelsessie cirkelsessie;
 
     public int getId() {
