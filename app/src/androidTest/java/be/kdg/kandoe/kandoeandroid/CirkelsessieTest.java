@@ -5,6 +5,7 @@ import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.rule.ActivityTestRule;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
+import android.widget.Button;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -49,7 +50,7 @@ public class CirkelsessieTest {
 
         // wait for the response from kandoe api
         // TODO: properly implement idlingresource stuff. http://stackoverflow.com/questions/30155227/espresso-how-to-wait-for-some-time1-hour
-        sleep(LONG_WAIT_TIME);
+        CommonMethods.sleep(LONG_WAIT_TIME);
     }
 
     @Test
@@ -62,23 +63,28 @@ public class CirkelsessieTest {
         onView(withId(R.id.circle_length))
                 .check(matches(isDisplayed()));
 
-        goBackN();
+        CommonMethods.goBackN(TAG);
     }
 
     @Test
     public void testCreateCard() {
-        String typedText = generateString(10);
+        String typedText = CommonMethods.generateString(10);
         onData(anything())
                 .inAdapterView(withId(R.id.listview))
                 .atPosition(0)
                 .perform(click());
 
-//        onView(withId(R.id.buttonDeelname))
-//                .perform(click());
-//        onView(withText(R.string.yes))
-//                .perform(click());
+        CommonMethods.sleep(SHORT_WAIT_TIME);
 
-        sleep(SHORT_WAIT_TIME);
+        Button deelnameButton = (Button) CommonMethods.getActivityInstance().findViewById(R.id.buttonDeelname);
+        if (deelnameButton.isEnabled()) {
+            onView(withId(R.id.buttonDeelname))
+                    .perform(click());
+            onView(withText(R.string.yes))
+                    .perform(click());
+        }
+
+        CommonMethods.sleep(SHORT_WAIT_TIME);
 
         onView(withText("Sessie"))
                 .perform(click());
@@ -86,7 +92,7 @@ public class CirkelsessieTest {
         onView(withId(R.id.buttonAddKaart))
                 .perform(click());
 
-        sleep(SHORT_WAIT_TIME);
+        CommonMethods.sleep(SHORT_WAIT_TIME);
 
         onView(withId(R.id.dialogtext))
                 .perform(typeText(typedText));
@@ -94,7 +100,7 @@ public class CirkelsessieTest {
         onView(withId(R.id.dialogButtonOK))
                 .perform(click());
 
-        sleep(SHORT_WAIT_TIME);
+        CommonMethods.sleep(SHORT_WAIT_TIME);
 
         onView(withText(typedText))
                 .check(matches(isDisplayed()));
@@ -158,37 +164,4 @@ public class CirkelsessieTest {
 //        return stringHolder[0];
 //    }
 
-    /**
-     * This method exists to fix a bug in espresso where the app refuses to
-     * return to the activity where it began for a new test.
-     */
-    private void goBackN() {
-        final int N = 10; // how many times to hit back button
-        try {
-            for (int i = 0; i < N; i++)
-                Espresso.pressBack();
-        } catch (NoActivityResumedException e) {
-            Log.e(TAG, "Closed all activities", e);
-        }
-    }
-
-    private static String generateString(int length)
-    {
-        Random rng = new Random();
-        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-        char[] text = new char[length];
-        for (int i = 0; i < length; i++)
-        {
-            text[i] = characters.charAt(rng.nextInt(characters.length()));
-        }
-        return new String(text);
-    }
-
-    private void sleep(long waitTime) {
-        try {
-            Thread.sleep(waitTime);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }

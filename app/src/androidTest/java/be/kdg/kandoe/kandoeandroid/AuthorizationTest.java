@@ -50,7 +50,7 @@ public class AuthorizationTest {
 
     @Before
     public void setRandomUser() {
-        randomUser = generateString(6);
+        randomUser = CommonMethods.generateString(6);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class AuthorizationTest {
         onView(withId(R.id.drawer_layout))
                 .check(matches(isDisplayed()));
 
-        goBackN();
+        CommonMethods.goBackN(TAG);
     }
 
     @Test
@@ -89,7 +89,7 @@ public class AuthorizationTest {
         onView(withId(R.id.register_button))
                 .perform(click());
 
-        sleep(SLEEP_SHORT);
+        CommonMethods.sleep(SLEEP_SHORT);
 
         onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
 
@@ -101,12 +101,12 @@ public class AuthorizationTest {
         onView(withId(R.id.sign_in_button))
                 .perform(click());
 
-        sleep(SLEEP_SHORT);
+        CommonMethods.sleep(SLEEP_SHORT);
 
         onView(withId(R.id.drawer))
                 .check(matches(isDisplayed()));
 
-        goBackN();
+        CommonMethods.goBackN(TAG);
     }
 
     @Test
@@ -123,95 +123,28 @@ public class AuthorizationTest {
                 .perform(click());
 
         String token = SharedPreferencesMethods.getFromSharedPreferences
-                (getActivityInstance(), getActivityInstance().getString(R.string.token));
+                (CommonMethods.getActivityInstance(), CommonMethods.getActivityInstance().getString(R.string.token));
 
         assertNotEquals("", token);
 
         onView(withId(R.id.drawer))
-                .perform(actionOpenDrawer());
+                .perform(CommonMethods.actionOpenDrawer());
 
-        sleep(SLEEP_SHORT);
+        CommonMethods.sleep(SLEEP_SHORT);
 
         onView(withText("Afmelden"))
                 .perform(click());
 
-        sleep(SLEEP_SHORT);
+        CommonMethods.sleep(SLEEP_SHORT);
 
         onView(withId(R.id.login_button))
                 .check(matches(isDisplayed()));
 
         token = SharedPreferencesMethods.getFromSharedPreferences
-                (getActivityInstance(), getActivityInstance().getString(R.string.token));
+                (CommonMethods.getActivityInstance(), CommonMethods.getActivityInstance().getString(R.string.token));
 
         assertEquals("", token);
 
-        goBackN();
-    }
-
-    /**
-     * This method exists to fix a bug in espresso where the app refuses to
-     * return to the activity where it began for a new test.
-     */
-    private void goBackN() {
-        final int N = 10; // how many times to hit back button
-        try {
-            for (int i = 0; i < N; i++)
-                Espresso.pressBack();
-        } catch (NoActivityResumedException e) {
-            Log.e(TAG, "Closed all activities", e);
-        }
-    }
-
-    private static String generateString(int length)
-    {
-        Random rng = new Random();
-        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-        char[] text = new char[length];
-        for (int i = 0; i < length; i++)
-        {
-            text[i] = characters.charAt(rng.nextInt(characters.length()));
-        }
-        return new String(text);
-    }
-
-    private static ViewAction actionOpenDrawer() {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(DrawerLayout.class);
-            }
-
-            @Override
-            public String getDescription() {
-                return "open drawer";
-            }
-
-            @Override
-            public void perform(UiController uiController, View view) {
-                ((DrawerLayout) view).openDrawer(GravityCompat.START);
-            }
-        };
-    }
-
-    private void sleep(long waitTime) {
-        try {
-            Thread.sleep(waitTime);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Activity getActivityInstance(){
-        final Activity[] currentActivity = new Activity[1];
-        getInstrumentation().runOnMainSync(new Runnable() {
-            public void run() {
-                Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(RESUMED);
-                if (resumedActivities.iterator().hasNext()){
-                    currentActivity[0] = (Activity) resumedActivities.iterator().next();
-                }
-            }
-        });
-
-        return currentActivity[0];
+        CommonMethods.goBackN(TAG);
     }
 }
