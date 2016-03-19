@@ -1,22 +1,18 @@
 package be.kdg.kandoe.kandoeandroid;
 
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.NoActivityResumedException;
 import android.support.test.rule.ActivityTestRule;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.util.Log;
 import android.widget.Button;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.Random;
-
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -106,6 +102,28 @@ public class CirkelsessieTest {
                 .check(matches(isDisplayed()));
     }
 
+    @Test
+    public void chat() {
+        String typedText = CommonMethods.generateString(10);
+        onData(anything())
+                .inAdapterView(withId(R.id.listview))
+                .atPosition(0)
+                .perform(click());
+
+        CommonMethods.sleep(SHORT_WAIT_TIME);
+
+        onView(withText("Chat"))
+                .perform(click());
+
+        onView(withId(R.id.etChat))
+                .perform(typeText(typedText));
+
+        CommonMethods.sleep(SHORT_WAIT_TIME);
+
+        onView(withText(typedText))
+                .check(matches(isDisplayed()));
+    }
+
 //    @Test
 //    public void moveCard() {
 //        String typedText = generateString(10);
@@ -140,28 +158,6 @@ public class CirkelsessieTest {
 //                .inAdapterView(withId(R.id.card_list))
 //                .atPosition(0)
 //                .check(matches());
-//    }
-
-//    String getText(final Matcher<View> matcher) {
-//        final String[] stringHolder = { null };
-//        onView(matcher).perform(new ViewAction() {
-//            @Override
-//            public Matcher<View> getConstraints() {
-//                return isAssignableFrom(TextView.class);
-//            }
-//
-//            @Override
-//            public String getDescription() {
-//                return "getting text from a ListItem";
-//            }
-//
-//            @Override
-//            public void perform(UiController uiController, View view) {
-//                TextView tv = (TextView) view; //Save, because of check in getConstraints()
-//                stringHolder[0] = tv.getText().toString();
-//            }
-//        });
-//        return stringHolder[0];
 //    }
 
 }
