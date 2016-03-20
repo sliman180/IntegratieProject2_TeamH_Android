@@ -26,25 +26,25 @@ public class DeelnamesTest {
 
     @Before
     public void login() {
-        onView(withId(R.id.login_button))
+        onView(withId(R.id.aanmeld_button))
                 .perform(click());
 
-        onView(withId(R.id.username))
+        onView(withId(R.id.gebruikersnaam))
                 .perform(typeText(ADMIN_USERNAME));
-        onView(withId(R.id.password))
+        onView(withId(R.id.wachtwoord))
                 .perform(typeText(ADMIN_PASSWORD));
 
-        onView(withId(R.id.sign_in_button))
+        onView(withId(R.id.aanmeld_button))
                 .perform(click());
 
         // wait for the response from kandoe api
-        CommonMethods.sleep(LONG_WAIT_TIME);
+        GemeenschappelijkeMethoden.sleep(LONG_WAIT_TIME);
     }
 
     @Test
     public void openDeelnames() {
         onView(withId(R.id.drawer))
-                .perform(CommonMethods.actionOpenDrawer());
+                .perform(GemeenschappelijkeMethoden.actionOpenDrawer());
 
         onView(withText("Mijn deelnames"))
                 .perform(click());

@@ -23,7 +23,7 @@ import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.OrganisatieAPI;
-import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.OrganisatieModel;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
@@ -93,7 +93,7 @@ public class OrganisatieLijstFragment extends Fragment {
 
     public void getData(){
         be.kdg.kandoe.kandoeandroid.api.OrganisatieAPI organisatieAPI =
-                Authorization.authorize(getActivity()).create(OrganisatieAPI.class);
+                Autorisatie.authorize(getActivity()).create(OrganisatieAPI.class);
 
         Call<List<Organisatie>> call = organisatieAPI.getOrganisaties(String.valueOf(gebruiker.getId()));
         call.enqueue(new Callback<List<Organisatie>>() {

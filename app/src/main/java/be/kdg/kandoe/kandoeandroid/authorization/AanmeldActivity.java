@@ -54,7 +54,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class AanmeldActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -86,14 +86,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         intent = new Intent(this, MainActivity.class);
         activity = this;
         // Set up the login form.
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
+        mUsernameView = (AutoCompleteTextView) findViewById(R.id.gebruikersnaam);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = (EditText) findViewById(R.id.wachtwoord);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login_button || id == EditorInfo.IME_NULL) {
+                if (id == R.id.aanmeld_button || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mSignInButton = (Button) findViewById(R.id.sign_in_button);
+        Button mSignInButton = (Button) findViewById(R.id.aanmeld_button);
         if (mSignInButton != null) {
             mSignInButton.setOnClickListener(new OnClickListener() {
                 @Override
@@ -273,7 +273,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
+                new ArrayAdapter<>(AanmeldActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mUsernameView.setAdapter(adapter);
@@ -340,7 +340,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         private void createSharedUserObject(){
-            Retrofit retrofit = Authorization.authorize(activity);
+            Retrofit retrofit = Autorisatie.authorize(activity);
             AuthAPI authAPI = retrofit.create(AuthAPI.class);
             Call<Gebruiker> call = authAPI.getGebruiker();
             call.enqueue(new Callback<Gebruiker>() {

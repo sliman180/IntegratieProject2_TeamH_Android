@@ -26,7 +26,7 @@ import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
-import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.ChatModel;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Bericht;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
@@ -100,7 +100,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String chatText = chatEditText.getText().toString();
-                Retrofit retrofit = Authorization.authorize(getActivity());
+                Retrofit retrofit = Autorisatie.authorize(getActivity());
                 CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
                 BerichtRequest berichtRequest = new BerichtRequest(chatText, gebruiker.getId());
                 Call<Void> call = cirkelsessieAPI.addBericht(cirkelsessieId, berichtRequest);
@@ -134,7 +134,7 @@ public class ChatFragment extends Fragment {
             chatButton.getBackground().setColorFilter(ContextCompat.getColor(getActivity(), R.color.md_grey_400), PorterDuff.Mode.SRC_ATOP);
         }
         CirkelsessieAPI cirkelsessieAPI =
-                Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
+                Autorisatie.authorize(getActivity()).create(CirkelsessieAPI.class);
         Call<List<Bericht>> call = cirkelsessieAPI.getBerichten(cirkelsessieId);
         call.enqueue(new Callback<List<Bericht>>() {
             @Override

@@ -15,7 +15,7 @@ import android.widget.Toast;
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.AuthAPI;
 import be.kdg.kandoe.kandoeandroid.api.GebruikerAPI;
-import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
 import retrofit.Call;
@@ -68,7 +68,7 @@ public class ProfielFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Retrofit retrofit = Authorization.authorize(getActivity());
+                Retrofit retrofit = Autorisatie.authorize(getActivity());
                 GebruikerAPI gebruikerAPI = retrofit.create(GebruikerAPI.class);
                 String gebruikersnaam = editText.getText().toString();
                 gebruiker.setGebruikersnaam(gebruikersnaam);
@@ -91,7 +91,7 @@ public class ProfielFragment extends Fragment {
     }
 
     public void getData(){
-        Retrofit retrofit = Authorization.authorize(getActivity());
+        Retrofit retrofit = Autorisatie.authorize(getActivity());
         AuthAPI authAPI = retrofit.create(AuthAPI.class);
         Call<Gebruiker> call = authAPI.getGebruiker();
         call.enqueue(new Callback<Gebruiker>() {

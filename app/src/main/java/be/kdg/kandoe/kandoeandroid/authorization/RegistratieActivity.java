@@ -17,7 +17,7 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegistratieActivity extends AppCompatActivity {
     private TextView mUsername;
     private TextView mPassword;
     private TextView mPassword2;
@@ -35,13 +35,13 @@ public class RegisterActivity extends AppCompatActivity {
         mActivity = this;
 
         // region TextViews
-        mUsername = (TextView) findViewById(R.id.username);
-        mPassword = (TextView) findViewById(R.id.password);
-        mPassword2 = (TextView) findViewById(R.id.password2);
+        mUsername = (TextView) findViewById(R.id.gebruikersnaam);
+        mPassword = (TextView) findViewById(R.id.wachtwoord);
+        mPassword2 = (TextView) findViewById(R.id.wachtwoord2);
         mEmail = (TextView) findViewById(R.id.email);
         //endregion
 
-        Button registerButton = (Button) findViewById(R.id.register_button);
+        Button registerButton = (Button) findViewById(R.id.registreer_button);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(mActivity, R.string.password_mismatch, Toast.LENGTH_LONG).show();
             return;
         }
-        AuthAPI authAPI = Authorization.authorize(this).create(AuthAPI.class);
+        AuthAPI authAPI = Autorisatie.authorize(this).create(AuthAPI.class);
         Call<Void> call = authAPI.register(new RegistratieRequest(username, password, password));
 
         call.enqueue(new Callback<Void>() {
@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onResponse(Response<Void> response, Retrofit retrofit) {
                 Toast.makeText(mActivity, R.string.register_success, Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(mActivity, LoginActivity.class);
+                Intent intent = new Intent(mActivity, AanmeldActivity.class);
                 startActivity(intent);
             }
 

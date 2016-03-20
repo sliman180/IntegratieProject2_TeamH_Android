@@ -21,7 +21,7 @@ import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
-import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Spelkaart;
 import retrofit.Call;
 import retrofit.Callback;
@@ -78,7 +78,7 @@ public class CirkelsessieFragment extends Fragment {
 
     public void getData(){
         beurt = ((CirkelsessieActivity) getActivity()).isBeurt();
-        Retrofit retrofit = Authorization.authorize(getActivity());
+        Retrofit retrofit = Autorisatie.authorize(getActivity());
         CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
         Call<List<Spelkaart>> call = cirkelsessieAPI.getSpelkaarten(cirkelsessieId);
 

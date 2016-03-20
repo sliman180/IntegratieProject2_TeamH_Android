@@ -13,7 +13,7 @@ import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
-public class Authorization {
+public class Autorisatie {
     private static Retrofit retrofit;
 
     public static Retrofit authorize(Activity activity){

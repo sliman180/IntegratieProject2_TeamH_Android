@@ -26,7 +26,7 @@ import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
-import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.CirkelsessieModel;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Cirkelsessie;
 import retrofit.Call;
@@ -113,7 +113,7 @@ public class CirkelSessieLijstFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 CirkelsessieAPI cirkelsessieAPI =
-                        Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
+                        Autorisatie.authorize(getActivity()).create(CirkelsessieAPI.class);
                 Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesGesloten();
                 call.enqueue(new Callback<List<Cirkelsessie>>() {
                     @Override
@@ -138,7 +138,7 @@ public class CirkelSessieLijstFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 CirkelsessieAPI cirkelsessieAPI =
-                        Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
+                        Autorisatie.authorize(getActivity()).create(CirkelsessieAPI.class);
                 Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesEnded();
                 call.enqueue(new Callback<List<Cirkelsessie>>() {
                     @Override
@@ -163,7 +163,7 @@ public class CirkelSessieLijstFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 CirkelsessieAPI cirkelsessieAPI =
-                        Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
+                        Autorisatie.authorize(getActivity()).create(CirkelsessieAPI.class);
                 Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesStarted();
                 call.enqueue(new Callback<List<Cirkelsessie>>() {
                     @Override
@@ -187,7 +187,7 @@ public class CirkelSessieLijstFragment extends Fragment {
 
     public void getData(){
         CirkelsessieAPI cirkelsessieAPI =
-                Authorization.authorize(getActivity()).create(CirkelsessieAPI.class);
+                Autorisatie.authorize(getActivity()).create(CirkelsessieAPI.class);
         Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesGepland();
         call.enqueue(new Callback<List<Cirkelsessie>>() {
             @Override

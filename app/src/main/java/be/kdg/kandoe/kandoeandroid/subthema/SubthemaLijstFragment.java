@@ -3,7 +3,6 @@ package be.kdg.kandoe.kandoeandroid.subthema;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
-import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.api.*;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.SubthemaModel;
@@ -91,7 +90,7 @@ public class SubthemaLijstFragment extends Fragment {
 
     public void getData(){
        GebruikerAPI gebruikerAPI =
-                Authorization.authorize(getActivity()).create(GebruikerAPI.class);
+                Autorisatie.authorize(getActivity()).create(GebruikerAPI.class);
 
         Call<List<Subthema>> call = gebruikerAPI.getSubThemas(String.valueOf(gebruiker.getId()));
         call.enqueue(new Callback<List<Subthema>>() {

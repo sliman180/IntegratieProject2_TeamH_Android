@@ -20,7 +20,7 @@ import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.OrganisatieAPI;
-import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.HoofdthemaModel;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Hoofdthema;
 import retrofit.Call;
@@ -63,7 +63,7 @@ public class OrganisatieActivity extends AppCompatActivity {
 
     public void getData(){
 
-        Retrofit retrofit = Authorization.authorize(mActivity);
+        Retrofit retrofit = Autorisatie.authorize(mActivity);
         OrganisatieAPI organisatieAPI = retrofit.create(OrganisatieAPI.class);
         Call<List<Hoofdthema>> call = organisatieAPI.getHoofthemasFromOrganisaties(id);
 

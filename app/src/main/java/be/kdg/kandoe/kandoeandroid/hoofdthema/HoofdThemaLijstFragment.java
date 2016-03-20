@@ -23,7 +23,7 @@ import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.HoofdthemaAPI;
-import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.HoofdthemaModel;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
@@ -89,7 +89,7 @@ public class HoofdThemaLijstFragment extends Fragment {
 
     public void getData(){
         HoofdthemaAPI hoofdthemaAPI =
-                Authorization.authorize(getActivity()).create(HoofdthemaAPI.class);
+                Autorisatie.authorize(getActivity()).create(HoofdthemaAPI.class);
 
         Call<List<Hoofdthema>> call = hoofdthemaAPI.getHoofdthemas(String.valueOf(gebruiker.getId()));
         call.enqueue(new Callback<List<Hoofdthema>>() {

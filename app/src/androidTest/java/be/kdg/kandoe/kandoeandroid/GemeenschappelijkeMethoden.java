@@ -20,7 +20,12 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.runner.lifecycle.Stage.RESUMED;
 
-public class CommonMethods {
+public class GemeenschappelijkeMethoden {
+    public static final String GEBRUIKERSNAAM = "userone";
+    public static final String WACHTWOORD = "userone";
+    public static final long LONG_WAIT_TIME = 3000;
+    public static final long SHORT_WAIT_TIME = 1000;
+
     /**
      * This method exists to fix a bug in espresso where the app refuses to
      * return to the activity where it began for a new test.

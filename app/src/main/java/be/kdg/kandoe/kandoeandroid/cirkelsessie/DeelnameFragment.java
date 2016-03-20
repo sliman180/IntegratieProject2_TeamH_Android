@@ -29,7 +29,7 @@ import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.DeelnameAPI;
-import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.DeelnemersModel;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Deelname;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
@@ -157,7 +157,7 @@ public class DeelnameFragment extends Fragment {
     }
 
     public void checkIsDeelnemer(){
-        Retrofit retrofit = Authorization.authorize(getActivity());
+        Retrofit retrofit = Autorisatie.authorize(getActivity());
         DeelnameAPI deelnameAPI = retrofit.create(DeelnameAPI.class);
         Call<List<Deelname>> call = deelnameAPI.getDeelnamesVanCirkelsessie(cirkelsessieId);
         call.enqueue(new Callback<List<Deelname>>() {
@@ -197,7 +197,7 @@ public class DeelnameFragment extends Fragment {
                 builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Retrofit retrofit = Authorization.authorize(getActivity());
+                        Retrofit retrofit = Autorisatie.authorize(getActivity());
                         DeelnameAPI deelnameAPI = retrofit.create(DeelnameAPI.class);
                         Call<Void> call = deelnameAPI.doeDeelname(cirkelsessieId);
                         call.enqueue(new Callback<Void>() {
@@ -231,7 +231,7 @@ public class DeelnameFragment extends Fragment {
 
     public void getData(){
         DeelnameAPI deelnameAPI =
-                Authorization.authorize(getActivity()).create(DeelnameAPI.class);
+                Autorisatie.authorize(getActivity()).create(DeelnameAPI.class);
         Call<List<Deelname>> call = deelnameAPI.getDeelnamesVanCirkelsessie(cirkelsessieId);
         call.enqueue(new Callback<List<Deelname>>() {
             @Override

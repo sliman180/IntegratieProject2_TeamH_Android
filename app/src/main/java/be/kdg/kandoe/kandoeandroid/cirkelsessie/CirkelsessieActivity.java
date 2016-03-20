@@ -29,7 +29,7 @@ import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.api.DeelnameAPI;
 import be.kdg.kandoe.kandoeandroid.api.SpelkaartAPI;
-import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.Parent;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Cirkelsessie;
@@ -137,7 +137,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
     }
 
     public void checkBeurt(){
-        Retrofit retrofit = Authorization.authorize(mActivity);
+        Retrofit retrofit = Autorisatie.authorize(mActivity);
         DeelnameAPI deelnameAPI = retrofit.create(DeelnameAPI.class);
         Call<List<Deelname>> call = deelnameAPI.getDeelnamesVanCirkelsessie(cirkelsessieId);
         call.enqueue(new Callback<List<Deelname>>() {
@@ -171,7 +171,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Retrofit retrofit = Authorization.authorize(mActivity);
+                Retrofit retrofit = Autorisatie.authorize(mActivity);
                 final CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
                 KaartRequest kaart = new KaartRequest(newCardInput.getText().toString(), newCardInput.getText().toString(), false);
                 kaart.setGebruiker(gebruiker.getId());
@@ -209,7 +209,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
     }
 
     public void changeCardPosition(Spelkaart spelkaart){
-        Retrofit retrofit = Authorization.authorize(mActivity);
+        Retrofit retrofit = Autorisatie.authorize(mActivity);
         SpelkaartAPI spelkaartAPI = retrofit.create(SpelkaartAPI.class);
         Call<Spelkaart> call = spelkaartAPI.verschuif(String.valueOf(spelkaart.getId()));
         call.enqueue(new Callback<Spelkaart>() {
@@ -246,7 +246,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         }
 
         private void getSpelkaartenData(){
-            Retrofit retrofit = Authorization.authorize(mActivity);
+            Retrofit retrofit = Autorisatie.authorize(mActivity);
             CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
             Call<List<Spelkaart>> call = cirkelsessieAPI.getSpelkaarten(cirkelsessieId);
             call.enqueue(new Callback<List<Spelkaart>>() {
@@ -279,7 +279,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         }
 
         private void getCirkelData(){
-            Retrofit retrofit = Authorization.authorize(mActivity);
+            Retrofit retrofit = Autorisatie.authorize(mActivity);
             CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
             Call<Cirkelsessie> call = cirkelsessieAPI.getCirkelsessie(cirkelsessieId);
             call.enqueue(new Callback<Cirkelsessie>() {

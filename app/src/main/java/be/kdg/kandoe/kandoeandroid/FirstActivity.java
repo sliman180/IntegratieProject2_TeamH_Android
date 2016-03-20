@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import be.kdg.kandoe.kandoeandroid.authorization.LoginActivity;
-import be.kdg.kandoe.kandoeandroid.authorization.RegisterActivity;
+import be.kdg.kandoe.kandoeandroid.authorization.AanmeldActivity;
+import be.kdg.kandoe.kandoeandroid.authorization.RegistratieActivity;
 
 public class FirstActivity extends AppCompatActivity {
     private AppCompatActivity mActivity;
@@ -22,7 +22,7 @@ public class FirstActivity extends AppCompatActivity {
         mActivity = this;
 
         //region Scale circle image
-        ImageView circle = (ImageView) findViewById(R.id.circle_image);
+        ImageView circle = (ImageView) findViewById(R.id.circel_afbeelding);
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -34,14 +34,14 @@ public class FirstActivity extends AppCompatActivity {
         //endregion
 
         //region Buttons
-        Button login = (Button) findViewById(R.id.login_button);
-        Button register = (Button) findViewById(R.id.register_button);
+        Button login = (Button) findViewById(R.id.aanmeld_button);
+        Button register = (Button) findViewById(R.id.registreer_button);
 
         if (login != null) {
             login.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(mActivity, LoginActivity.class));
+                    startActivity(new Intent(mActivity, AanmeldActivity.class));
 
                 }
             });
@@ -51,7 +51,7 @@ public class FirstActivity extends AppCompatActivity {
             register.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(mActivity, RegisterActivity.class));
+                    startActivity(new Intent(mActivity, RegistratieActivity.class));
                 }
             });
         }

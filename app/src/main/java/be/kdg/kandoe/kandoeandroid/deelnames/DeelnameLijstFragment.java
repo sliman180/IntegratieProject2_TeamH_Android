@@ -28,7 +28,7 @@ import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.DeelnameAPI;
-import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
+import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
 import be.kdg.kandoe.kandoeandroid.cirkelsessie.CirkelsessieActivity;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.DeelnameModel;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
@@ -100,7 +100,7 @@ public class DeelnameLijstFragment extends Fragment {
 
     public void getData(){
         DeelnameAPI deelnameAPI =
-                Authorization.authorize(getActivity()).create(DeelnameAPI.class);
+                Autorisatie.authorize(getActivity()).create(DeelnameAPI.class);
         Call<List<Deelname>> call = deelnameAPI.getDeelnamesGebruiker(String.valueOf(gebruiker.getId()));
         call.enqueue(new Callback<List<Deelname>>() {
             @Override
