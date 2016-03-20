@@ -22,7 +22,7 @@ import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.HoofdthemaAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.SubthemaModel;
-import be.kdg.kandoe.kandoeandroid.pojo.Subthema;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Subthema;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;

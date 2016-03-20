@@ -7,14 +7,12 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -41,11 +39,10 @@ import java.util.List;
 import be.kdg.kandoe.kandoeandroid.MainActivity;
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.AuthAPI;
-import be.kdg.kandoe.kandoeandroid.api.GebruikerAPI;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
-import be.kdg.kandoe.kandoeandroid.pojo.Credentials;
-import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
-import be.kdg.kandoe.kandoeandroid.pojo.Token;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Credentials;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Token;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -344,8 +341,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private void createSharedUserObject(){
             Retrofit retrofit = Authorization.authorize(activity);
-            GebruikerAPI gebruikerAPI = retrofit.create(GebruikerAPI.class);
-            Call<Gebruiker> call = gebruikerAPI.getGebruiker();
+            AuthAPI authAPI = retrofit.create(AuthAPI.class);
+            Call<Gebruiker> call = authAPI.getGebruiker();
             call.enqueue(new Callback<Gebruiker>() {
                 @Override
                 public void onResponse(Response<Gebruiker> response, Retrofit retrofit) {

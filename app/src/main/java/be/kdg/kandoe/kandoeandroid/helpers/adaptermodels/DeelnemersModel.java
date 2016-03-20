@@ -1,26 +1,23 @@
 package be.kdg.kandoe.kandoeandroid.helpers.adaptermodels;
 
 
-
-public class DeelnameModel {
+public class DeelnemersModel {
 
     private int icon;
     private String title;
+    private boolean beurt;
     private String date;
-    private String counter;
+    private String aantalKaarten;
 
     private boolean isGroupHeader = false;
 
-    public DeelnameModel(String title,String date) {
-        this(-1,title,date,null);
-        isGroupHeader = false;
-    }
-    public DeelnameModel(int icon,String title, String date, String counter) {
+    public DeelnemersModel(int icon,String title,boolean beurt, String date, String aantalKaarten) {
         super();
         this.icon = icon;
         this.title = title;
+        this.beurt = beurt;
         this.date = date;
-        this.counter = counter;
+        this.aantalKaarten = aantalKaarten;
     }
 
     public int getIcon() {
@@ -55,11 +52,19 @@ public class DeelnameModel {
         this.isGroupHeader = isGroupHeader;
     }
 
-    public String getCounter() {
-        return counter;
+    public boolean getBeurt() {
+        return beurt;
     }
 
-    public void setCounter(String counter) {
-        this.counter = counter;
+    public void setBeurt(boolean beurt) {
+        this.beurt = beurt;
+    }
+
+    public String getAantalKaarten() {
+        return aantalKaarten;
+    }
+
+    public void setAantalKaarten(String aantalKaarten) {
+        this.aantalKaarten = aantalKaarten;
     }
 }

@@ -1,9 +1,9 @@
-package be.kdg.kandoe.kandoeandroid.helpers;
+package be.kdg.kandoe.kandoeandroid.helpers.adaptermodels;
 
 
 import java.util.ArrayList;
 
-import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Spelkaart;
 
 public class Parent {
 

@@ -79,4 +79,5 @@
     <string name="sourceURL">http://teamh-spring.herokuapp.com</string>
     <string name="session">Sessie</string>
     <string name="participants">Deelnemers</string>
+    <string name="deelnemers_deelname">Deelnemers</string>
 </resources>

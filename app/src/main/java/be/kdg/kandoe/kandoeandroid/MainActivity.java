@@ -3,13 +3,11 @@ package be.kdg.kandoe.kandoeandroid;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.google.gson.Gson;
@@ -32,7 +30,7 @@ import be.kdg.kandoe.kandoeandroid.help.HelpFragment;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.hoofdthema.HoofdThemaLijstFragment;
 import be.kdg.kandoe.kandoeandroid.organisaties.OrganisatieLijstFragment;
-import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
 import be.kdg.kandoe.kandoeandroid.profiel.ProfielFragment;
 import be.kdg.kandoe.kandoeandroid.subthema.SubthemaLijstFragment;
 

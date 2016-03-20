@@ -2,9 +2,8 @@ package be.kdg.kandoe.kandoeandroid.api;
 
 import java.util.List;
 
-import be.kdg.kandoe.kandoeandroid.pojo.Hoofdthema;
-import be.kdg.kandoe.kandoeandroid.pojo.Organisatie;
-import be.kdg.kandoe.kandoeandroid.pojo.Subthema;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Hoofdthema;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Organisatie;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Path;

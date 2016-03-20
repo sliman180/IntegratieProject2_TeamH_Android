@@ -22,8 +22,8 @@ import static org.hamcrest.Matchers.anything;
 @LargeTest
 public class CirkelsessieTest {
     private static final String TAG = "cirkel_test";
-    private static final String ADMIN_USERNAME = "admin";
-    private static final String ADMIN_PASSWORD = "admin";
+    private static final String ADMIN_USERNAME = "userone";
+    private static final String ADMIN_PASSWORD = "userone";
     private static final long LONG_WAIT_TIME = 3000;
     private static final long SHORT_WAIT_TIME = 1000;
 
@@ -112,6 +112,11 @@ public class CirkelsessieTest {
     @Test
     public void chat() {
         String typedText = CommonMethods.generateString(10);
+
+        onView(withId(R.id.buttonGestart)).perform(click());
+
+        CommonMethods.sleep(SHORT_WAIT_TIME);
+
         onData(anything())
                 .inAdapterView(withId(R.id.listview))
                 .atPosition(0)
@@ -129,6 +134,8 @@ public class CirkelsessieTest {
 
         onView(withText(typedText))
                 .check(matches(isDisplayed()));
+
+        onView(withId(R.id.btSend)).perform(click());
     }
 
 //    @Test

@@ -2,7 +2,7 @@ package be.kdg.kandoe.kandoeandroid.api;
 
 import java.util.List;
 
-import be.kdg.kandoe.kandoeandroid.pojo.Deelname;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Deelname;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.POST;

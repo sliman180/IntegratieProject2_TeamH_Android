@@ -3,7 +3,6 @@ package be.kdg.kandoe.kandoeandroid.cirkelsessie;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -29,8 +28,8 @@ import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.ChatModel;
-import be.kdg.kandoe.kandoeandroid.pojo.Bericht;
-import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Bericht;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
 import be.kdg.kandoe.kandoeandroid.pojo.request.BerichtRequest;
 import retrofit.Call;
 import retrofit.Callback;

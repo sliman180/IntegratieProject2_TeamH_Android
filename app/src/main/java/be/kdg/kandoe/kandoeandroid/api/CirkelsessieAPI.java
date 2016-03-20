@@ -3,12 +3,12 @@ package be.kdg.kandoe.kandoeandroid.api;
 
 import java.util.List;
 
-import be.kdg.kandoe.kandoeandroid.pojo.Bericht;
-import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Bericht;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Cirkelsessie;
 import be.kdg.kandoe.kandoeandroid.pojo.request.BerichtRequest;
 import be.kdg.kandoe.kandoeandroid.pojo.request.KaartRequest;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Kaart;
-import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Spelkaart;
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.GET;

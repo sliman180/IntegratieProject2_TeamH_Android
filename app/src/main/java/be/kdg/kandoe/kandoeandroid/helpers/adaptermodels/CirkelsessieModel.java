@@ -1,7 +1,7 @@
 package be.kdg.kandoe.kandoeandroid.helpers.adaptermodels;
 
 
-import be.kdg.kandoe.kandoeandroid.pojo.Subthema;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Subthema;
 
 public class CirkelsessieModel {
 

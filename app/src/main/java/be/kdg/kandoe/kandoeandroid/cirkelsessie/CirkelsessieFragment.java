@@ -22,7 +22,7 @@ import java.util.List;
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
-import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Spelkaart;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;

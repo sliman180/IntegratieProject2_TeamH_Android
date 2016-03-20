@@ -19,19 +19,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.CirkelsessieModel;
-import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Cirkelsessie;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -298,8 +295,6 @@ public class CirkelSessieLijstFragment extends Fragment {
             this.modelsArrayList = modelsArrayList;
         }
 
-
-
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // 1. Create inflater
@@ -327,8 +322,11 @@ public class CirkelSessieLijstFragment extends Fragment {
                 counterView.setText(modelsArrayList.get(position).getCounter());
                 Date date = new Date(modelsArrayList.get(position).getDatum());
                 datumView.setText("Startdatum: " + String.valueOf(ft.format(date)));
-                if(modelsArrayList.get(position).getSubthema() != null)
+                if(modelsArrayList.get(position).getSubthema() != null){
                 subthemaView.setText("Subthema: " + modelsArrayList.get(position).getSubthema().getNaam());
+                }else {
+                    subthemaView.setVisibility(View.GONE);
+                }
 
                 if (position % 2 == 1) {
                     rowView.setBackgroundResource(R.color.colorPrimary);

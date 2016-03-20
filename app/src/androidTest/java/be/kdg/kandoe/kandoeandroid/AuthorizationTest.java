@@ -41,8 +41,8 @@ public class AuthorizationTest {
     private static final String TAG = "auth_test";
     private static final long SLEEP_SHORT = 1000;
     private String randomUser;
-    private static final String ADMIN_USERNAME = "admin";
-    private static final String ADMIN_PASSWORD = "admin";
+    private static final String ADMIN_USERNAME = "userone";
+    private static final String ADMIN_PASSWORD = "userone";
 
     @Rule
     public ActivityTestRule<FirstActivity> mActivityRule =

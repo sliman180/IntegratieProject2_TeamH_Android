@@ -2,28 +2,22 @@ package be.kdg.kandoe.kandoeandroid.profiel;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import be.kdg.kandoe.kandoeandroid.R;
+import be.kdg.kandoe.kandoeandroid.api.AuthAPI;
 import be.kdg.kandoe.kandoeandroid.api.GebruikerAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
-import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -98,14 +92,9 @@ public class ProfielFragment extends Fragment {
     }
 
     public void getData(){
-//        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(mActivity.getApplicationContext());
-//                Gson gson = new Gson();
-//        String json = mPrefs.getString("Gebruiker", "");
-//        final Gebruiker gebruiker = gson.fromJson(json, Gebruiker.class);
-
         Retrofit retrofit = Authorization.authorize(getActivity());
-        GebruikerAPI gebruikerAPI = retrofit.create(GebruikerAPI.class);
-        Call<Gebruiker> call = gebruikerAPI.getGebruiker();
+        AuthAPI authAPI = retrofit.create(AuthAPI.class);
+        Call<Gebruiker> call = authAPI.getGebruiker();
         call.enqueue(new Callback<Gebruiker>() {
             @Override
             public void onResponse(Response<Gebruiker> response, Retrofit retrofit){

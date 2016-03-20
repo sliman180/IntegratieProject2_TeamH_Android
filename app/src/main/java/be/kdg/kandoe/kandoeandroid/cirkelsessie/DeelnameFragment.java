@@ -1,36 +1,44 @@
 package be.kdg.kandoe.kandoeandroid.cirkelsessie;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.DeelnameAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
-import be.kdg.kandoe.kandoeandroid.pojo.Deelname;
-import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
+import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.DeelnemersModel;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Deelname;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class DeelnameFragment extends Fragment {
 
     private View v;
@@ -43,6 +51,13 @@ public class DeelnameFragment extends Fragment {
     private String status;
     private TextView beurtTextview;
     private ChatFragment chatFragment;
+    private Activity mActivity;
+    private int aantalDeelnemers = 0;
+    private int maxAantalDeelnemers = 0;
+    private DeelnemersAdapter adapter = null;
+    private Handler handler;
+
+    private ArrayList<DeelnemersModel> list = new ArrayList<>();
 
     public DeelnameFragment() {
         // Required empty public constructor
@@ -61,7 +76,9 @@ public class DeelnameFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mActivity = getActivity();
         isDeelnemer = false;
+        handler = new Handler();
         cirkelsessieId = ((CirkelsessieActivity) getActivity()).getCirkelsessieId();
         gebruiker = ((CirkelsessieActivity) getActivity()).getGebruiker();
         status = ((CirkelsessieActivity) getActivity()).getStatus();
@@ -70,6 +87,7 @@ public class DeelnameFragment extends Fragment {
         chatFragment = (ChatFragment) getFragmentManager().findFragmentById(R.id.chat_fragment);
         onClickDeelnemen();
         checkStatus();
+        createAdapter();
     }
 
     public void checkStatus(){
@@ -130,6 +148,7 @@ public class DeelnameFragment extends Fragment {
 
         }
     }
+
     public void checkIsNotDeelnemer(){
         if (!isDeelnemer) {
             buttonVoegKaart.setEnabled(false);
@@ -153,17 +172,18 @@ public class DeelnameFragment extends Fragment {
                             buttonDeelname.getBackground().setColorFilter(ContextCompat.getColor(getActivity(), R.color.md_grey_400), PorterDuff.Mode.SRC_ATOP);
                             buttonDeelname.setEnabled(false);
                             isDeelnemer = true;
-                            if(status.equals("GESTART") && isDeelnemer){
-                            buttonVoegKaart.setEnabled(true);
-                            buttonVoegKaart.getBackground().setColorFilter(null);
+                            if (status.equals("GESTART") && isDeelnemer) {
+                                buttonVoegKaart.setEnabled(true);
+                                buttonVoegKaart.getBackground().setColorFilter(null);
                             }
                         }
                     }
                 }
             }
+
             @Override
             public void onFailure(Throwable t) {
-                Log.d("checkIsDeelnemer:",t.getMessage());
+                Log.d("checkIsDeelnemer:", t.getMessage());
             }
         });
     }
@@ -183,16 +203,15 @@ public class DeelnameFragment extends Fragment {
                         call.enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Response<Void> response, Retrofit retrofit) {
-                                buttonVoegKaart.setEnabled(true);
-                                buttonVoegKaart.getBackground().setColorFilter(null);
                                 buttonDeelname.setText(R.string.deelgenomen);
                                 buttonDeelname.getBackground().setColorFilter(ContextCompat.getColor(getActivity(), R.color.md_grey_400), PorterDuff.Mode.SRC_ATOP);
                                 buttonDeelname.setEnabled(false);
                                 isDeelnemer = true;
                             }
+
                             @Override
                             public void onFailure(Throwable t) {
-                                Log.d("onCliclDeelnemen:", t.getMessage());
+                                Log.d("onClickDeelnemen:", t.getMessage());
 
                             }
                         });
@@ -210,7 +229,146 @@ public class DeelnameFragment extends Fragment {
         });
     }
 
+    public void getData(){
+        DeelnameAPI deelnameAPI =
+                Authorization.authorize(getActivity()).create(DeelnameAPI.class);
+        Call<List<Deelname>> call = deelnameAPI.getDeelnamesVanCirkelsessie(cirkelsessieId);
+        call.enqueue(new Callback<List<Deelname>>() {
+            @Override
+            public void onResponse(Response<List<Deelname>> response, Retrofit retrofit) {
+                addData(response);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Toast.makeText(mActivity.getBaseContext(), "failure",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void createAdapter(){
+        ListView listview = null;
+        if (getView() != null)
+            listview = (ListView) getView().findViewById(R.id.listview_deelnemers);
+
+        if (mActivity != null && adapter ==null) {
+            adapter = new DeelnemersAdapter(mActivity.getBaseContext(),
+                    R.layout.item_list_deelnemers, list);
+        }
+
+        if (listview != null) {
+            listview.setAdapter(adapter);
+        }
+    }
+
+    public void addData(Response<List<Deelname>> response){
+        list.clear();
+        SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        for (int i = 0; i < response.body().size(); ++i) {
+            Date date = new Date(response.body().get(i).getDatum());
+            DeelnemersModel model = new DeelnemersModel(R.drawable.ic_account_box
+                    ,response.body().get(i).getGebruiker().getGebruikersnaam()
+                    ,response.body().get(i).isAanDeBeurt()
+                    ,ft.format(date)
+                    ,String.valueOf(response.body().get(i).getAangemaakteKaarten()));
+            list.add(model);
+        }
+        aantalDeelnemers = response.body().size();
+        if((maxAantalDeelnemers < aantalDeelnemers) && adapter !=null){
+            adapter.notifyDataSetChanged();
+            maxAantalDeelnemers = aantalDeelnemers;
+        }
+        if(adapter != null && status.equals("GESTART")){
+        adapter.notifyDataSetChanged();
+        }
+    }
+
+
+    private class DeelnemersAdapter extends ArrayAdapter<DeelnemersModel> {
+
+        private Context context;
+        private ArrayList<DeelnemersModel> modelsArrayList;
+
+        public DeelnemersAdapter(Context context, int textViewResourceId, ArrayList<DeelnemersModel> modelsArrayList) {
+
+            super(context, textViewResourceId, modelsArrayList);
+
+            this.context = context;
+            this.modelsArrayList = modelsArrayList;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // 1. Create inflater
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
+            // 2. Get rowView from inflater
+
+            View rowView = null;
+            if(!modelsArrayList.get(position).isGroupHeader()){
+                rowView = inflater.inflate(R.layout.item_list_deelnemers, parent, false);
+
+                // 3. Get icon,title & counter views from the rowView
+                ImageView imgView = (ImageView) rowView.findViewById(R.id.item_icon);
+                TextView titleView = (TextView) rowView.findViewById(R.id.item_title);
+                TextView dateView = (TextView) rowView.findViewById(R.id.date);
+                TextView beurtView = (TextView) rowView.findViewById(R.id.beurt);
+                TextView aantalKaarten = (TextView) rowView.findViewById(R.id.aantalKaarten);
+
+                // 4. Set the text for textView
+                imgView.setImageResource(modelsArrayList.get(position).getIcon());
+                String titleText = modelsArrayList.get(position).getTitle();
+                titleView.setText(titleText);
+                String dateText = "Deelgenomen op : " + modelsArrayList.get(position).getDate();
+                dateView.setText(dateText);
+                if(status.equals("GESTART")){
+                    if(modelsArrayList.get(position).getBeurt()){
+                        beurtView.setText("Is aan de beurt");
+                        beurtView.setTextColor(Color.GREEN);
+                    }else {
+                        beurtView.setText("Is niet aan de beurt");
+                        beurtView.setTextColor(Color.RED);
+                    }
+                }else {
+                    beurtView.setVisibility(View.GONE);
+                }
+                aantalKaarten.setText("Gemaakte kaarten: " + modelsArrayList.get(position).getAantalKaarten());
+
+            }
+
+            // 5. retrn rowView
+            return rowView;
+        }
+    }
+
     public boolean isDeelnemer() {
         return isDeelnemer;
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        handler.removeCallbacks(chatRunnable);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        handler.postDelayed(chatRunnable, 1000);
+    }
+
+    private final Runnable chatRunnable = new Runnable() {
+        @Override
+        public void run()
+        {
+            getData();
+            //Do task
+            handler.postDelayed(chatRunnable, 1000);
+        }
+    };
 }

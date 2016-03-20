@@ -1,7 +1,4 @@
-package be.kdg.kandoe.kandoeandroid.pojo;
-
-import java.util.ArrayList;
-import java.util.List;
+package be.kdg.kandoe.kandoeandroid.pojo.response;
 
 public class Subthema {
     private int id;

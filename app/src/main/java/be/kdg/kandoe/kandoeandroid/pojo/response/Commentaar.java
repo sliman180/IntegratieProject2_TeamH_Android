@@ -1,9 +1,7 @@
-package be.kdg.kandoe.kandoeandroid.pojo;
+package be.kdg.kandoe.kandoeandroid.pojo.response;
 
 
 import java.util.Date;
-
-import be.kdg.kandoe.kandoeandroid.pojo.response.Kaart;
 
 public class Commentaar {
     private int id;

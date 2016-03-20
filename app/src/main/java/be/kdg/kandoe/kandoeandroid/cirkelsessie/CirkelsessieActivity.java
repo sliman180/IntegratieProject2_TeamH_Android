@@ -30,14 +30,14 @@ import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
 import be.kdg.kandoe.kandoeandroid.api.DeelnameAPI;
 import be.kdg.kandoe.kandoeandroid.api.SpelkaartAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Authorization;
-import be.kdg.kandoe.kandoeandroid.helpers.Parent;
+import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.Parent;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
-import be.kdg.kandoe.kandoeandroid.pojo.Cirkelsessie;
-import be.kdg.kandoe.kandoeandroid.pojo.Deelname;
-import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Cirkelsessie;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Deelname;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
 import be.kdg.kandoe.kandoeandroid.pojo.request.KaartRequest;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Kaart;
-import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Spelkaart;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -98,7 +98,6 @@ public class CirkelsessieActivity extends AppCompatActivity {
         cirkelsessieId = extras.getString("cirkelsessieId");
         setTitle(extras.getString("cirkelsessieTitle"));
         status = extras.getString("status");
-
 
         if(toolbar != null){
             toolbar.setNavigationIcon(R.drawable.ic_chevron_left);
@@ -171,6 +170,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Retrofit retrofit = Authorization.authorize(mActivity);
                 final CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
                 KaartRequest kaart = new KaartRequest(newCardInput.getText().toString(), newCardInput.getText().toString(), false);

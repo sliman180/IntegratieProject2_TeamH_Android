@@ -1,4 +1,4 @@
-package be.kdg.kandoe.kandoeandroid.pojo;
+package be.kdg.kandoe.kandoeandroid.pojo.response;
 
 public class Credentials {
     private String gebruikersnaam;

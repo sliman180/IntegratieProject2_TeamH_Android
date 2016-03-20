@@ -22,6 +22,30 @@
         android:layout_alignParentEnd="true"
         android:theme="@style/MyButton" />
 
+    <RelativeLayout
+        android:id="@+id/deelnemers_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp"
+        android:orientation="vertical"
+        android:layout_below="@id/buttonInfo">
+    <TextView
+        android:id="@+id/deelnemers_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:listSeparatorTextViewStyle"
+        android:text="@string/deelnemers_deelname"
+        android:layout_marginBottom="15dp"
+        />
+        <ListView
+            android:id="@+id/listview_deelnemers"
+            android:layout_below="@id/deelnemers_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10.0sp"/>
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

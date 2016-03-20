@@ -1,12 +1,11 @@
-package be.kdg.kandoe.kandoeandroid.pojo;
+package be.kdg.kandoe.kandoeandroid.pojo.response;
 
-import java.util.List;
 
-public class Rol {
+public class Organisatie {
     private int id;
     private String naam;
     private String beschrijving;
-    private List<Gebruiker> gebruikers;
+    private Gebruiker gebruiker;
 
     public int getId() {
         return id;
@@ -32,11 +31,13 @@ public class Rol {
         this.beschrijving = beschrijving;
     }
 
-    public List<Gebruiker> getGebruikers() {
-        return gebruikers;
+    public Gebruiker getGebruiker() {
+        return gebruiker;
     }
 
-    public void setGebruikers(List<Gebruiker> gebruikers) {
-        this.gebruikers = gebruikers;
+    public void setGebruiker(Gebruiker gebruiker) {
+        this.gebruiker = gebruiker;
     }
+
+
 }

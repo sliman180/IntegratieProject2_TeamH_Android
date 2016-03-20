@@ -1,8 +1,6 @@
 package be.kdg.kandoe.kandoeandroid.pojo.response;
 
 
-import be.kdg.kandoe.kandoeandroid.pojo.Gebruiker;
-
 public class Kaart {
 
     private int id;

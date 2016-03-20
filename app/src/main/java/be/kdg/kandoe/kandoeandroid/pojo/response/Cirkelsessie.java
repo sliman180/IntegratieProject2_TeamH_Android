@@ -1,4 +1,4 @@
-package be.kdg.kandoe.kandoeandroid.pojo;
+package be.kdg.kandoe.kandoeandroid.pojo.response;
 
 
 import com.google.gson.annotations.SerializedName;

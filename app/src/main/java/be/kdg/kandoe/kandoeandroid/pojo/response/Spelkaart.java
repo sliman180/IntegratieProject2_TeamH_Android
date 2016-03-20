@@ -1,7 +1,5 @@
-package be.kdg.kandoe.kandoeandroid.pojo;
+package be.kdg.kandoe.kandoeandroid.pojo.response;
 
-
-import be.kdg.kandoe.kandoeandroid.pojo.response.Kaart;
 
 public class Spelkaart {
 

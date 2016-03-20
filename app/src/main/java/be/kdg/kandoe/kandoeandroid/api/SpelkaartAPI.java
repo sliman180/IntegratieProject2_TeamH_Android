@@ -1,7 +1,7 @@
 package be.kdg.kandoe.kandoeandroid.api;
 
 
-import be.kdg.kandoe.kandoeandroid.pojo.Spelkaart;
+import be.kdg.kandoe.kandoeandroid.pojo.response.Spelkaart;
 import retrofit.Call;
 import retrofit.http.POST;
 import retrofit.http.Path;

@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.AuthAPI;
-import be.kdg.kandoe.kandoeandroid.pojo.RegisterDetails;
 import be.kdg.kandoe.kandoeandroid.pojo.request.RegistratieRequest;
 import retrofit.Call;
 import retrofit.Callback;
