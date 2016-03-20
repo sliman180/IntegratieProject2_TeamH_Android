@@ -86,7 +86,7 @@ public class AanmeldActivity extends AppCompatActivity implements LoaderCallback
         intent = new Intent(this, MainActivity.class);
         activity = this;
         // Set up the login form.
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.gebruikersnaamAuto);
+        mUsernameView = (AutoCompleteTextView) findViewById(R.id.gebruikersnaam);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.wachtwoord);
@@ -287,7 +287,6 @@ public class AanmeldActivity extends AppCompatActivity implements LoaderCallback
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     /**
@@ -356,7 +355,7 @@ public class AanmeldActivity extends AppCompatActivity implements LoaderCallback
 
                 @Override
                 public void onFailure(Throwable t) {
-                    Toast.makeText(getBaseContext(), "failure loginActivity", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), R.string.aanmelden_mislukt, Toast.LENGTH_SHORT).show();
                 }
             });
 

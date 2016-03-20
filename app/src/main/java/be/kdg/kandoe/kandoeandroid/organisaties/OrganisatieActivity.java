@@ -61,7 +61,7 @@ public class OrganisatieActivity extends AppCompatActivity {
     }
 
 
-    public void getData(){
+    private void getData(){
 
         Retrofit retrofit = Autorisatie.authorize(mActivity);
         OrganisatieAPI organisatieAPI = retrofit.create(OrganisatieAPI.class);
@@ -86,7 +86,7 @@ public class OrganisatieActivity extends AppCompatActivity {
         });
     }
 
-    public void createList(Response<List<Hoofdthema>> response){
+    private void createList(Response<List<Hoofdthema>> response){
         ListView listview = (ListView) findViewById(R.id.listview_hoofdthemas);
 
         final ArrayList<HoofdthemaModel> list = new ArrayList<>();
@@ -126,8 +126,8 @@ public class OrganisatieActivity extends AppCompatActivity {
     }
 
     private class HoofdthemaAdapter extends ArrayAdapter<HoofdthemaModel> {
-        private Context context;
-        private ArrayList<HoofdthemaModel> modelsArrayList;
+        private final Context context;
+        private final ArrayList<HoofdthemaModel> modelsArrayList;
 
 
         public HoofdthemaAdapter(Context context,int textViewResourceId, ArrayList<HoofdthemaModel> modelsArrayList) {

@@ -1,7 +1,5 @@
 package be.kdg.kandoe.kandoeandroid.helpers.adaptermodels;
 
-import java.util.Date;
-
 public class ChatModel {
     private int icon;
     private String title;

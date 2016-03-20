@@ -24,7 +24,7 @@
     android:layout_height="wrap_content"
     android:layout_toEndOf="@+id/item_counter"
     android:layout_alignBaseline="@+id/item_counter"
-    android:text="New text"
+    android:text="@string/new_text"
     android:textSize="14sp" android:textStyle="bold"
     />
 
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_title"
         android:layout_toEndOf="@+id/item_counter"
-        android:text="New text"
+        android:text="@string/new_text"
         android:textSize="12sp"
         android:textStyle="bold"
         />

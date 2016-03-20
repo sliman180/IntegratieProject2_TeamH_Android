@@ -24,7 +24,6 @@ import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.AuthAPI;
 import be.kdg.kandoe.kandoeandroid.api.GebruikerAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
-import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
 import retrofit.Call;
 import retrofit.Callback;
@@ -35,8 +34,6 @@ import retrofit.Retrofit;
 public class ProfielFragment extends Fragment implements Validator.ValidationListener{
 
     private Gebruiker gebruiker;
-    private View v;
-
 
     @NotEmpty
     private EditText gebruikersnaam;
@@ -77,7 +74,7 @@ public class ProfielFragment extends Fragment implements Validator.ValidationLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_profiel, container, false);
+        View v = inflater.inflate(R.layout.fragment_profiel, container, false);
         gebruikersnaam = (EditText) v.findViewById(R.id.gebruikersnaam_ed);
         mail = (EditText) v.findViewById(R.id.email_ed);
         telefoon = (EditText) v.findViewById(R.id.telefoon_ed);
@@ -114,7 +111,7 @@ public class ProfielFragment extends Fragment implements Validator.ValidationLis
         return v;
     }
 
-    public void getData(){
+    private void getData(){
         Retrofit retrofit = Autorisatie.authorize(getActivity());
         AuthAPI authAPI = retrofit.create(AuthAPI.class);
         Call<Gebruiker> call = authAPI.getGebruiker();

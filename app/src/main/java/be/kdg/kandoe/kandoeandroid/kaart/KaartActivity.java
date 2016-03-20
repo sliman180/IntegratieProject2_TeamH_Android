@@ -43,7 +43,7 @@ public class KaartActivity extends AppCompatActivity {
 
     }
 
-    public void getData(){
+    private void getData(){
         Retrofit retrofit = Autorisatie.authorize(this);
         SpelkaartAPI spelkaartAPI = retrofit.create(SpelkaartAPI.class);
         Call<Spelkaart> call = spelkaartAPI.getSpelkaart(spelkaartId);

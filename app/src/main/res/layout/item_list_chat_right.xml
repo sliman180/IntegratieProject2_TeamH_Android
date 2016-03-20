@@ -13,7 +13,7 @@
             android:paddingBottom="5dp"
             android:paddingStart="10dp"
             android:paddingEnd="5dp"
-            android:text="Deelnemer :"
+            android:text="@string/deelnemer_textview"
             android:layout_gravity="end"
             android:paddingTop="5dp"
             android:textColor="@color/colorAccent"
@@ -38,7 +38,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp"
-        android:text="Sample"
+        android:text="@string/sample"
         android:textColor="#FFFFFF" />
         <TextView
             android:id="@+id/item_datum"
@@ -48,7 +48,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_marginStart="20dp"
-            android:text="Datum :"
+            android:text="@string/item_datum"
             android:textColor="#FFFFFF"
             android:paddingTop="5dp"
             android:textSize="10sp"/>

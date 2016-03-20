@@ -20,7 +20,7 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.runner.lifecycle.Stage.RESUMED;
 
-public class GemeenschappelijkeMethoden {
+class GemeenschappelijkeMethoden {
     public static final String GEBRUIKERSNAAM = "userone";
     public static final String WACHTWOORD = "userone";
     public static final long LONG_WAIT_TIME = 3000;

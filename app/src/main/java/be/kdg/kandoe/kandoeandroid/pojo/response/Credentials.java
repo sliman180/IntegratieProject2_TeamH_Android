@@ -4,7 +4,7 @@ public class Credentials {
     private String gebruikersnaam;
     private String wachtwoord;
 
-    public Credentials() {
+    Credentials() {
 
     }
 

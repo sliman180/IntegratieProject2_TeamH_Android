@@ -1,7 +1,7 @@
 package be.kdg.kandoe.kandoeandroid.pojo.response;
 
 public class Token {
-    String token;
+    private String token;
 
     public String getToken() {
         return  token;

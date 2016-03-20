@@ -48,9 +48,9 @@ public class CirkelSessieLijstFragment extends Fragment {
     private Button buttonEnd;
     private Button buttonGestart;
     private CirkelsessieAdapter adapter = null;
-    private ArrayList<CirkelsessieModel> list = new ArrayList<>();
-    private ArrayList<Cirkelsessie> list2 = new ArrayList<>();
-    private SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    private final ArrayList<CirkelsessieModel> list = new ArrayList<>();
+    private final ArrayList<Cirkelsessie> list2 = new ArrayList<>();
+    private final SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
 
     @Override
@@ -101,7 +101,7 @@ public class CirkelSessieLijstFragment extends Fragment {
 
     }
 
-    public void buttonInit(){
+    private void buttonInit(){
         buttonOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,7 +185,7 @@ public class CirkelSessieLijstFragment extends Fragment {
         });
     }
 
-    public void getData(){
+    private void getData(){
         CirkelsessieAPI cirkelsessieAPI =
                 Autorisatie.authorize(getActivity()).create(CirkelsessieAPI.class);
         Call<List<Cirkelsessie>> call = cirkelsessieAPI.getCirkelsessiesGepland();
@@ -229,7 +229,7 @@ public class CirkelSessieLijstFragment extends Fragment {
             textViewAantal.setText(textAantal);
         }
     }
-    public void createAdapter(){
+    private void createAdapter(){
         ListView listview = null;
         if (getView() != null)
             listview = (ListView) getView().findViewById(R.id.listview);
@@ -287,8 +287,8 @@ public class CirkelSessieLijstFragment extends Fragment {
     }
 
     private class CirkelsessieAdapter extends ArrayAdapter<CirkelsessieModel> {
-        private Context context;
-        private ArrayList<CirkelsessieModel> modelsArrayList;
+        private final Context context;
+        private final ArrayList<CirkelsessieModel> modelsArrayList;
 
         public CirkelsessieAdapter(Context context,int textViewResourceId, ArrayList<CirkelsessieModel> modelsArrayList) {
             super(context, textViewResourceId, modelsArrayList);
@@ -319,12 +319,12 @@ public class CirkelSessieLijstFragment extends Fragment {
                 // 4. Set the text for textView
                 imgView.setImageResource(modelsArrayList.get(position).getIcon());
                 titleView.setText(modelsArrayList.get(position).getTitle());
-                organisatorView.setText("Organisator: " + modelsArrayList.get(position).getOrganisator());
+                organisatorView.setText(context.getString(R.string.organisator) + modelsArrayList.get(position).getOrganisator());
                 counterView.setText(modelsArrayList.get(position).getCounter());
                 Date date = new Date(modelsArrayList.get(position).getDatum());
-                datumView.setText("Startdatum: " + String.valueOf(ft.format(date)));
+                datumView.setText(context.getString(R.string.startdatum) + String.valueOf(ft.format(date)));
                 if(modelsArrayList.get(position).getSubthema() != null){
-                subthemaView.setText("Subthema: " + modelsArrayList.get(position).getSubthema().getNaam());
+                subthemaView.setText(context.getString(R.string.subthema)+ ":" + modelsArrayList.get(position).getSubthema().getNaam());
                 }else {
                     subthemaView.setVisibility(View.GONE);
                 }

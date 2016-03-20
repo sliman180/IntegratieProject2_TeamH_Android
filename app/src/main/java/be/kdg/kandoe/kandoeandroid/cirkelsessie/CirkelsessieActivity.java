@@ -49,6 +49,7 @@ import retrofit.Retrofit;
 /**
  * Stelt de cirkel voor en alle kaarten die er worden aangemaakt
  */
+@SuppressWarnings("ALL")
 public class CirkelsessieActivity extends AppCompatActivity {
 
     private CirkelsessieListAdapter cirkelsessieListAdapter;
@@ -61,7 +62,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
     private Handler handler;
     private Gebruiker gebruiker;
     private boolean beurt;
-    private ArrayList<Spelkaart> spelkaarten = new ArrayList<>();
+    private final ArrayList<Spelkaart> spelkaarten = new ArrayList<>();
     private String status;
     private final static long REFRESH_TIME = 2000;
 
@@ -139,7 +140,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         return beurt;
     }
 
-    public void checkBeurt(){
+    private void checkBeurt(){
         Retrofit retrofit = Autorisatie.authorize(mActivity);
         DeelnameAPI deelnameAPI = retrofit.create(DeelnameAPI.class);
         Call<List<Deelname>> call = deelnameAPI.getDeelnamesVanCirkelsessie(cirkelsessieId);
@@ -235,9 +236,9 @@ public class CirkelsessieActivity extends AppCompatActivity {
      */
     private class CirkelsessieListAdapter extends BaseExpandableListAdapter {
 
-        private Context context;
+        private final Context context;
 
-        private ArrayList<Parent> parentItems;
+        private final ArrayList<Parent> parentItems;
 
         public CirkelsessieListAdapter(Context context) {
             this.context = context;
@@ -372,8 +373,8 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mActivity.getBaseContext(), KaartActivity.class);
-                    intent.putExtra("spelkaartId", String.valueOf(getChild(groupPos,childPos).getId()));
-                    intent.putExtra("spelkaartTitle",getChild(groupPos,childPos).getKaart().getTekst());
+                    intent.putExtra("spelkaartId", String.valueOf(getChild(groupPos, childPos).getId()));
+                    intent.putExtra("spelkaartTitle", getChild(groupPos, childPos).getKaart().getTekst());
                     startActivity(intent);
                 }
             });

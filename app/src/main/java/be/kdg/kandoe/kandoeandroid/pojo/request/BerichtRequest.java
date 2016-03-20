@@ -19,10 +19,6 @@ public class BerichtRequest {
         this.gebruiker = gebruiker;
     }
 
-    public String getTekst() {
-        return tekst;
-    }
-
     public void setTekst(String tekst) {
         this.tekst = tekst;
     }

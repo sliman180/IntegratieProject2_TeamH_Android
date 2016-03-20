@@ -26,14 +26,14 @@
         android:layout_marginStart="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GESTART"
+        android:text="@string/gestart"
         android:id="@+id/buttonGestart"
         android:textColor="#FFFFFF"
         />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OPEN"
+        android:text="@string/open"
         android:id="@+id/buttonOpen"
         android:textColor="#FFFFFF"
         android:layout_toEndOf="@id/buttonGestart"
@@ -42,7 +42,7 @@
         android:layout_toEndOf="@id/buttonOpen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GESLOTEN"
+        android:text="@string/gesloten"
         android:textColor="#FFFFFF"
         android:id="@+id/buttonGesloten"
         />
@@ -50,7 +50,7 @@
         android:layout_toEndOf="@id/buttonGesloten"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="beëindigd"
+        android:text="@string/button_beeindigd"
         android:textColor="#FFFFFF"
         android:id="@+id/buttonEnd"
         />
@@ -85,7 +85,7 @@
             android:id="@+id/no_cirkelsessies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_cirkelsessies"
+            android:text="@string/geen_cirkelsessies"
 
             android:visibility="gone"
             android:textSize="20sp"

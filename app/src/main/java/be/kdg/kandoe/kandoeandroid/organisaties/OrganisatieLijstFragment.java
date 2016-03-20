@@ -79,17 +79,7 @@ public class OrganisatieLijstFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    public void getData(){
+    private void getData(){
         be.kdg.kandoe.kandoeandroid.api.OrganisatieAPI organisatieAPI =
                 Autorisatie.authorize(getActivity()).create(OrganisatieAPI.class);
 
@@ -114,7 +104,7 @@ public class OrganisatieLijstFragment extends Fragment {
         });
     }
 
-    public void createList(Response<List<Organisatie>> response){
+    private void createList(Response<List<Organisatie>> response){
         unchangedList.clear();
         ListView listview = null;
         if (getView() != null)
@@ -148,8 +138,8 @@ public class OrganisatieLijstFragment extends Fragment {
 
     private class OrganisatieAdapter extends ArrayAdapter<OrganisatieModel> {
 
-        private Context context;
-        private ArrayList<OrganisatieModel> modelsArrayList;
+        private final Context context;
+        private final ArrayList<OrganisatieModel> modelsArrayList;
 
         public OrganisatieAdapter(Context context,int textViewResourceId, ArrayList<OrganisatieModel> modelsArrayList) {
 

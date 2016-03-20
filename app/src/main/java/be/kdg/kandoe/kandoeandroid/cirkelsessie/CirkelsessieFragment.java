@@ -103,12 +103,12 @@ public class CirkelsessieFragment extends Fragment {
     }
 
 
-    public static int dpToPx(int dp)
+    private static int dpToPx(int dp)
     {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
-    public void createTextViews(Response<List<Spelkaart>> response){
+    private void createTextViews(Response<List<Spelkaart>> response){
         List<Spelkaart> spelkaarts = new ArrayList<>();
 
         spelkaarts.addAll(response.body());

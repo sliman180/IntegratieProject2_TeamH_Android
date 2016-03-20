@@ -77,17 +77,7 @@ public class HoofdThemaLijstFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    public void getData(){
+    private void getData(){
         HoofdthemaAPI hoofdthemaAPI =
                 Autorisatie.authorize(getActivity()).create(HoofdthemaAPI.class);
 
@@ -112,7 +102,7 @@ public class HoofdThemaLijstFragment extends Fragment {
         });
     }
 
-    public void createList(Response<List<Hoofdthema>> response){
+    private void createList(Response<List<Hoofdthema>> response){
         unchangedList.clear();
         ListView listview = null;
         if (getView() != null)
@@ -150,8 +140,8 @@ public class HoofdThemaLijstFragment extends Fragment {
 
     private class HoofdthemaAdapter extends ArrayAdapter<HoofdthemaModel> {
 
-        private Context context;
-        private ArrayList<HoofdthemaModel> modelsArrayList;
+        private final Context context;
+        private final ArrayList<HoofdthemaModel> modelsArrayList;
 
         public HoofdthemaAdapter(Context context,int textViewResourceId, ArrayList<HoofdthemaModel> modelsArrayList) {
 

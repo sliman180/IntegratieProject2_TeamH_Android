@@ -51,8 +51,8 @@ public class ChatFragment extends Fragment {
     private Activity mActivity;
     private int aantalMessages = 0;
     private int maxAantalMessages = 0;
-    private ArrayList<ChatModel> list = new ArrayList<>();
-    private SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    private final ArrayList<ChatModel> list = new ArrayList<>();
+    private final SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     private DeelnameFragment deelnameFragment;
     private String status;
 
@@ -120,7 +120,7 @@ public class ChatFragment extends Fragment {
         });
     }
 
-    public void getData(){
+    private void getData(){
         boolean isDeelnemer = deelnameFragment.isDeelnemer();
         if(!isDeelnemer){
             chatButton.setEnabled(false);
@@ -150,7 +150,7 @@ public class ChatFragment extends Fragment {
         });
     }
 
-    public void addData(Response<List<Bericht>> response){
+    private void addData(Response<List<Bericht>> response){
         list.clear();
         for (int i = 0; i < response.body().size(); ++i) {
             ChatModel chatModel;
@@ -173,7 +173,7 @@ public class ChatFragment extends Fragment {
             maxAantalMessages = aantalMessages;
         }
     }
-    public void createAdapter(){
+    private void createAdapter(){
         ListView listview = null;
         if (getView() != null)
             listview = (ListView) getView().findViewById(R.id.listview_chat);
@@ -214,8 +214,8 @@ public class ChatFragment extends Fragment {
     }
 
     private class ChatAdapter extends ArrayAdapter<ChatModel> {
-        private Context context;
-        private ArrayList<ChatModel> modelsArrayList;
+        private final Context context;
+        private final ArrayList<ChatModel> modelsArrayList;
 
         public ChatAdapter(Context context,int textViewResourceId, ArrayList<ChatModel> modelsArrayList) {
 

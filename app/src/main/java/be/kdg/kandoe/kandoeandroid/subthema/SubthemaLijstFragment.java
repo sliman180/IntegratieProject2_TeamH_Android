@@ -78,17 +78,7 @@ public class SubthemaLijstFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    public void getData(){
+    private void getData(){
        GebruikerAPI gebruikerAPI =
                 Autorisatie.authorize(getActivity()).create(GebruikerAPI.class);
 
@@ -106,14 +96,14 @@ public class SubthemaLijstFragment extends Fragment {
 
             @Override
             public void onFailure(Throwable t) {
-                Toast.makeText(mActivity.getBaseContext(), "failure",
+                Toast.makeText(mActivity.getBaseContext(), R.string.failure,
                         Toast.LENGTH_SHORT).show();
                 Log.d("failure",t.getMessage());
             }
         });
     }
 
-    public void createList(Response<List<Subthema>> response){
+    private void createList(Response<List<Subthema>> response){
         ListView listview = null;
         if (getView() != null)
             listview = (ListView) getView().findViewById(R.id.listview_subthemas);
@@ -157,8 +147,8 @@ public class SubthemaLijstFragment extends Fragment {
 
     private class SubthemaAdapter extends ArrayAdapter<SubthemaModel> {
 
-        private Context context;
-        private ArrayList<SubthemaModel> modelsArrayList;
+        private final Context context;
+        private final ArrayList<SubthemaModel> modelsArrayList;
         HashMap<String, Integer> mIdMap = new HashMap<>();
 
 
@@ -196,9 +186,9 @@ public class SubthemaLijstFragment extends Fragment {
                 // 4. Set the text for textView
                 counterView.setText(modelsArrayList.get(position).getCounter());
                 titleView.setText(modelsArrayList.get(position).getTitle());
-                beschrijvingView.setText("Beschrijving : "+modelsArrayList.get(position).getBeschrijving());
-                organisatieView.setText("Organisatie : "+modelsArrayList.get(position).getOrganisatie());
-                hoofdthemaView.setText("Hoofdthema : "+modelsArrayList.get(position).getHoofdthema());
+                beschrijvingView.setText(context.getString(R.string.beschrijving)+modelsArrayList.get(position).getBeschrijving());
+                organisatieView.setText(context.getString(R.string.organisatie)+modelsArrayList.get(position).getOrganisatie());
+                hoofdthemaView.setText(context.getString(R.string.hoofdthema)+modelsArrayList.get(position).getHoofdthema());
 
             }
 
@@ -208,9 +198,4 @@ public class SubthemaLijstFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
 }

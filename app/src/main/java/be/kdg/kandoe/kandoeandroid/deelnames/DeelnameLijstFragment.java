@@ -88,17 +88,7 @@ public class DeelnameLijstFragment extends Fragment {
     }
 
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    public void getData(){
+    private void getData(){
         DeelnameAPI deelnameAPI =
                 Autorisatie.authorize(getActivity()).create(DeelnameAPI.class);
         Call<List<Deelname>> call = deelnameAPI.getDeelnamesGebruiker(String.valueOf(gebruiker.getId()));
@@ -122,7 +112,7 @@ public class DeelnameLijstFragment extends Fragment {
         });
     }
 
-    public void createList(Response<List<Deelname>> response){
+    private void createList(Response<List<Deelname>> response){
         ListView listview = null;
         if (getView() != null)
             listview = (ListView) getView().findViewById(R.id.listview_deelnames);
@@ -169,8 +159,8 @@ public class DeelnameLijstFragment extends Fragment {
 
     private class DeelnameAdapter extends ArrayAdapter<DeelnameModel> {
 
-        private Context context;
-        private ArrayList<DeelnameModel> modelsArrayList;
+        private final Context context;
+        private final ArrayList<DeelnameModel> modelsArrayList;
         HashMap<String, Integer> mIdMap = new HashMap<>();
 
         public DeelnameAdapter(Context context,int textViewResourceId, ArrayList<DeelnameModel> modelsArrayList) {

@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) getSupportActionBar().setTitle(title);
     }
 
-    public void freeMemory(){
+    private void freeMemory(){
         System.runFinalization();
         Runtime.getRuntime().gc();
         System.gc();

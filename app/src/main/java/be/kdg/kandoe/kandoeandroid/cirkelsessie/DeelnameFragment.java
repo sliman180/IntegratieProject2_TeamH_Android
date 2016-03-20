@@ -55,7 +55,7 @@ public class DeelnameFragment extends Fragment {
     private DeelnemersAdapter adapter = null;
     private Handler handler;
 
-    private ArrayList<DeelnemersModel> list = new ArrayList<>();
+    private final ArrayList<DeelnemersModel> list = new ArrayList<>();
 
     public DeelnameFragment() {
         // Required empty public constructor
@@ -88,7 +88,7 @@ public class DeelnameFragment extends Fragment {
         createAdapter();
     }
 
-    public void checkStatus(){
+    private void checkStatus(){
         switch (status) {
             case "GESLOTEN":
                 buttonInfo.setText(R.string.sessie_gesloten);
@@ -147,14 +147,14 @@ public class DeelnameFragment extends Fragment {
         }
     }
 
-    public void checkIsNotDeelnemer(){
+    private void checkIsNotDeelnemer(){
         if (!isDeelnemer) {
             buttonVoegKaart.setEnabled(false);
             buttonVoegKaart.getBackground().setColorFilter(ContextCompat.getColor(getActivity(), R.color.md_grey_400), PorterDuff.Mode.SRC_ATOP);
         }
     }
 
-    public void checkIsDeelnemer(){
+    private void checkIsDeelnemer(){
         Retrofit retrofit = Autorisatie.authorize(getActivity());
         DeelnameAPI deelnameAPI = retrofit.create(DeelnameAPI.class);
         Call<List<Deelname>> call = deelnameAPI.getDeelnamesVanCirkelsessie(cirkelsessieId);
@@ -186,7 +186,7 @@ public class DeelnameFragment extends Fragment {
         });
     }
 
-    public void onClickDeelnemen(){
+    private void onClickDeelnemen(){
         buttonDeelname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,7 +227,7 @@ public class DeelnameFragment extends Fragment {
         });
     }
 
-    public void getData(){
+    private void getData(){
         DeelnameAPI deelnameAPI =
                 Autorisatie.authorize(getActivity()).create(DeelnameAPI.class);
         Call<List<Deelname>> call = deelnameAPI.getDeelnamesVanCirkelsessie(cirkelsessieId);
@@ -245,7 +245,7 @@ public class DeelnameFragment extends Fragment {
         });
     }
 
-    public void createAdapter(){
+    private void createAdapter(){
         ListView listview = null;
         if (getView() != null)
             listview = (ListView) getView().findViewById(R.id.listview_deelnemers);
@@ -260,7 +260,7 @@ public class DeelnameFragment extends Fragment {
         }
     }
 
-    public void addData(Response<List<Deelname>> response){
+    private void addData(Response<List<Deelname>> response){
         list.clear();
         SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         for (int i = 0; i < response.body().size(); ++i) {
@@ -285,8 +285,8 @@ public class DeelnameFragment extends Fragment {
 
     private class DeelnemersAdapter extends ArrayAdapter<DeelnemersModel> {
 
-        private Context context;
-        private ArrayList<DeelnemersModel> modelsArrayList;
+        private final Context context;
+        private final ArrayList<DeelnemersModel> modelsArrayList;
 
         public DeelnemersAdapter(Context context, int textViewResourceId, ArrayList<DeelnemersModel> modelsArrayList) {
 
@@ -322,12 +322,12 @@ public class DeelnameFragment extends Fragment {
                 titleView.setText(titleText);
                 String dateText = "Deelgenomen op : " + modelsArrayList.get(position).getDate();
                 dateView.setText(dateText);
-                if(status.equals("GESTART")){
+                if(status.equals(getString(R.string.gestart))){
                     if(modelsArrayList.get(position).getBeurt()){
-                        beurtView.setText("Is aan de beurt");
+                        beurtView.setText(R.string.is_aan_de_beurt);
                         beurtView.setTextColor(Color.GREEN);
                     }else {
-                        beurtView.setText("Is niet aan de beurt");
+                        beurtView.setText(R.string.is_niet_aan_de_beurt);
                         beurtView.setTextColor(Color.RED);
                     }
                 }else {

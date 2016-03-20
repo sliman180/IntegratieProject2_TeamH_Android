@@ -2,11 +2,6 @@ package be.kdg.kandoe.kandoeandroid.pojo.response;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import be.kdg.kandoe.kandoeandroid.pojo.response.Kaart;
-
 public class Gebruiker {
 
     @SerializedName("id")

@@ -1,6 +1,6 @@
 package be.kdg.kandoe.kandoeandroid.pojo.response;
 
-public class RegisterDetails extends Credentials{
+class RegisterDetails extends Credentials{
 
     private String email;
 

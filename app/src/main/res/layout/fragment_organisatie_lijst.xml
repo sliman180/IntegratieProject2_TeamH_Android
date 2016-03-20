@@ -34,7 +34,7 @@
         android:id="@+id/no_organisatie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/no_organisaties"
+        android:text="@string/geen_organisaties"
         android:visibility="gone"
         android:textSize="20sp"
         android:textStyle="bold">
