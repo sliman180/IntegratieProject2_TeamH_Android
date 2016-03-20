@@ -23,13 +23,13 @@
         <activity
             android:name=".cirkelsessie.CirkelsessieActivity"
             android:label="@string/title_activity_cirkelsessie"
-            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".FirstActivity"
-            android:theme="@style/AppTheme"
             android:launchMode="singleTask"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,8 +44,8 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".hoofdthema.HoofdthemaActivity"
@@ -57,6 +57,10 @@
             android:label="@string/title_activity_organisatie"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".kaart.KaartActivity"
+            android:label="@string/title_activity_kaart"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

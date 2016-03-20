@@ -85,4 +85,10 @@
     <string name="no_deelnames">U hebt geen deelnames</string>
     <string name="no_hoofdthemas">U hebt geen hoofdthemas</string>
     <string name="no_subthemas">U hebt geen subthema\'s</string>
+    <string name="hoe_spelen_text">U neemt deel aan een sessie dat gestart is en voegt dan kaarten toe indien nodig. Als er al kaarten aanwezig zijn, dan moet u de kaart verplaatsen door erop te klikken. U moet hiervoor wel wachten, omdat men met beurten speelt. De kaart die op de cirkel nummer 1 staat wordt gebruikt als idee.</string>
+    <string name="help_kaarten_text">Men kan kaarten aanmaken en hierop een idee schrijven, of bestaande kaarten gebruiken die door andere deelnemers werden aangemaakt verplaatsten.</string>
+    <string name="help_cirkelsessie_text">Elke cirkelsessie heeft een status, namelijk; GESTART,OPEN,GESLOTEN en BEËINDIGD. Elke cirkel heeft een bepaalde grootte waarop kaarten worden geplaatst.</string>
+    <string name="help_deelnemen_text">Deelnemen kan je alleen doen als de sessie OPEN staat.</string>
+    <string name="title_activity_kaart">KaartActivity</string>
+    <string name="spelkaart_gegevens">Spelkaart gegevens</string>
 </resources>

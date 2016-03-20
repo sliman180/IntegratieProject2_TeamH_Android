@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +34,7 @@ import be.kdg.kandoe.kandoeandroid.api.SpelkaartAPI;
 import be.kdg.kandoe.kandoeandroid.authorization.Autorisatie;
 import be.kdg.kandoe.kandoeandroid.helpers.adaptermodels.Parent;
 import be.kdg.kandoe.kandoeandroid.helpers.SharedPreferencesMethods;
+import be.kdg.kandoe.kandoeandroid.kaart.KaartActivity;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Cirkelsessie;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Deelname;
 import be.kdg.kandoe.kandoeandroid.pojo.response.Gebruiker;
@@ -153,7 +156,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable t) {
-                Log.d("checkBeurt: ", t.getMessage());
+
             }
         });
     }
@@ -189,8 +192,6 @@ public class CirkelsessieActivity extends AppCompatActivity {
                         Toast.makeText(mActivity.getBaseContext(), R.string.kaart_niet_aangemaakt,
                                 Toast.LENGTH_SHORT).show();
                         newCardDialog.dismiss();
-                        Log.d("voegKaartToe: ", t.getMessage());
-
                     }
                 });
             }
@@ -224,7 +225,6 @@ public class CirkelsessieActivity extends AppCompatActivity {
             public void onFailure(Throwable t) {
                 Toast.makeText(mActivity.getBaseContext(), R.string.kaart_n_verplaatst,
                         Toast.LENGTH_SHORT).show();
-                Log.d("changeCardPosition: ", t.getMessage());
             }
         });
     }
@@ -362,10 +362,21 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
             final TextView txtListChild = (TextView) view
                     .findViewById(R.id.kaart);
+            ImageView imageView = (ImageView) view.findViewById(R.id.item_icon_kaart);
 
+            imageView.setImageResource(R.drawable.ic_picture_in_picture);
             txtListChild.setText(childText);
-            txtListChild.setTextColor(getResources().getColor(R.color.colorPrimary));
-            txtListChild.setBackgroundResource(R.drawable.back);
+            txtListChild.setTextColor(ContextCompat.getColor(mActivity, R.color.colorPrimary));
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mActivity.getBaseContext(), KaartActivity.class);
+                    intent.putExtra("spelkaartId", String.valueOf(getChild(groupPos,childPos).getId()));
+                    intent.putExtra("spelkaartTitle",getChild(groupPos,childPos).getKaart().getTekst());
+                    startActivity(intent);
+                }
+            });
 
             final View finalView = view;
             if(deelnameFragment.isDeelnemer()){
@@ -373,12 +384,13 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if(beurt && status.equals("GESTART")){
-                    finalView.setBackgroundColor(Color.LTGRAY);
+                    finalView.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.colorPrimary));
                     AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
                     builder.setTitle(R.string.verplaats_kaart_q);
                     builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            finalView.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.md_grey_400));
                             Spelkaart spelkaart = getChild(groupPos, childPos);
                             if (spelkaart.getPositie() == maxAantalCirkels) {
                                 Toast.makeText(getBaseContext(), R.string.max_positie,
@@ -386,7 +398,6 @@ public class CirkelsessieActivity extends AppCompatActivity {
                             }else{
                                 Parent oldParent = getGroup(groupPos);
                                 oldParent.getChildren().remove(spelkaart);
-
                                 changeCardPosition(spelkaart);
                                 notifyDataSetChanged();
                             }
@@ -396,7 +407,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            finalView.setBackgroundColor(Color.WHITE);
+                            finalView.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.md_grey_400));
                         }
                     });
 
