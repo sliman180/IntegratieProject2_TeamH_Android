@@ -19,6 +19,7 @@ dependencies {
         transitive = true
     }
 
+    compile 'com.mobsandgeeks:android-saripaar:2.0.2'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
     compile 'com.android.support:support-v13:23.2.1'

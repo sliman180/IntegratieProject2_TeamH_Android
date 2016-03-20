@@ -56,7 +56,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:layout_marginTop="5dp"
             android:id="@+id/wachtwoord_ed"
             android:layout_below="@id/gebruikersnaam_ed"
