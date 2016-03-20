@@ -27,6 +27,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:divider="@android:color/transparent"
-        android:dividerHeight="10.0sp"/>
+        android:dividerHeight="10.0sp"
+        />
+
+    <TextView
+        android:id="@+id/no_organisatie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_organisaties"
+        android:visibility="gone"
+        android:textSize="20sp"
+        android:textStyle="bold">
+    </TextView>
 
 </LinearLayout>

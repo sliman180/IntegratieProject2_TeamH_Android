@@ -95,7 +95,12 @@ public class HoofdThemaLijstFragment extends Fragment {
         call.enqueue(new Callback<List<Hoofdthema>>() {
             @Override
             public void onResponse(Response<List<Hoofdthema>> response, Retrofit retrofit) {
-                createList(response);
+                if(response.body().size() == 0){
+                    TextView textView = (TextView) v.findViewById(R.id.no_hoofdthemas);
+                    textView.setVisibility(View.VISIBLE);
+                }else {
+                    createList(response);
+                }
             }
 
             @Override

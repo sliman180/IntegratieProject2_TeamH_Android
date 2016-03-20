@@ -36,7 +36,6 @@ import retrofit.Retrofit;
 
 public class OrganisatieLijstFragment extends Fragment {
 
-
     private Activity mActivity;
 
     private Intent intent;
@@ -100,7 +99,12 @@ public class OrganisatieLijstFragment extends Fragment {
         call.enqueue(new Callback<List<Organisatie>>() {
             @Override
             public void onResponse(Response<List<Organisatie>> response, Retrofit retrofit) {
-                createList(response);
+                if(response.body().size() == 0){
+                    TextView textView = (TextView) v.findViewById(R.id.no_organisatie);
+                    textView.setVisibility(View.VISIBLE);
+                }else {
+                    createList(response);
+                }
             }
 
             @Override

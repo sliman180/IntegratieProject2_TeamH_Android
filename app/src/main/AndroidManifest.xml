@@ -26,16 +26,6 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".subthema.SubthemaActivity"
-            android:label="@string/title_activity_subthema"
-            android:parentActivityName=".MainActivity"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity
             android:name=".FirstActivity"
             android:theme="@style/AppTheme"
             android:launchMode="singleTask"

@@ -80,6 +80,17 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="10.0sp"
             />
+
+        <TextView
+            android:id="@+id/no_cirkelsessies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_cirkelsessies"
+            android:layout_below="@id/cirkelsessie_header"
+            android:visibility="gone"
+            android:textSize="20sp"
+            android:textStyle="bold">
+        </TextView>
     </RelativeLayout>
 
 

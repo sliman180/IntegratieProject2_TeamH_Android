@@ -30,4 +30,14 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0sp"/>
 
+    <TextView
+        android:id="@+id/no_deelnames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_deelnames"
+        android:visibility="gone"
+        android:textSize="20sp"
+        android:textStyle="bold">
+    </TextView>
+
 </LinearLayout>

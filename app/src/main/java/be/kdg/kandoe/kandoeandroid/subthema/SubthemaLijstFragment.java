@@ -43,7 +43,6 @@ import retrofit.Retrofit;
 public class SubthemaLijstFragment extends Fragment {
 
     private Activity mActivity;
-    private Intent intent;
 
     private TextView textViewAantal;
 
@@ -68,7 +67,6 @@ public class SubthemaLijstFragment extends Fragment {
             Gson gson = new Gson();
             gebruiker = gson.fromJson(json, Gebruiker.class);
         }
-        intent = new Intent(mActivity.getBaseContext(), SubthemaActivity.class);
         getData();
     }
 
@@ -99,7 +97,12 @@ public class SubthemaLijstFragment extends Fragment {
         call.enqueue(new Callback<List<Subthema>>() {
             @Override
             public void onResponse(Response<List<Subthema>> response, Retrofit retrofit) {
-                createList(response);
+                if(response.body().size() == 0){
+                    TextView textView = (TextView) v.findViewById(R.id.no_subthemas);
+                    textView.setVisibility(View.VISIBLE);
+                }else {
+                    createList(response);
+                }
             }
 
             @Override

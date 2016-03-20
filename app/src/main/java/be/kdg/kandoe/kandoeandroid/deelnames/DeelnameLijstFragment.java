@@ -105,7 +105,12 @@ public class DeelnameLijstFragment extends Fragment {
         call.enqueue(new Callback<List<Deelname>>() {
             @Override
             public void onResponse(Response<List<Deelname>> response, Retrofit retrofit) {
-                createList(response);
+                if(response.body().size() == 0){
+                    TextView textView = (TextView) v.findViewById(R.id.no_deelnames);
+                    textView.setVisibility(View.VISIBLE);
+                }else {
+                    createList(response);
+                }
             }
 
             @Override

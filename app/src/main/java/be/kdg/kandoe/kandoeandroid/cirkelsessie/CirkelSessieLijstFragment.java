@@ -225,6 +225,8 @@ public class CirkelSessieLijstFragment extends Fragment {
         }
         if(adapter !=null){
             adapter.notifyDataSetChanged();
+            String textAantal = "Aantal : " + String.valueOf(list2.size());
+            textViewAantal.setText(textAantal);
         }
     }
     public void createAdapter(){
@@ -265,8 +267,7 @@ public class CirkelSessieLijstFragment extends Fragment {
 
         linlaHeaderProgress.setVisibility(View.GONE);
         listView.setVisibility(View.VISIBLE);
-        String textAantal = "Aantal : " + String.valueOf(list2.size());
-        textViewAantal.setText(textAantal);
+
 
     }
 

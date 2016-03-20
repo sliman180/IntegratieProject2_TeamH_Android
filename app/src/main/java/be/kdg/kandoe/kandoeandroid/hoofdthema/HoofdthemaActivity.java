@@ -75,7 +75,7 @@ public class HoofdthemaActivity extends AppCompatActivity {
                     textView.setVisibility(View.VISIBLE);
                 }else {
                 createList(response);
-                Toast.makeText(getBaseContext(),"succes",Toast.LENGTH_SHORT).show();}
+                }
             }
 
             @Override

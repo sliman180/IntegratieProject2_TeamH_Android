@@ -80,4 +80,9 @@
     <string name="session">Sessie</string>
     <string name="participants">Deelnemers</string>
     <string name="deelnemers_deelname">Deelnemers</string>
+    <string name="no_organisaties">U hebt geen organisaties</string>
+    <string name="no_cirkelsessies">Geen cirkelsessies beschikbaar</string>
+    <string name="no_deelnames">U hebt geen deelnames</string>
+    <string name="no_hoofdthemas">U hebt geen hoofdthemas</string>
+    <string name="no_subthemas">U hebt geen subthema\'s</string>
 </resources>

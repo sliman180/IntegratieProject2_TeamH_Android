@@ -52,7 +52,6 @@ public class ProfielFragment extends Fragment {
             mActivity = getActivity();
             token = SharedPreferencesMethods.getFromSharedPreferences(mActivity, getString(R.string.token));
         }
-//        intent = new Intent(mActivity.getBaseContext(), SubthemaActivity.class);
 
     }
 

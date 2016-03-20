@@ -15,8 +15,6 @@ import retrofit.http.Path;
  */
 public interface GebruikerAPI {
 
-
-
     @PUT("/api/gebruikers/{id}")
     Call<Void> updateGegevens(@Path("id") String id, @Body Gebruiker gebruiker);
 
