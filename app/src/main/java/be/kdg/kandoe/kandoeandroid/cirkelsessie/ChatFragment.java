@@ -106,7 +106,6 @@ public class ChatFragment extends Fragment {
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Response<Void> response, Retrofit retrofit) {
-                        Toast.makeText(getActivity().getBaseContext(), "Bericht verzonden", Toast.LENGTH_SHORT).show();
                         chatEditText.setText("");
                     }
 

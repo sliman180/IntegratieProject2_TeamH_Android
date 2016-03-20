@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import be.kdg.kandoe.kandoeandroid.R;
 import be.kdg.kandoe.kandoeandroid.api.CirkelsessieAPI;
@@ -64,7 +66,9 @@ public class CirkelsessieActivity extends AppCompatActivity {
     private boolean beurt;
     private final ArrayList<Spelkaart> spelkaarten = new ArrayList<>();
     private String status;
+    private long datum;
     private final static long REFRESH_TIME = 2000;
+    private Button buttonVoegKaart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mActivity = this;
         beurt = false;
+
 
         TabHost host = (TabHost)findViewById(R.id.tabHost);
         if(host !=null)
@@ -102,6 +107,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         cirkelsessieId = extras.getString("cirkelsessieId");
         setTitle(extras.getString("cirkelsessieTitle"));
         status = extras.getString("status");
+        datum = extras.getLong("datum");
 
         if(toolbar != null){
             toolbar.setNavigationIcon(R.drawable.ic_chevron_left);
@@ -119,6 +125,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
 
         fragmentCirkelsessie = (CirkelsessieFragment) getFragmentManager().findFragmentById(R.id.cirkelsessie_fragment);
         deelnameFragment = (DeelnameFragment) getFragmentManager().findFragmentById(R.id.deelname_fragment);
+        buttonVoegKaart = (Button) findViewById(R.id.buttonAddKaart);
         handler = new Handler();
 
         String json = SharedPreferencesMethods.getFromSharedPreferences(mActivity, mActivity.getString(R.string.gebruiker));
@@ -288,6 +295,15 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 public void onResponse(Response<Cirkelsessie> response, Retrofit retrofit) {
                     if (response.body() != null) {
                         maxAantalCirkels = response.body().getAantalCirkels();
+
+                        Date date = new Date(datum);
+                        Date dateNow = new Date();
+                        if (dateNow.after(date) && response.body().getStatus().equals("OPEN")) {
+                            status = "GESTART";
+                        }else {
+                            status = response.body().getStatus();
+                        }
+
                     }
                 }
                 @Override
@@ -415,6 +431,11 @@ public class CirkelsessieActivity extends AppCompatActivity {
                     builder.show();
                     }else if(!beurt && status.equals("GESTART")){
                         Toast.makeText(getBaseContext(),R.string.n_beurt,Toast.LENGTH_SHORT).show();
+                    }else if(status.equals("BEEINDIGD")){
+                        Toast.makeText(getBaseContext(),"Cirkelsessie is beëindigd",Toast.LENGTH_SHORT).show();
+                        buttonVoegKaart.setEnabled(false);
+                        buttonVoegKaart.getBackground().setColorFilter(ContextCompat.getColor(mActivity, R.color.md_grey_400), PorterDuff.Mode.SRC_ATOP);
+
                     }else {
                         Toast.makeText(getBaseContext(),"Cirkelsessie is niet gestart",Toast.LENGTH_SHORT).show();
                     }
@@ -436,6 +457,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         @Override
         public void run()
         {
+            cirkelsessieListAdapter.getCirkelData();
             checkBeurt();
             cirkelsessieListAdapter.getSpelkaartenData();
 

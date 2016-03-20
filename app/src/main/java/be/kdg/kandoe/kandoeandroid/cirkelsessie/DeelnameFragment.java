@@ -83,8 +83,8 @@ public class DeelnameFragment extends Fragment {
         buttonVoegKaart = (Button) getActivity().findViewById(R.id.buttonAddKaart);
         beurtTextview = (TextView) getActivity().findViewById(R.id.isBeurt);
         chatFragment = (ChatFragment) getFragmentManager().findFragmentById(R.id.chat_fragment);
-        onClickDeelnemen();
         checkStatus();
+        onClickDeelnemen();
         createAdapter();
     }
 

@@ -253,6 +253,7 @@ public class CirkelSessieLijstFragment extends Fragment {
                     Date dateNow = new Date();
                     if (dateNow.after(date)) {
                         intent.putExtra("status", "GESTART");
+                        intent.putExtra("datum", list2.get(position).getStartDatum());
                     } else {
                         intent.putExtra("status", list2.get(position).getStatus());
                     }

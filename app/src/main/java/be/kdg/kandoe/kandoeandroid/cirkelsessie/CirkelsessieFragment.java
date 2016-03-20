@@ -156,6 +156,8 @@ public class CirkelsessieFragment extends Fragment {
                             builder.show();
                             }else if(!beurt && status.equals("GESTART")){
                                 Toast.makeText(getActivity().getBaseContext(),R.string.n_beurt,Toast.LENGTH_SHORT).show();
+                            }else if(status.equals("BEEINDIGD")){
+                                Toast.makeText(getActivity().getBaseContext(),"Cirkelsessie is beëindigd",Toast.LENGTH_SHORT).show();
                             }else {
                                 Toast.makeText(getActivity().getBaseContext(),"Cirkelsessie is niet gestart",Toast.LENGTH_SHORT).show();
                             }
@@ -170,9 +172,8 @@ public class CirkelsessieFragment extends Fragment {
                 beurtTextView.setTextColor(ContextCompat.getColor(getActivity(), R.color.md_green_600));
 
             }else {
-            beurtTextView.setText(R.string.n_beurt);
+                beurtTextView.setText(R.string.n_beurt);
                 beurtTextView.setTextColor(ContextCompat.getColor(getActivity(), R.color.md_red_600));
-
             }
         }
     }
