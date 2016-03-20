@@ -93,8 +93,8 @@ public class HoofdthemaActivity extends AppCompatActivity {
 
         for (int i = 0; i < response.body().size(); ++i) {
             SubthemaModel model = new SubthemaModel(String.valueOf(i + 1),response.body().get(i).getNaam()
-                    ,response.body().get(i).getBeschrijving(),"",
-                    "");
+                    ,response.body().get(i).getBeschrijving(),response.body().get(i).getHoofdthema().getOrganisatie().getNaam(),
+                    response.body().get(i).getHoofdthema().getNaam());
             list.add(model);
             list2.add(response.body().get(i));
         }

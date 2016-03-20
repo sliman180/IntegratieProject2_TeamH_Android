@@ -75,7 +75,7 @@ public class OrganisatieActivity extends AppCompatActivity {
                     textView.setVisibility(View.VISIBLE);
                 }else {
                     createList(response);
-                    Toast.makeText(getBaseContext(),"succes",Toast.LENGTH_SHORT).show();}
+                }
 
             }
 
@@ -94,7 +94,7 @@ public class OrganisatieActivity extends AppCompatActivity {
 
         for (int i = 0; i < response.body().size(); ++i) {
             HoofdthemaModel model = new HoofdthemaModel(String.valueOf(i + 1),response.body().get(i).getNaam()
-                    ,response.body().get(i).getBeschrijving(),"",
+                    ,response.body().get(i).getBeschrijving(),response.body().get(i).getOrganisatie().getNaam(),
                     0);
             list.add(model);
             list2.add(response.body().get(i));

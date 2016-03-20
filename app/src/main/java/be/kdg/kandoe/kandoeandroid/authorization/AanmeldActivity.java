@@ -86,7 +86,7 @@ public class AanmeldActivity extends AppCompatActivity implements LoaderCallback
         intent = new Intent(this, MainActivity.class);
         activity = this;
         // Set up the login form.
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.gebruikersnaam);
+        mUsernameView = (AutoCompleteTextView) findViewById(R.id.gebruikersnaamAuto);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.wachtwoord);

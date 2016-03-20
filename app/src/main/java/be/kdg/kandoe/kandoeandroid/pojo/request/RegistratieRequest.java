@@ -6,15 +6,17 @@ public class RegistratieRequest {
     private String gebruikersnaam;
     private String wachtwoord;
     private String confirmatie;
+    private String email;
 
     public RegistratieRequest() {
         //
     }
 
-    public RegistratieRequest(String gebruikersnaam, String wachtwoord, String confirmatie) {
+    public RegistratieRequest(String gebruikersnaam, String wachtwoord, String confirmatie, String email) {
         this.gebruikersnaam = gebruikersnaam;
         this.wachtwoord = wachtwoord;
         this.confirmatie = confirmatie;
+        this.email = email;
     }
 
     public String getGebruikersnaam() {
@@ -39,5 +41,13 @@ public class RegistratieRequest {
 
     public void setConfirmatie(String confirmatie) {
         this.confirmatie = confirmatie;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

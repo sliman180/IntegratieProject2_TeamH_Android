@@ -60,13 +60,12 @@ public class RegistratieActivity extends AppCompatActivity {
             return;
         }
         AuthAPI authAPI = Autorisatie.authorize(this).create(AuthAPI.class);
-        Call<Void> call = authAPI.register(new RegistratieRequest(username, password, password));
+        Call<Void> call = authAPI.register(new RegistratieRequest(username, password, password,email));
 
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Response<Void> response, Retrofit retrofit) {
                 Toast.makeText(mActivity, R.string.register_success, Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(mActivity, AanmeldActivity.class);
                 startActivity(intent);
             }

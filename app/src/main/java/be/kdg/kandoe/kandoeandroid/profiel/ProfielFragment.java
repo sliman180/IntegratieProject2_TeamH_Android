@@ -27,8 +27,6 @@ import retrofit.Retrofit;
 public class ProfielFragment extends Fragment {
 
     private Gebruiker gebruiker;
-    private Intent intent;
-
     private View v;
     private EditText gebruikersnaam;
     private EditText mail;
@@ -36,7 +34,6 @@ public class ProfielFragment extends Fragment {
     private EditText voornaam;
     private EditText familienaam;
     private EditText wachtwoord;
-    private EditText editText;
 
 
     public ProfielFragment() {
@@ -51,11 +48,6 @@ public class ProfielFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getActivity() != null) {
-            Activity mActivity = getActivity();
-            String token = SharedPreferencesMethods.getFromSharedPreferences(mActivity, getString(R.string.token));
-        }
-
     }
 
     @Override
@@ -80,8 +72,20 @@ public class ProfielFragment extends Fragment {
                 Retrofit retrofit = Autorisatie.authorize(getActivity());
                 GebruikerAPI gebruikerAPI = retrofit.create(GebruikerAPI.class);
                 String gebruikersnaamS = gebruikersnaam.getText().toString();
+                String telefoonS = telefoon.getText().toString();
+                String familienaamS = familienaam.getText().toString();
+                String voornaamS = voornaam.getText().toString();
+                String mailS = mail.getText().toString();
+                if(!wachtwoord.getText().toString().equals("")){
+                    String wachtwoordS = wachtwoord.getText().toString();
+                    gebruiker.setWachtwoord(wachtwoordS);
+                }
                 gebruiker.setGebruikersnaam(gebruikersnaamS);
-                gebruiker.setWachtwoord("admin");
+                gebruiker.setEmail(mailS);
+                gebruiker.setVoornaam(voornaamS);
+                gebruiker.setFamilienaam(familienaamS);
+                gebruiker.setTelefoon(telefoonS);
+
                 Call<Void> call = gebruikerAPI.updateGegevens(String.valueOf(gebruiker.getId()),gebruiker);
                 call.enqueue(new Callback<Void>() {
                     @Override
@@ -107,8 +111,13 @@ public class ProfielFragment extends Fragment {
             @Override
             public void onResponse(Response<Gebruiker> response, Retrofit retrofit){
                 if(response != null){
-                gebruiker = response.body();
-                gebruikersnaam.setText(response.body().getGebruikersnaam());}
+                    gebruiker = response.body();
+                    gebruikersnaam.setText(response.body().getGebruikersnaam());
+                    mail.setText(response.body().getEmail());
+                    telefoon.setText(response.body().getTelefoon());
+                    voornaam.setText(response.body().getVoornaam());
+                    familienaam.setText(response.body().getFamilienaam());
+                }
             }
 
             @Override
