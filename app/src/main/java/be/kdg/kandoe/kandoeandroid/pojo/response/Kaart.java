@@ -1,16 +1,19 @@
 package be.kdg.kandoe.kandoeandroid.pojo.response;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class Kaart {
 
+    @SerializedName("id")
     private int id;
-
+    @SerializedName("tekst")
     private String tekst;
-
+    @SerializedName("imageUrl")
     private String imageUrl;
-
+    @SerializedName("commentsToelaatbaar")
     private boolean commentsToelaatbaar;
-
+    @SerializedName("gebruiker")
     private Gebruiker gebruiker;
 
     public Gebruiker getGebruiker() {

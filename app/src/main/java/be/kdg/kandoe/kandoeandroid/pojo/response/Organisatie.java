@@ -1,10 +1,17 @@
 package be.kdg.kandoe.kandoeandroid.pojo.response;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class Organisatie {
+
+    @SerializedName("id")
     private int id;
+    @SerializedName("naam")
     private String naam;
+    @SerializedName("beschrijving")
     private String beschrijving;
+    @SerializedName("gebruiker")
     private Gebruiker gebruiker;
 
     public int getId() {

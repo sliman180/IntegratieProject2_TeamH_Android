@@ -46,7 +46,7 @@
             android:label="@string/title_activity_main"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            />
         <activity
             android:name=".hoofdthema.HoofdthemaActivity"
             android:label="@string/title_activity_hoofdthema"
@@ -60,7 +60,7 @@
         <activity
             android:name=".kaart.KaartActivity"
             android:label="@string/title_activity_kaart"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

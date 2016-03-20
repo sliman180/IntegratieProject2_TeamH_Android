@@ -2,6 +2,7 @@ package be.kdg.kandoe.kandoeandroid.pojo.response;
 
 
 public class Bericht {
+
     private int id;
     private String tekst;
     private long datum;

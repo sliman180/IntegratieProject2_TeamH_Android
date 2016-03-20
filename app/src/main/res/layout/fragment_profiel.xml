@@ -1,27 +1,29 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="be.kdg.kandoe.kandoeandroid.profiel.ProfielFragment"
     android:background="@color/md_grey_300">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="15dp"
-        android:orientation="horizontal">
+
+        >
+
         <TextView
             android:id="@+id/profile_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?android:listSeparatorTextViewStyle"
             android:text="@string/gegevens"
-            android:layout_marginBottom="15dp"/>
+            android:layout_marginBottom="15dp"
+            />
 
-        <TextView android:id="@+id/gebruikersnaam2"
+        <TextView android:id="@+id/gebruikersnaam"
             android:layout_below="@id/profile_header"
-            android:layout_width="wrap_content"
+            android:layout_width="125dp"
             android:layout_height="wrap_content"
             android:text="@string/gebruikersnaam"
             android:padding="10dp"
@@ -29,17 +31,132 @@
             android:background="@drawable/back_profile"
             />
 
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:id="@+id/gebruikersnaam_ed"
+            android:layout_below="@id/profile_header"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/gebruikersnaam"
+            android:layout_alignParentEnd="true"/>
+
+        <TextView android:id="@+id/wachtwoord_profiel"
+            android:layout_below="@id/gebruikersnaam"
+            android:layout_marginTop="10dp"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:text="@string/wachtwoord_profiel"
+            android:padding="10dp"
+            android:textAppearance="?android:textAppearance"
+            android:background="@drawable/back_profile"
+            />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:id="@+id/gebruikersnaam"
-            android:layout_below="@id/profile_header"
+            android:layout_marginTop="5dp"
+            android:id="@+id/wachtwoord_ed"
+            android:layout_below="@id/gebruikersnaam_ed"
             android:textAppearance="?android:textAppearanceMedium"
             android:layout_marginStart="20dp"
-            android:layout_toEndOf="@id/gebruikersnaam2"
+            android:layout_toEndOf="@id/gebruikersnaam"
             android:layout_alignParentEnd="true"/>
+
+
+        <TextView android:id="@+id/email_profiel"
+            android:layout_below="@id/wachtwoord_profiel"
+            android:layout_width="125dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:text="@string/email"
+            android:padding="10dp"
+            android:textAppearance="?android:textAppearance"
+            android:background="@drawable/back_profile"
+            />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textWebEmailAddress"
+            android:id="@+id/email_ed"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/wachtwoord_ed"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/email_profiel"
+            android:layout_alignParentEnd="true"/>
+
+        <TextView android:id="@+id/voornaam_profiel"
+            android:layout_below="@id/email_profiel"
+            android:layout_width="125dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:text="@string/voornaam"
+            android:padding="10dp"
+            android:textAppearance="?android:textAppearance"
+            android:background="@drawable/back_profile"
+            />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:layout_marginTop="5dp"
+            android:id="@+id/voornaam_ed"
+            android:layout_below="@id/email_ed"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/email_profiel"
+            android:layout_alignParentEnd="true"/>
+
+        <TextView android:id="@+id/familienaam_profiel"
+            android:layout_below="@id/voornaam_profiel"
+            android:layout_width="125dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:text="@string/familienaam"
+            android:padding="10dp"
+            android:textAppearance="?android:textAppearance"
+            android:background="@drawable/back_profile"
+            />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:inputType="textPersonName"
+            android:id="@+id/familienaam_ed"
+            android:layout_below="@id/voornaam_ed"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/email_profiel"
+            android:layout_alignParentEnd="true"/>
+
+        <TextView android:id="@+id/telefoon_profiel"
+            android:layout_below="@id/familienaam_profiel"
+            android:layout_width="125dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:text="@string/telefoon_nr"
+            android:padding="10dp"
+            android:textAppearance="?android:textAppearance"
+            android:background="@drawable/back_profile"
+            />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPhonetic"
+            android:id="@+id/telefoon_ed"
+            android:layout_below="@id/familienaam_ed"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/email_profiel"
+            android:layout_alignParentEnd="true"/>
+
 
         <Button
             android:layout_width="wrap_content"
@@ -48,10 +165,12 @@
             android:id="@+id/buttonSave"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
             android:theme="@style/MyButton"
             android:textColor="#FFFFFF"
+            android:layout_below="@id/telefoon_ed"
             />
     </RelativeLayout>
 
 
-</FrameLayout>
+</ScrollView>

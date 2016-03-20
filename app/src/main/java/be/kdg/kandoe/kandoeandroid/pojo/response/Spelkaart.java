@@ -1,12 +1,15 @@
 package be.kdg.kandoe.kandoeandroid.pojo.response;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class Spelkaart {
 
+    @SerializedName("id")
     private int id;
-
+    @SerializedName("kaart")
     private Kaart kaart;
-
+    @SerializedName("positie")
     private int positie;
 
 

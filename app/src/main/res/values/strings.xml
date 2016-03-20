@@ -91,4 +91,8 @@
     <string name="help_deelnemen_text">Deelnemen kan je alleen doen als de sessie OPEN staat.</string>
     <string name="title_activity_kaart">KaartActivity</string>
     <string name="spelkaart_gegevens">Spelkaart gegevens</string>
+    <string name="voornaam">Voornaam</string>
+    <string name="familienaam">Familienaam</string>
+    <string name="telefoon_nr">Telefoon Nr</string>
+    <string name="wachtwoord_profiel">Wachtwoord</string>
 </resources>

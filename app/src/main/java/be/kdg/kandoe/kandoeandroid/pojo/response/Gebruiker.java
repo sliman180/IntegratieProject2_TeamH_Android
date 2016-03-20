@@ -15,6 +15,15 @@ public class Gebruiker {
     private String gebruikersnaam;
     @SerializedName("wachtwoord")
     private String wachtwoord;
+    @SerializedName("email")
+    private String email;
+    @SerializedName("voornaam")
+    private String voornaam;
+    @SerializedName("familienaam")
+    private String familienaam;
+    @SerializedName("telefoon")
+    private String telefoon;
+
 
 
     public int getId() {
@@ -41,4 +50,35 @@ public class Gebruiker {
         this.wachtwoord = wachtwoord;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getVoornaam() {
+        return voornaam;
+    }
+
+    public void setVoornaam(String voornaam) {
+        this.voornaam = voornaam;
+    }
+
+    public String getFamilienaam() {
+        return familienaam;
+    }
+
+    public void setFamilienaam(String familienaam) {
+        this.familienaam = familienaam;
+    }
+
+    public String getTelefoon() {
+        return telefoon;
+    }
+
+    public void setTelefoon(String telefoon) {
+        this.telefoon = telefoon;
+    }
 }
