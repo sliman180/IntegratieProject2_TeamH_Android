@@ -94,4 +94,14 @@
     <string name="help">Help</string>
     <string name="divider">Divider</string>
     <string name="afmelden">Afmelden</string>
+    <string name="hoe_spelen_text">U neemt deel aan een sessie dat gestart is en voegt dan kaarten toe indien nodig. Als er al kaarten aanwezig zijn, dan moet u de kaart verplaatsen door erop te klikken. U moet hiervoor wel wachten, omdat men met beurten speelt. De kaart die op de cirkel nummer 1 staat wordt gebruikt als idee.</string>
+    <string name="help_kaarten_text">Men kan kaarten aanmaken en hierop een idee schrijven, of bestaande kaarten gebruiken die door andere deelnemers werden aangemaakt verplaatsten.</string>
+    <string name="help_cirkelsessie_text">Elke cirkelsessie heeft een status, namelijk; GESTART,OPEN,GESLOTEN en BEËINDIGD. Elke cirkel heeft een bepaalde grootte waarop kaarten worden geplaatst.</string>
+    <string name="help_deelnemen_text">Deelnemen kan je alleen doen als de sessie OPEN staat.</string>
+    <string name="title_activity_kaart">KaartActivity</string>
+    <string name="spelkaart_gegevens">Spelkaart gegevens</string>
+    <string name="voornaam">Voornaam</string>
+    <string name="familienaam">Familienaam</string>
+    <string name="telefoon_nr">Telefoon Nr</string>
+    <string name="wachtwoord_profiel">Wachtwoord</string>
 </resources>

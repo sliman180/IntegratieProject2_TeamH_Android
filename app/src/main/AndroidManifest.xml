@@ -24,15 +24,15 @@
         <activity
             android:name=".cirkelsessie.CirkelsessieActivity"
             android:label="@string/title_activity_cirkelsessie"
-            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden" />
         <activity
             android:name=".FirstActivity"
-            android:theme="@style/AppTheme"
             android:launchMode="singleTask"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden">
@@ -51,11 +51,12 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".hoofdthema.HoofdthemaActivity"
             android:label="@string/title_activity_hoofdthema"
@@ -70,6 +71,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden" />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".kaart.KaartActivity"
+            android:label="@string/title_activity_kaart"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

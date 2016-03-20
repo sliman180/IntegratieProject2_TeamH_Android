@@ -29,7 +29,15 @@ public class ProfielFragment extends Fragment {
     private Gebruiker gebruiker;
     private Intent intent;
 
+    private View v;
+    private EditText gebruikersnaam;
+    private EditText mail;
+    private EditText telefoon;
+    private EditText voornaam;
+    private EditText familienaam;
+    private EditText wachtwoord;
     private EditText editText;
+
 
     public ProfielFragment() {
         // Required empty public constructor
@@ -54,8 +62,14 @@ public class ProfielFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_profiel, container, false);
-        editText = (EditText) v.findViewById(R.id.gebruikersnaam);
+        v = inflater.inflate(R.layout.fragment_profiel, container, false);
+        gebruikersnaam = (EditText) v.findViewById(R.id.gebruikersnaam_ed);
+        mail = (EditText) v.findViewById(R.id.email_ed);
+        telefoon = (EditText) v.findViewById(R.id.telefoon_ed);
+        voornaam = (EditText) v.findViewById(R.id.voornaam_ed);
+        familienaam = (EditText) v.findViewById(R.id.familienaam_ed);
+        wachtwoord = (EditText) v.findViewById(R.id.wachtwoord_ed);
+
 
         getData();
 
@@ -65,8 +79,8 @@ public class ProfielFragment extends Fragment {
             public void onClick(View v) {
                 Retrofit retrofit = Autorisatie.authorize(getActivity());
                 GebruikerAPI gebruikerAPI = retrofit.create(GebruikerAPI.class);
-                String gebruikersnaam = editText.getText().toString();
-                gebruiker.setGebruikersnaam(gebruikersnaam);
+                String gebruikersnaamS = gebruikersnaam.getText().toString();
+                gebruiker.setGebruikersnaam(gebruikersnaamS);
                 gebruiker.setWachtwoord("admin");
                 Call<Void> call = gebruikerAPI.updateGegevens(String.valueOf(gebruiker.getId()),gebruiker);
                 call.enqueue(new Callback<Void>() {
@@ -94,7 +108,7 @@ public class ProfielFragment extends Fragment {
             public void onResponse(Response<Gebruiker> response, Retrofit retrofit){
                 if(response != null){
                 gebruiker = response.body();
-                editText.setText(response.body().getGebruikersnaam());}
+                gebruikersnaam.setText(response.body().getGebruikersnaam());}
             }
 
             @Override

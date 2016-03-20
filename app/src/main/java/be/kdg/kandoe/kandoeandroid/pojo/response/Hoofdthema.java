@@ -1,13 +1,21 @@
 package be.kdg.kandoe.kandoeandroid.pojo.response;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Hoofdthema {
+
+
+    @SerializedName("id")
     private int id;
+    @SerializedName("naam")
     private String naam;
+    @SerializedName("beschrijving")
     private String beschrijving;
+    @SerializedName("organisatie")
     private Organisatie organisatie;
+    @SerializedName("gebruiker")
     private Gebruiker gebruiker;
-//    private List<Subthema> subthemas = new ArrayList<>();
-//    private List<Tag> tags = new ArrayList<>();
+
 
     public int getId() {
         return id;

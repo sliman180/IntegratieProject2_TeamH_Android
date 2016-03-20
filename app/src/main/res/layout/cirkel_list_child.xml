@@ -5,11 +5,36 @@
     android:padding="10dp"
     android:background="@color/md_grey_400">
 
-    <TextView
-        android:id="@+id/kaart"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="16sp"
-        android:padding="15dp"/>
+        android:orientation="horizontal"
+        android:background="@drawable/back">
+        <TextView
+            android:id="@+id/kaart"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:padding="15dp"
+            android:text="New Text"/>
 
+        <View
+            android:layout_width="1dp"
+            android:layout_toEndOf="@id/kaart"
+            android:layout_height="match_parent"
+            android:background="@color/md_grey_500"
+            android:id="@+id/backLine" />
+
+        <ImageView
+            android:id="@+id/item_icon_kaart"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@null"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
 </RelativeLayout>

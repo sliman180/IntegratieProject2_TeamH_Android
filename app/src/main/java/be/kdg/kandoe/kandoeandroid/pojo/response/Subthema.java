@@ -1,9 +1,15 @@
 package be.kdg.kandoe.kandoeandroid.pojo.response;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Subthema {
+    @SerializedName("id")
     private int id;
+    @SerializedName("naam")
     private String naam;
+    @SerializedName("beschrijving")
     private String beschrijving;
+    @SerializedName("hoofdthema")
     private Hoofdthema hoofdthema;
 
     public Organisatie getOrganisatie() {
@@ -23,9 +29,6 @@ public class Subthema {
     public void setHoofdthema(Hoofdthema hoofdthema) {
         this.hoofdthema = hoofdthema;
     }
-
-    //    private List<Cirkelsessie> cirkelsessies = new ArrayList<>();
-//    private List<Kaart> kaarten = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -51,27 +54,5 @@ public class Subthema {
         this.beschrijving = beschrijving;
     }
 
-//    public Hoofdthema getHoofdthema() {
-//        return hoofdthema;
-//    }
-//
-//    public void setHoofdthema(Hoofdthema hoofdthema) {
-//        this.hoofdthema = hoofdthema;
-//    }
-//
-//    public List<Cirkelsessie> getCirkelsessies() {
-//        return cirkelsessies;
-//    }
-//
-//    public void setCirkelsessies(List<Cirkelsessie> cirkelsessies) {
-//        this.cirkelsessies = cirkelsessies;
-//    }
-//
-//    public List<Kaart> getKaarten() {
-//        return kaarten;
-//    }
-//
-//    public void setKaarten(List<Kaart> kaarten) {
-//        this.kaarten = kaarten;
-//    }
+
 }

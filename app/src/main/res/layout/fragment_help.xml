@@ -10,13 +10,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
         <TextView
             android:id="@+id/help_spelen_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?android:listSeparatorTextViewStyle"
             android:text="@string/hoe_spelen"
+            android:layout_marginBottom="5dp"
+            />
+        <TextView
+            android:id="@+id/help_spelen_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hoe_spelen_text"
             android:layout_marginBottom="15dp"
             />
 
@@ -25,13 +32,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
         <TextView
             android:id="@+id/help_deelnemen_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?android:listSeparatorTextViewStyle"
             android:text="@string/help_deelnemen"
+            android:layout_marginBottom="5dp"
+            />
+        <TextView
+            android:id="@+id/help_deelnemen_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/help_deelnemen_text"
             android:layout_marginBottom="15dp"
             />
 
@@ -39,13 +53,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
         <TextView
             android:id="@+id/help_cirkelsessies_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?android:listSeparatorTextViewStyle"
             android:text="@string/help_cirkelsessies"
+            android:layout_marginBottom="5dp"
+            />
+        <TextView
+            android:id="@+id/help_cirkelsessies_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/help_cirkelsessie_text"
             android:layout_marginBottom="15dp"
             />
 
@@ -54,13 +75,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
         <TextView
             android:id="@+id/help_kaart_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?android:listSeparatorTextViewStyle"
             android:text="@string/help_kaarten"
+            android:layout_marginBottom="5dp"
+            />
+        <TextView
+            android:id="@+id/help_kaarten_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/help_kaarten_text"
             android:layout_marginBottom="15dp"
             />
 
