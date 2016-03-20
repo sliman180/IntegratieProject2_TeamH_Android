@@ -41,7 +41,6 @@ import retrofit.Retrofit;
 
 public class DeelnameFragment extends Fragment {
 
-    private View v;
     private Button buttonDeelname;
     private String cirkelsessieId;
     private Gebruiker gebruiker;
@@ -52,7 +51,6 @@ public class DeelnameFragment extends Fragment {
     private TextView beurtTextview;
     private ChatFragment chatFragment;
     private Activity mActivity;
-    private int aantalDeelnemers = 0;
     private int maxAantalDeelnemers = 0;
     private DeelnemersAdapter adapter = null;
     private Handler handler;
@@ -67,7 +65,7 @@ public class DeelnameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_deelname, container, false);
+        View v = inflater.inflate(R.layout.fragment_deelname, container, false);
         buttonDeelname = (Button) v.findViewById(R.id.buttonDeelname);
         buttonInfo = (Button) v.findViewById(R.id.buttonInfo);
         return v;
@@ -274,7 +272,7 @@ public class DeelnameFragment extends Fragment {
                     ,String.valueOf(response.body().get(i).getAangemaakteKaarten()));
             list.add(model);
         }
-        aantalDeelnemers = response.body().size();
+        int aantalDeelnemers = response.body().size();
         if((maxAantalDeelnemers < aantalDeelnemers) && adapter !=null){
             adapter.notifyDataSetChanged();
             maxAantalDeelnemers = aantalDeelnemers;

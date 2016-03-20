@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="drawer" type="id"/>
+    <item name="hoofdthemas" type="id"/>
+    <item name="subthemas" type="id"/>
+    <item name="organisaties" type="id"/>
+    <item name="deelnames" type="id"/>
 </resources>

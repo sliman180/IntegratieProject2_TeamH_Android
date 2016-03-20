@@ -43,7 +43,7 @@ public class HoofdthemasTest {
         onView(withId(R.id.drawer))
                 .perform(GemeenschappelijkeMethoden.actionOpenDrawer());
 
-        onView(withText("Mijn hoofdthema\'s"))
+        onView(withText("Mijn hoofdthema's"))
                 .perform(click());
 
         onView(withId(R.id.hoofdthema_header))

@@ -26,14 +26,9 @@ import retrofit.Retrofit;
 
 public class ProfielFragment extends Fragment {
 
-    private String token;
-
-    private Activity mActivity;
-
     private Gebruiker gebruiker;
     private Intent intent;
 
-    private View v;
     private EditText editText;
 
     public ProfielFragment() {
@@ -49,8 +44,8 @@ public class ProfielFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getActivity() != null) {
-            mActivity = getActivity();
-            token = SharedPreferencesMethods.getFromSharedPreferences(mActivity, getString(R.string.token));
+            Activity mActivity = getActivity();
+            String token = SharedPreferencesMethods.getFromSharedPreferences(mActivity, getString(R.string.token));
         }
 
     }
@@ -59,7 +54,7 @@ public class ProfielFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_profiel, container, false);
+        View v = inflater.inflate(R.layout.fragment_profiel, container, false);
         editText = (EditText) v.findViewById(R.id.gebruikersnaam);
 
         getData();

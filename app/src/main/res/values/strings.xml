@@ -85,4 +85,13 @@
     <string name="no_deelnames">U hebt geen deelnames</string>
     <string name="no_hoofdthemas">U hebt geen hoofdthemas</string>
     <string name="no_subthemas">U hebt geen subthema\'s</string>
+    <string name="mijn_profiel">Mijn profiel</string>
+    <string name="mijn_subthemas">Mijn subthema\'s</string>
+    <string name="cirkelsessies">Cirkelsessies</string>
+    <string name="mijn_hoofdthemas">Mijn hoofdthema\'s</string>
+    <string name="mijn_deelnames">Mijn deelnames</string>
+    <string name="mijn_organisaties">Mijn organisaties</string>
+    <string name="help">Help</string>
+    <string name="divider">Divider</string>
+    <string name="afmelden">Afmelden</string>
 </resources>

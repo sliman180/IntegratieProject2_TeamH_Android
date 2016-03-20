@@ -46,7 +46,6 @@ public class ChatFragment extends Fragment {
     private EditText chatEditText;
     private String cirkelsessieId;
     private Gebruiker gebruiker;
-    private ListView chatListview;
     private Handler handler;
     private ChatAdapter adapter = null;
     private Activity mActivity;
@@ -73,7 +72,7 @@ public class ChatFragment extends Fragment {
 
         chatButton = (Button) v.findViewById(R.id.btSend);
         chatEditText = (EditText) v.findViewById(R.id.etChat);
-        chatListview = (ListView) v.findViewById(R.id.listview_chat);
+        ListView chatListview = (ListView) v.findViewById(R.id.listview_chat);
         chatButtonClick();
         return v;
     }

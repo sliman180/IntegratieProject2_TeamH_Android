@@ -46,8 +46,6 @@ public class OrganisatieLijstFragment extends Fragment {
 
     private ArrayList<Organisatie> unchangedList;
 
-    private ImageView mImageView;
-
     private Gebruiker gebruiker;
 
 
@@ -180,7 +178,7 @@ public class OrganisatieLijstFragment extends Fragment {
                 final TextView beschrijvingView = (TextView) rowView.findViewById(R.id.organisatie_beschrijving);
                 final ImageView clickImgView = (ImageView) rowView.findViewById(R.id.click_icon);
                 clickImgView.setColorFilter(null);
-                mImageView = clickImgView;
+                ImageView mImageView = clickImgView;
 
                 // 4. Set the text for textView
 

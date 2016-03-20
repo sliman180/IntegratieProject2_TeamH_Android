@@ -39,13 +39,12 @@ public class MainActivity extends AppCompatActivity {
     private Drawer result;
     private LinkedHashMap<String, Object> menuMap;
     private String[] mMenuItems;
-    private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mActivity = this;
+        Activity mActivity = this;
         Gson gson = new Gson();
         String json = SharedPreferencesMethods.getFromSharedPreferences(mActivity,getString(R.string.gebruiker));
 
@@ -55,13 +54,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //if you want to update the items at a later time it is recommended to keep it in a variable
-        SecondaryDrawerItem profiel = new SecondaryDrawerItem().withName("Mijn profiel").withIcon(GoogleMaterial.Icon.gmd_account_circle);
-        SecondaryDrawerItem subthemas = new SecondaryDrawerItem().withName("Mijn subthema's").withIcon(GoogleMaterial.Icon.gmd_style);
-        SecondaryDrawerItem cirkelsessies = new SecondaryDrawerItem().withName("Cirkelsessies").withIcon(MaterialDesignIconic.Icon.gmi_dot_circle_alt);
-        SecondaryDrawerItem mijnCirkelsessies = new SecondaryDrawerItem().withName("Mijn hoofdthema's").withIcon(GoogleMaterial.Icon.gmd_turned_in);
-        SecondaryDrawerItem mijnDeelnames = new SecondaryDrawerItem().withName("Mijn deelnames").withIcon(GoogleMaterial.Icon.gmd_playlist_add_check);
-        SecondaryDrawerItem mijnOrganisaties = new SecondaryDrawerItem().withName("Mijn organisaties").withIcon(GoogleMaterial.Icon.gmd_account_balance);
-        SecondaryDrawerItem help = new SecondaryDrawerItem().withName("Help").withIcon(GoogleMaterial.Icon.gmd_help);
+        SecondaryDrawerItem profiel = new SecondaryDrawerItem().withName(R.string.mijn_profiel).withIcon(GoogleMaterial.Icon.gmd_account_circle);
+        SecondaryDrawerItem subthemas = new SecondaryDrawerItem().withName(R.string.mijn_subthemas).withIcon(GoogleMaterial.Icon.gmd_style);
+        SecondaryDrawerItem cirkelsessies = new SecondaryDrawerItem().withName(R.string.cirkelsessies).withIcon(MaterialDesignIconic.Icon.gmi_dot_circle_alt);
+        SecondaryDrawerItem hoofdthemas = new SecondaryDrawerItem().withName(R.string.mijn_hoofdthemas).withIcon(GoogleMaterial.Icon.gmd_turned_in);
+        SecondaryDrawerItem mijnDeelnames = new SecondaryDrawerItem().withName(R.string.mijn_deelnames).withIcon(GoogleMaterial.Icon.gmd_playlist_add_check);
+        SecondaryDrawerItem mijnOrganisaties = new SecondaryDrawerItem().withName(R.string.mijn_organisaties).withIcon(GoogleMaterial.Icon.gmd_account_balance);
+        SecondaryDrawerItem help = new SecondaryDrawerItem().withName(R.string.help).withIcon(GoogleMaterial.Icon.gmd_help);
 
         // Create the AccountHeader
         AccountHeader headerResult = new AccountHeaderBuilder()
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         new DividerDrawerItem(),
                         mijnDeelnames,
                         mijnOrganisaties,
-                        mijnCirkelsessies,
+                        hoofdthemas,
                         subthemas,
                         new DividerDrawerItem(),
                         help
@@ -111,17 +110,17 @@ public class MainActivity extends AppCompatActivity {
         result.getDrawerLayout().setId(R.id.drawer);
 
         menuMap = new LinkedHashMap<>();
-        menuMap.put("Mijn profiel", ProfielFragment.newInstance());
-        menuMap.put("Divider", null);
-        menuMap.put("Cirkelsessies", new CirkelSessieLijstFragment());
-        menuMap.put("Divider", null);
-        menuMap.put("Mijn deelnames", DeelnameLijstFragment.newInstance());
-        menuMap.put("Mijn organisaties", OrganisatieLijstFragment.newInstance());
-        menuMap.put("Mijn hoofdthemas", HoofdThemaLijstFragment.newInstance());
-        menuMap.put("Mijn subthemas", SubthemaLijstFragment.newInstance());
-        menuMap.put("Divider", null);
-        menuMap.put("Help", HelpFragment.newInstance());
-        menuMap.put("Afmelden", LOG_OUT_METHOD);
+        menuMap.put(getString(R.string.mijn_profiel), ProfielFragment.newInstance());
+        menuMap.put(getString(R.string.divider), null);
+        menuMap.put(getString(R.string.cirkelsessies), new CirkelSessieLijstFragment());
+        menuMap.put(getString(R.string.divider), null);
+        menuMap.put(getString(R.string.mijn_deelnames), DeelnameLijstFragment.newInstance());
+        menuMap.put(getString(R.string.mijn_organisaties), OrganisatieLijstFragment.newInstance());
+        menuMap.put(getString(R.string.mijn_hoofdthemas), HoofdThemaLijstFragment.newInstance());
+        menuMap.put(getString(R.string.mijn_subthemas), SubthemaLijstFragment.newInstance());
+        menuMap.put(getString(R.string.divider), null);
+        menuMap.put(getString(R.string.help), HelpFragment.newInstance());
+        menuMap.put(getString(R.string.afmelden), LOG_OUT_METHOD);
 
         // On start the first screen should be open
         getFragmentManager().beginTransaction().replace(R.id.content_frame,

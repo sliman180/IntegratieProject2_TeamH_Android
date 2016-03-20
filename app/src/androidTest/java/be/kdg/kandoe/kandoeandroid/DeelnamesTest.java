@@ -16,9 +16,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class DeelnamesTest {
     private static final String TAG = "deelnames_test";
-    private static final String ADMIN_USERNAME = "admin";
-    private static final String ADMIN_PASSWORD = "admin";
-    private static final long LONG_WAIT_TIME = 3000;
 
     @Rule
     public ActivityTestRule<FirstActivity> mActivityRule =
@@ -30,21 +27,23 @@ public class DeelnamesTest {
                 .perform(click());
 
         onView(withId(R.id.gebruikersnaam))
-                .perform(typeText(ADMIN_USERNAME));
+                .perform(typeText(GemeenschappelijkeMethoden.GEBRUIKERSNAAM));
         onView(withId(R.id.wachtwoord))
-                .perform(typeText(ADMIN_PASSWORD));
+                .perform(typeText(GemeenschappelijkeMethoden.WACHTWOORD));
 
         onView(withId(R.id.aanmeld_button))
                 .perform(click());
 
         // wait for the response from kandoe api
-        GemeenschappelijkeMethoden.sleep(LONG_WAIT_TIME);
+        GemeenschappelijkeMethoden.sleep(GemeenschappelijkeMethoden.LONG_WAIT_TIME);
     }
 
     @Test
     public void openDeelnames() {
         onView(withId(R.id.drawer))
                 .perform(GemeenschappelijkeMethoden.actionOpenDrawer());
+
+        GemeenschappelijkeMethoden.sleep(GemeenschappelijkeMethoden.SHORT_WAIT_TIME);
 
         onView(withText("Mijn deelnames"))
                 .perform(click());
