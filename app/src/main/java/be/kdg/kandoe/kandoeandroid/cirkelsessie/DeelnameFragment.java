@@ -83,12 +83,12 @@ public class DeelnameFragment extends Fragment {
         buttonVoegKaart = (Button) getActivity().findViewById(R.id.buttonAddKaart);
         beurtTextview = (TextView) getActivity().findViewById(R.id.isBeurt);
         chatFragment = (ChatFragment) getFragmentManager().findFragmentById(R.id.chat_fragment);
-        checkStatus();
+        checkFirstStatus();
         onClickDeelnemen();
         createAdapter();
     }
 
-    private void checkStatus(){
+    private void checkFirstStatus(){
         switch (status) {
             case "GESLOTEN":
                 buttonInfo.setText(R.string.sessie_gesloten);
@@ -260,6 +260,15 @@ public class DeelnameFragment extends Fragment {
         }
     }
 
+    private void checkBeeindig(){
+        status = ((CirkelsessieActivity) getActivity()).getStatus();
+        if(status.equals("BEEINDIGD")){
+            buttonInfo.setText(R.string.sessie_beindigd);
+            buttonInfo.getBackground().setColorFilter(ContextCompat.getColor(getActivity(), R.color.md_grey_400), PorterDuff.Mode.SRC_ATOP);
+            buttonInfo.setTextColor(ContextCompat.getColor(getActivity(), R.color.md_black_1000));
+            buttonInfo.setEnabled(false);
+        }
+    }
     private void addData(Response<List<Deelname>> response){
         list.clear();
         SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy HH:mm");
@@ -364,6 +373,7 @@ public class DeelnameFragment extends Fragment {
         @Override
         public void run()
         {
+            checkBeeindig();
             getData();
             //Do task
             handler.postDelayed(chatRunnable, 1000);

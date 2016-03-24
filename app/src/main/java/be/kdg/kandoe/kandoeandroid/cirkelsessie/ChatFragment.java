@@ -119,7 +119,17 @@ public class ChatFragment extends Fragment {
         });
     }
 
+    public void stopData(){
+        if(status.equals("BEEINDIGD")){
+            chatButton.setEnabled(false);
+            chatButton.getBackground().setColorFilter(ContextCompat.getColor(getActivity(), R.color.md_grey_400), PorterDuff.Mode.SRC_ATOP);
+            handler.removeCallbacks(chatRunnable);
+        }
+    }
+
     private void getData(){
+        status = ((CirkelsessieActivity) getActivity()).getStatus();
+        stopData();
         boolean isDeelnemer = deelnameFragment.isDeelnemer();
         if(!isDeelnemer){
             chatButton.setEnabled(false);

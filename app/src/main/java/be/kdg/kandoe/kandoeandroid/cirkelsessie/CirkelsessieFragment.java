@@ -78,6 +78,7 @@ public class CirkelsessieFragment extends Fragment {
 
     public void getData(){
         beurt = ((CirkelsessieActivity) getActivity()).isBeurt();
+        status = ((CirkelsessieActivity) getActivity()).getStatus();
         Retrofit retrofit = Autorisatie.authorize(getActivity());
         CirkelsessieAPI cirkelsessieAPI = retrofit.create(CirkelsessieAPI.class);
         Call<List<Spelkaart>> call = cirkelsessieAPI.getSpelkaarten(cirkelsessieId);
@@ -167,11 +168,14 @@ public class CirkelsessieFragment extends Fragment {
 
 
         }
-            if(beurt){
+            if(beurt && status.equals("GESTART")){
                 beurtTextView.setText(R.string.beurt);
                 beurtTextView.setTextColor(ContextCompat.getColor(getActivity(), R.color.md_green_600));
 
-            }else {
+            }else if(status.equals("BEEINDIGD")){
+                beurtTextView.setText("Cirkelsessie is beëindigd.");
+                beurtTextView.setTextColor(ContextCompat.getColor(getActivity(), R.color.md_black_1000));
+            }else if(!beurt && status.equals("GESTART")) {
                 beurtTextView.setText(R.string.n_beurt);
                 beurtTextView.setTextColor(ContextCompat.getColor(getActivity(), R.color.md_red_600));
             }

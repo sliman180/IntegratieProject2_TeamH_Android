@@ -124,6 +124,7 @@ public class CirkelsessieActivity extends AppCompatActivity {
         elv.setAdapter(cirkelsessieListAdapter);
 
         fragmentCirkelsessie = (CirkelsessieFragment) getFragmentManager().findFragmentById(R.id.cirkelsessie_fragment);
+
         deelnameFragment = (DeelnameFragment) getFragmentManager().findFragmentById(R.id.deelname_fragment);
         buttonVoegKaart = (Button) findViewById(R.id.buttonAddKaart);
         handler = new Handler();
@@ -131,8 +132,6 @@ public class CirkelsessieActivity extends AppCompatActivity {
         String json = SharedPreferencesMethods.getFromSharedPreferences(mActivity, mActivity.getString(R.string.gebruiker));
         Gson gson = new Gson();
         gebruiker = gson.fromJson(json, Gebruiker.class);
-
-
     }
 
     public String getStatus() {
@@ -302,6 +301,10 @@ public class CirkelsessieActivity extends AppCompatActivity {
                             status = "GESTART";
                         }else {
                             status = response.body().getStatus();
+                            if(status.equals("BEEINDIGD")){
+                                buttonVoegKaart.setEnabled(false);
+                                buttonVoegKaart.getBackground().setColorFilter(ContextCompat.getColor(mActivity, R.color.md_grey_400), PorterDuff.Mode.SRC_ATOP);
+                            }
                         }
 
                     }
@@ -395,6 +398,8 @@ public class CirkelsessieActivity extends AppCompatActivity {
                 }
             });
 
+
+
             final View finalView = view;
             if(deelnameFragment.isDeelnemer()){
             txtListChild.setOnClickListener(new View.OnClickListener() {
@@ -431,11 +436,6 @@ public class CirkelsessieActivity extends AppCompatActivity {
                     builder.show();
                     }else if(!beurt && status.equals("GESTART")){
                         Toast.makeText(getBaseContext(),R.string.n_beurt,Toast.LENGTH_SHORT).show();
-                    }else if(status.equals("BEEINDIGD")){
-                        Toast.makeText(getBaseContext(),"Cirkelsessie is beëindigd",Toast.LENGTH_SHORT).show();
-                        buttonVoegKaart.setEnabled(false);
-                        buttonVoegKaart.getBackground().setColorFilter(ContextCompat.getColor(mActivity, R.color.md_grey_400), PorterDuff.Mode.SRC_ATOP);
-
                     }else {
                         Toast.makeText(getBaseContext(),"Cirkelsessie is niet gestart",Toast.LENGTH_SHORT).show();
                     }
